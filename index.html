@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Step-by-step 3D build guide for the Daquis Residence, Sandari Batulao: structure, plumbing, electrical, dimensions and material quantities.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Daquis Residence Build Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: site-drawing sheet. Sticky 3D build viewer on top, reference sheets below, like a plan set's title blocks. */
+:root{
+  --bg:#EEF0EF; --paper:#FFFFFF; --ink:#1B2124; --muted:#5A656B; --line:#D2D8DA;
+  --accent:#C24E22; --accent-ink:#8E3410; --accent-soft:#F7E3D9;
+  --main:#4C41BE; --tie:#D2552A; --mat:#13856A; --form:#A9690C; --steel:#55626A;
+  --c-front:#DCE0DF; --c-top:#EDF0EF; --c-side:#C8CDCC; --c-edge:#8C9699;
+  --chb-front:#CBC6BB; --chb-top:#DDD8CE; --chb-side:#B8B2A6;
+  --fin-front:#FAFAF7; --fin-top:#FFFFFF; --fin-side:#E7E8E3;
+  --glass:#2C3D48; --sheet:#7C8A92;
+  --dk-front:#4A5157; --dk-top:#5B636A; --dk-side:#3B4146; --hill:#9DBB7E; --hill-edge:#5E8A45; --road:#D6D9D6; --soil:#7A5A3C; --roof:#5D6A72; --asph:#41484D; --lane:#F4F3EC; --curb:#BDC2BE; --trunk:#6E4B2C; --fol:#5F9C45; --fol2:#4B8436; --fol-e:#3A6A2A; --pole:#4A5157; --lamp:#FFF1C2; --gopen:#20262A; --sew:#8C5A2E; --wat:#1E78C8; --sto:#1F9A8A; --ele:#C2368A; --rib:#45525A; --mt1:#9AA3A8; --mt2:#B2BABE; --mt3:#838D92; --leaf:#6FA34B; --leaf-edge:#3F6E2A;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121619; --paper:#1A2024; --ink:#E6EAEB; --muted:#98A3A8; --line:#2D363B;
+  --accent:#F0804F; --accent-ink:#FFB08C; --accent-soft:#3A2419;
+  --main:#9C94F5; --tie:#F07A4B; --mat:#3FC199; --form:#E2A54A; --steel:#A6B2B8;
+  --c-front:#3B4348; --c-top:#4A535A; --c-side:#2F363A; --c-edge:#6E7A80;
+  --chb-front:#5A554C; --chb-top:#6A645A; --chb-side:#4A463F;
+  --fin-front:#6C757A; --fin-top:#7C858A; --fin-side:#596166;
+  --glass:#0E1A21; --sheet:#8C9AA2; --dk-front:#2A3034; --dk-top:#353C41; --dk-side:#22272A; --hill:#3F5A33; --hill-edge:#6E9A55; --road:#252B2E; --soil:#4E3A28; --roof:#4C5860; --asph:#22282C; --lane:#C9C8BE; --curb:#59605C; --trunk:#7A5634; --fol:#3F7030; --fol2:#335F27; --fol-e:#5E9A43; --pole:#8A9399; --lamp:#FFE9A8; --gopen:#0E1215; --sew:#D19A62; --wat:#5BAEF0; --sto:#4FC9B6; --ele:#EE6FB9; --rib:#323D44; --mt1:#6E787D; --mt2:#808A8F; --mt3:#5E686D; --leaf:#4F7F36; --leaf-edge:#7FB860; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121619; --paper:#1A2024; --ink:#E6EAEB; --muted:#98A3A8; --line:#2D363B;
+  --accent:#F0804F; --accent-ink:#FFB08C; --accent-soft:#3A2419;
+  --main:#9C94F5; --tie:#F07A4B; --mat:#3FC199; --form:#E2A54A; --steel:#A6B2B8;
+  --c-front:#3B4348; --c-top:#4A535A; --c-side:#2F363A; --c-edge:#6E7A80;
+  --chb-front:#5A554C; --chb-top:#6A645A; --chb-side:#4A463F;
+  --fin-front:#6C757A; --fin-top:#7C858A; --fin-side:#596166;
+  --glass:#0E1A21; --sheet:#8C9AA2; --dk-front:#2A3034; --dk-top:#353C41; --dk-side:#22272A; --hill:#3F5A33; --hill-edge:#6E9A55; --road:#252B2E; --soil:#4E3A28; --roof:#4C5860; --asph:#22282C; --lane:#C9C8BE; --curb:#59605C; --trunk:#7A5634; --fol:#3F7030; --fol2:#335F27; --fol-e:#5E9A43; --pole:#8A9399; --lamp:#FFE9A8; --gopen:#0E1215; --sew:#D19A62; --wat:#5BAEF0; --sto:#4FC9B6; --ele:#EE6FB9; --rib:#323D44; --mt1:#6E787D; --mt2:#808A8F; --mt3:#5E686D; --leaf:#4F7F36; --leaf-edge:#7FB860; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:.01em;text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(40px,8vw,68px);font-weight:700;text-transform:uppercase}
+h2{font-size:clamp(28px,4.5vw,38px);text-transform:uppercase}
+h3{font-size:21px}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font:500 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{padding-block:36px 24px;display:grid;gap:14px}
+header p.lede{max-width:62ch;margin:0;color:var(--muted);font-size:16px}
+.levels{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);background:var(--paper);border-radius:6px;overflow:hidden;width:fit-content;max-width:100%}
+.levels div{padding:8px 14px;border-right:1px solid var(--line);display:grid}
+.levels div:last-child{border-right:0}
+.levels b{font:500 15px var(--f-mono);font-variant-numeric:tabular-nums}
+.levels span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+section{padding-block:28px;border-top:1px solid var(--line);display:grid;gap:18px}
+.sechead{display:grid;gap:6px}
+.sechead p{margin:0;color:var(--muted);max-width:64ch}
+
+/* viewer */
+.viewer{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:18px;align-items:start}
+.stage{background:var(--paper);border:1px solid var(--line);border-radius:8px;position:sticky;top:env(safe-area-inset-top,0px);display:grid}
+.stagebar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--muted);font:500 12px var(--f-mono);padding:6px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+#scene{width:100%;height:auto;display:block;aspect-ratio:1/1;max-height:62vh;touch-action:none;cursor:grab;user-select:none}
+#scene.grab{cursor:grabbing}
+.rot{display:flex;align-items:center;gap:6px;padding:8px 10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.rot button{border:1px solid var(--line);background:var(--paper);color:var(--ink);font:500 12px var(--f-mono);padding:6px 10px;border-radius:6px;cursor:pointer}
+.rot span{font-size:12px;color:var(--muted);margin-left:auto}
+#scene *{vector-effect:non-scaling-stroke}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;padding:8px 12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:16px;height:3px;margin-right:6px;vertical-align:middle;border-radius:2px}
+.panel{display:grid;gap:14px;min-width:0}
+.phases{display:flex;flex-wrap:wrap;gap:6px}
+.phases button{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:5px 10px;border-radius:999px;cursor:pointer}
+.phases button.on{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.stepno{display:flex;align-items:baseline;gap:10px}
+.stepno .n{font:700 46px/1 var(--f-display);color:var(--accent);font-variant-numeric:tabular-nums}
+.stepno .of{font:500 12px var(--f-mono);color:var(--muted)}
+#stTitle{font-size:26px}
+#stList{margin:0;padding-left:18px;display:grid;gap:6px}
+.spec{font:500 13px/1.5 var(--f-mono);background:var(--bg);border-radius:6px;padding:8px 10px;color:var(--ink)}
+.watch{font-size:13.5px;border-left:3px solid var(--accent);padding:4px 0 4px 10px;color:var(--ink);border-radius:0}
+.nav{display:flex;gap:8px;align-items:center}
+.nav button{font:600 14px var(--f-body);padding:10px 16px;border-radius:6px;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.nav button.primary{background:var(--accent);border-color:var(--accent);color:#fff;flex:1}
+.nav button:disabled{opacity:.4;cursor:default}
+.track{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.track div{height:100%;background:var(--accent);transition:width .25s}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* scene classes */
+.conc .ff{fill:var(--c-front)} .conc .ft{fill:var(--c-top)} .conc .fs{fill:var(--c-side)}
+.conc polygon,.chb polygon,.fin polygon{stroke:var(--c-edge);stroke-width:.6;stroke-linejoin:round}
+.chb .ff{fill:var(--chb-front)} .chb .ft{fill:var(--chb-top)} .chb .fs{fill:var(--chb-side)}
+.fin .ff{fill:var(--fin-front)} .fin .ft{fill:var(--fin-top)} .fin .fs{fill:var(--fin-side)}
+.pit polygon{fill:none;stroke:var(--muted);stroke-width:.8;stroke-dasharray:4 3}
+.fbox polygon{fill:none;stroke:var(--form);stroke-width:1;stroke-dasharray:5 3}
+.mb{stroke:var(--main);stroke-width:1.7;fill:none;stroke-linecap:round}
+.tl{stroke:var(--tie);stroke-width:1;fill:none;stroke-linejoin:round}
+.mt{stroke:var(--mat);stroke-width:1.1}
+.sm{stroke:var(--mat);stroke-width:.8}
+.str{stroke:var(--form);stroke-width:1.3}
+.post{stroke:var(--form);stroke-width:2.2}
+.shore{stroke:var(--form);stroke-width:.9}
+.deck{fill:var(--form);fill-opacity:.12;stroke:var(--form);stroke-width:.9;stroke-dasharray:5 3}
+.gl{fill:none;stroke:var(--muted);stroke-width:.8;stroke-dasharray:6 4}
+.pur{stroke:var(--steel);stroke-width:1.4}
+.tub{stroke:var(--steel);stroke-width:.9}
+.sheet{fill:var(--sheet);fill-opacity:.38;stroke:var(--steel);stroke-width:.8}
+.open{fill:var(--bg);fill-opacity:.85;stroke:var(--c-edge);stroke-width:.8}
+.glass{fill:var(--glass);stroke:var(--fin-side);stroke-width:1.4}
+.stone .ff{fill:var(--chb-front)} .stone .ft{fill:var(--chb-top)} .stone .fs{fill:var(--chb-side)}
+.dk .ff{fill:var(--dk-front)} .dk .ft{fill:var(--dk-top)} .dk .fs{fill:var(--dk-side)}
+.stone polygon,.dk polygon{stroke:var(--c-edge);stroke-width:.6;stroke-linejoin:round}
+.hill{fill:var(--hill);fill-opacity:.45;stroke:var(--hill-edge);stroke-width:.6}
+.hillx{fill:none;stroke:var(--hill-edge);stroke-width:.9;stroke-dasharray:6 4}
+.road{fill:var(--road);stroke:none}
+.formline{fill:none;stroke:var(--form);stroke-width:1;stroke-dasharray:5 3}
+.soil{fill:var(--soil);stroke:var(--c-edge);stroke-width:.5}
+.leaf circle{fill:var(--leaf);stroke:var(--leaf-edge);stroke-width:.6}
+.gdoor{fill:var(--dk-side);stroke:var(--c-edge);stroke-width:.8}
+.tip{position:absolute;z-index:6;pointer-events:none;background:var(--ink);color:var(--paper);font:12px/1.5 var(--f-mono);padding:8px 10px;border-radius:6px;max-width:280px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.tip b{display:block;font:600 13px/1.3 var(--f-body);margin-bottom:3px}
+#scene .hl polygon{stroke:var(--accent)!important;stroke-width:1.6!important}
+#scene [data-i]{cursor:help}
+.rot button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dimt{fill:var(--ink);font-family:var(--f-mono);font-weight:500;paint-order:stroke;stroke:var(--paper);stroke-linejoin:round}
+.diml{stroke:var(--accent);stroke-width:.9}
+.dimg{stroke:var(--muted);stroke-width:.6;stroke-dasharray:3 3}
+.dimc{fill:var(--paper);stroke:var(--ink);stroke-width:.9}
+.dims{pointer-events:none}
+.qty{gap:8px}
+.qh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font:600 17px var(--f-display);letter-spacing:.02em;text-transform:uppercase}
+.qn{font:500 11px var(--f-mono);color:var(--muted);text-transform:none;letter-spacing:0}
+.qwrap{overflow-x:auto}
+.qt{font:12.5px/1.45 var(--f-mono)}
+.qt td{padding:6px 8px 6px 0;white-space:normal;vertical-align:top;border-top:1px solid var(--line)}
+.qt td:first-child{font-family:var(--f-body);font-size:13px}
+.qt td:nth-child(2){white-space:nowrap;font-weight:500}
+.qt td:last-child{color:var(--muted)}
+.qsum{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.qsum b{color:var(--ink);font-weight:600}
+.qnone{margin:0;font-size:13px;color:var(--muted)}
+.roofs{fill:var(--roof);stroke:var(--c-edge);stroke-width:.6}
+.rib{stroke:var(--rib);stroke-width:.7}
+.flash{stroke:var(--steel);stroke-width:1.6}
+.metal .ff{fill:var(--mt1)} .metal .ft{fill:var(--mt2)} .metal .fs{fill:var(--mt3)}
+.metal polygon{stroke:var(--c-edge);stroke-width:.5}
+.sew{fill:none;stroke:var(--sew);stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.wat{fill:none;stroke:var(--wat);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.sto{fill:none;stroke:var(--sto);stroke-width:2.2;stroke-dasharray:6 3;stroke-linejoin:round}
+.ele{fill:none;stroke:var(--ele);stroke-width:1.8;stroke-dasharray:2 3;stroke-linecap:round}
+polyline.hit{stroke:transparent;stroke-width:14;stroke-dasharray:none}
+#scene .hl polyline:not(.hit){stroke-width:4}
+.tank .ff,.tankw .ff{fill:var(--chb-front)} .tank .ft{fill:var(--c-top)} .tankw .ft{fill:none} .tank .fs,.tankw .fs{fill:var(--chb-side)}
+.tank polygon,.tankw polygon{stroke:var(--sew);stroke-width:.8}
+.tankw .ff,.tankw .fs{fill-opacity:.35}
+.valve .ff,.valve .ft,.valve .fs{fill:var(--wat)} .valve polygon{stroke:var(--wat)}
+.panel .ff{fill:var(--mt1)} .panel .ft{fill:var(--mt2)} .panel .fs{fill:var(--mt3)} .panel polygon{stroke:var(--ele);stroke-width:1}
+.sheets{gap:10px}
+table.wrap td{white-space:normal;vertical-align:top}
+table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.zoomrow{display:flex;align-items:center;gap:8px;font:500 12px var(--f-mono);color:var(--muted)}
+.zoomrow button{width:32px;height:32px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;font:600 16px var(--f-body);cursor:pointer}
+.zoomrow .zh{margin-left:auto}
+.sheetbox{overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff;max-height:70vh}
+.sheetbox img{display:block;width:100%;height:auto;max-width:none}
+.asph{fill:var(--asph)} .lane{fill:var(--lane)} .curb{stroke:var(--curb);stroke-width:2}
+.trunk{stroke:var(--trunk);stroke-linecap:round}
+.fol{fill:var(--fol);stroke:var(--fol-e);stroke-width:.6} .fol2{fill:var(--fol2);stroke:var(--fol-e);stroke-width:.6}
+.pole{stroke:var(--pole);stroke-width:1.6;stroke-linecap:round} .lamp{fill:var(--lamp);stroke:var(--pole);stroke-width:.6}
+.carr .ff{fill:#B5382C} .carr .ft{fill:#CF4A3C} .carr .fs{fill:#952C22}
+.carw .ff{fill:#E4E7E9} .carw .ft{fill:#F3F5F6} .carw .fs{fill:#C9CED1}
+.carr polygon,.carw polygon{stroke:#2A2F33;stroke-width:.5}
+.cglass .ff,.cglass .fs,.cglass .ft{fill:#25343E} .cglass polygon{stroke:#1A2329;stroke-width:.5}
+.wheel{fill:#1E2226;stroke:#555C61;stroke-width:1.2}
+.gopen{fill:var(--gopen);stroke:var(--c-edge);stroke-width:.8}
+.nightsky{fill:#081226;fill-opacity:.6;pointer-events:none}
+.glows,#carglow{pointer-events:none}
+.wglow{fill:#FFCF73;fill-opacity:.82}
+.lglow{fill:#FFE29A;fill-opacity:.55} .pool{fill:#FFE29A;fill-opacity:.16}
+.hlight{fill:#FFF3C4;fill-opacity:.95}
+.dot{fill:var(--accent)}
+.nw{animation:pop .9s ease-out}
+@keyframes pop{0%{opacity:.15}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.nw{animation:none}.track div{transition:none}}
+
+/* reference */
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.glossary code{font:500 17px var(--f-mono);color:var(--accent-ink)}
+.glossary span{font-size:14px;color:var(--muted)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+figure{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:10px;align-content:start}
+figure svg{width:100%;height:auto;max-width:380px;justify-self:center}
+figcaption{font-size:14px;color:var(--muted)}
+figcaption b{color:var(--ink);font-weight:600;display:block;font-family:var(--f-display);font-size:19px;letter-spacing:.01em}
+.cc{fill:var(--c-front);stroke:var(--c-edge);stroke-width:.6}
+.bar{fill:var(--main)} .tie{stroke:var(--tie);fill:none} .matl{stroke:var(--mat)}
+.dim{stroke:var(--muted);stroke-width:.6;fill:none}
+.lead{stroke:var(--muted);stroke-width:.6;stroke-dasharray:3 2;fill:none}
+.t{fill:var(--ink);font:500 13px var(--f-mono)} .ts{fill:var(--muted);font:12px var(--f-body)}
+.tables{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.tbl{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow-x:auto;min-width:0}
+.tbl h3{padding:12px 14px 4px}
+.tbl p{margin:0;padding:0 14px 10px;font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font:13px var(--f-mono);font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 14px;border-top:1px solid var(--line);white-space:nowrap}
+th{font:600 11px var(--f-body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.check li{display:flex;gap:10px;align-items:flex-start}
+.check li::before{content:"";flex:0 0 14px;height:14px;margin-top:4px;border:1.5px solid var(--accent);border-radius:3px}
+.ask li{margin-bottom:6px}
+footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+@media (max-width:820px){
+  .viewer{grid-template-columns:minmax(0,1fr)}
+  .stage{position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+  #scene{max-height:44vh}
+  .legend{display:none}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Proposed 3-storey residence · Blk 1 Lot 49 Sandari Batulao, Nasugbu, Batangas</div>
+  <h1>Daquis Residence build guide</h1>
+  <p class="lede">The whole structure, from string lines to paint, built up one stage at a time in 24 steps. Every bar size, spacing and level comes from the D.V. Fallarme construction plans (sheets S1-05 and S2-06). Tap Next to add the next stage.</p>
+  <div class="levels" aria-label="Floor levels from the plans">
+    <div><b>−0.20</b><span>Sidewalk</span></div>
+    <div><b>±0.00</b><span>Ground FFL</span></div>
+    <div><b>+2.65</b><span>2nd FFL</span></div>
+    <div><b>+6.05</b><span>3rd FFL</span></div>
+    <div><b>+9.30</b><span>Roof beam</span></div>
+    <div><b>+9.75</b><span>Parapet</span></div>
+  </div>
+</header>
+
+<section id="build" aria-labelledby="h-build">
+  <div class="sechead">
+    <div class="eyebrow">Part 1</div>
+    <h2 id="h-build">Build sequence</h2>
+    <p>Your actual frame, modeled from the framing plans (S1-05), elevations and sections (A3-03): a tapered plan 5.30m wide at the road and 6.59m at the rear, a garage cut into the slope, side stairs up the A side, and a 3rd floor that cantilevers 1.1m out over the front. Viewed from the front-left, like the perspective on A1-01. New parts flash in when they're added.</p>
+  </div>
+  <div class="viewer">
+    <div class="stage" id="stage">
+      <div class="stagebar">
+        <span class="eyebrow" id="viewLbl">Close-up</span>
+        <div class="seg" role="group" aria-label="Camera">
+          <button id="vAuto" aria-pressed="true">Auto</button>
+          <button id="vFull" aria-pressed="false">Whole house</button>
+          <button id="vClose" aria-pressed="false">Close-up</button>
+        </div>
+      </div>
+      <svg id="scene" viewBox="0 0 100 100" role="img" aria-labelledby="scT"><title id="scT">3D view of the current construction stage</title></svg>
+      <div class="rot"><button id="rL" aria-label="Rotate left">↺ Rotate</button><button id="rR" aria-label="Rotate right">Rotate ↻</button><button id="rReset">Front view</button><button id="rDim" aria-pressed="true">Dimensions</button><button id="rMep" aria-pressed="true">Pipes &amp; wiring</button><button id="rNight" aria-pressed="false" hidden>Night</button><span>Drag to turn · tap a part for its size and quantity</span></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="legend">
+        <span><i style="background:var(--main)"></i>Main bars</span>
+        <span><i style="background:var(--tie)"></i>Ties, stirrups</span>
+        <span><i style="background:var(--mat)"></i>Mats, slab bars</span>
+        <span><i style="background:var(--form)"></i>Strings, forms, shoring</span>
+        <span><i style="background:var(--steel)"></i>Roof steel</span>
+        <span><i style="background:var(--sew)"></i>Sewer</span>
+        <span><i style="background:var(--wat)"></i>Water</span>
+        <span><i style="background:var(--sto)"></i>Storm drain</span>
+        <span><i style="background:var(--ele)"></i>Electrical</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="phases" id="phases"></div>
+      <div class="track" aria-hidden="true"><div id="prog"></div></div>
+      <div class="card" aria-live="polite">
+        <div class="stepno"><span class="n" id="stN">01</span><span class="of" id="stOf">of 21 · Foundation</span></div>
+        <h3 id="stTitle">Layout and gridlines</h3>
+        <ul id="stList"></ul>
+        <div class="spec" id="stSpec"></div>
+        <div class="watch" id="stWatch"></div>
+      </div>
+      <div class="card qty" id="qty"></div>
+      <div class="nav">
+        <button id="bBack" aria-label="Previous step">Back</button>
+        <button id="bNext" class="primary">Next step</button>
+      </div>
+      <div class="eyebrow">Quantities are estimates from the model, not a bill of quantities. No laps or waste beyond rounding up to 6m bars.</div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-codes">
+  <div class="sechead">
+    <div class="eyebrow">Part 2</div>
+    <h2 id="h-codes">Reading the schedule</h2>
+    <p>Every line in the footing, column and beam schedules uses the same short codes.</p>
+  </div>
+  <div class="glossary">
+    <div><code>#12 / 12mmØ</code><span>Bar diameter in millimeters. #12 is a 12mm bar.</span></div>
+    <div><code>@ 200 C/C</code><span>Spacing, center to center, in mm.</span></div>
+    <div><code>4-#20</code><span>Quantity and size: four 20mm bars.</span></div>
+    <div><code>9-2L-#10@75</code><span>9 closed 2-leg stirrups of 10mm bar, 75mm apart.</span></div>
+    <div><code>C21 / C28</code><span>Concrete strength in MPa. C21 ≈ 1:2:4 for footings, beams and slabs. C28 ≈ 1:1.5:3 for columns.</span></div>
+    <div><code>Fy415</code><span>Grade 60 rebar. Don't substitute Grade 40 (Fy275).</span></div>
+    <div><code>L × B × D1</code><span>Footing length, breadth and thickness. D2 is only for stepped footings (blank here).</span></div>
+    <div><code>B × D</code><span>Beam width × depth. B1 at 200 × 400 is 200 wide, 400 deep.</span></div>
+    <div><code>SCR zone 450</code><span>Confinement zone at each column end, where ties go closer (75mm).</span></div>
+    <div><code>EF</code><span>Each face. 1-#12EF means one 12mm web bar on each side face.</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-parts">
+  <div class="sechead">
+    <div class="eyebrow">Part 3</div>
+    <h2 id="h-parts">Each part up close</h2>
+    <p>Plans and cuts of the typical members. Bar spacing is exaggerated where it helps you see the two zones.</p>
+  </div>
+  <div class="figs">
+    <figure>
+      <svg viewBox="0 0 380 300" role="img" aria-label="Footing FC1 plan view with rebar grid"><g>
+        <rect x="80" y="40" width="200" height="200" class="cc"/>
+        <g class="matl" stroke-width="1.2"><line x1="94" y1="44" x2="94" y2="236"/><line x1="123" y1="44" x2="123" y2="236"/><line x1="151" y1="44" x2="151" y2="236"/><line x1="180" y1="44" x2="180" y2="236"/><line x1="209" y1="44" x2="209" y2="236"/><line x1="237" y1="44" x2="237" y2="236"/><line x1="266" y1="44" x2="266" y2="236"/><line x1="84" y1="54" x2="276" y2="54"/><line x1="84" y1="83" x2="276" y2="83"/><line x1="84" y1="111" x2="276" y2="111"/><line x1="84" y1="140" x2="276" y2="140"/><line x1="84" y1="169" x2="276" y2="169"/><line x1="84" y1="197" x2="276" y2="197"/><line x1="84" y1="226" x2="276" y2="226"/></g>
+        <rect x="159" y="119" width="42" height="42" class="cc" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+        <path class="dim" d="M80 258H280M80 252V264M280 252V264M298 40V240M292 40H304M292 240H304"/>
+        <text class="t" x="180" y="280" text-anchor="middle">L = 1400</text>
+        <text class="t" x="310" y="136">B =</text><text class="t" x="310" y="154">1400</text>
+        <text class="ts" x="180" y="30" text-anchor="middle">Column 300×300 at center</text>
+      </g></svg>
+      <figcaption><b>Footing FC1, plan</b>Square pad 1400 × 1400. Bottom mat #12 @ 200 both ways, 7 bars each way.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 380 300" role="img" aria-label="Footing section with top and bottom mats">
+        <rect x="164" y="60" width="52" height="110" class="cc" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+        <path class="lead" d="M40 100H162M218 100H340"/>
+        <text class="ts" x="340" y="90" text-anchor="end">Natural ground</text>
+        <rect x="70" y="170" width="240" height="51" class="cc"/>
+        <g class="bar"><circle cx="85" cy="184" r="3"/><circle cx="136" cy="184" r="3"/><circle cx="187" cy="184" r="3"/><circle cx="238" cy="184" r="3"/><circle cx="289" cy="184" r="3"/><circle cx="82" cy="208" r="3"/><circle cx="116" cy="208" r="3"/><circle cx="150" cy="208" r="3"/><circle cx="184" cy="208" r="3"/><circle cx="218" cy="208" r="3"/><circle cx="252" cy="208" r="3"/><circle cx="286" cy="208" r="3"/></g>
+        <rect x="70" y="222" width="240" height="10" fill="none" class="lead"/>
+        <text class="ts" x="190" y="248" text-anchor="middle">Gravel bed 50–100mm</text>
+        <text class="ts" x="78" y="128">Bottom mat</text><text class="t" x="78" y="145">#12 @ 200</text>
+        <path class="lead" d="M100 152L114 203"/>
+        <text class="ts" x="228" y="128">Top mat</text><text class="t" x="228" y="145">#12 @ 300</text>
+        <path class="lead" d="M250 152L240 179"/>
+        <path class="dim" d="M56 170V221M50 170H62M50 221H62M70 266H310M70 260V272M310 260V272"/>
+        <text class="t" x="46" y="200" text-anchor="end">D1</text>
+        <text class="t" x="190" y="288" text-anchor="middle">L or B = 1400</text>
+        <text class="ts" x="190" y="48" text-anchor="middle">Column 300×300</text>
+      </svg>
+      <figcaption><b>Footing, section</b>D1 = 300mm thick. Bottom mat sits 75mm up on spacers. Excavation depth is not given in the plans.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 380 280" role="img" aria-label="Column cross section with four corner bars and a closed tie">
+        <rect x="90" y="40" width="200" height="200" class="cc"/>
+        <rect x="117" y="67" width="146" height="146" rx="8" class="tie" stroke-width="2.5"/>
+        <path class="tie" stroke-width="2.5" d="M124 74L142 92M124 74L138 70"/>
+        <g class="bar"><circle cx="129" cy="79" r="7"/><circle cx="251" cy="79" r="7"/><circle cx="129" cy="201" r="7"/><circle cx="251" cy="201" r="7"/></g>
+        <text class="ts" x="298" y="72">Main bars</text><text class="t" x="298" y="89">4-#20</text>
+        <text class="ts" x="298" y="132">Tie</text><text class="t" x="298" y="149">#12 / #10</text>
+        <text class="ts" x="298" y="192">Cover</text><text class="t" x="298" y="209">~40mm</text>
+        <path class="dim" d="M90 256H290M72 40V240"/>
+        <text class="t" x="190" y="273" text-anchor="middle">300</text>
+        <text class="t" x="62" y="144" text-anchor="end">300</text>
+      </svg>
+      <figcaption><b>Column, cross-section</b>Concrete 300 × 300, about 330–340 finished after plaster. Some columns use 4-#25 or 4-#32; check each mark.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 380 450" role="img" aria-label="Column elevation showing tie spacing zones">
+        <rect x="60" y="30" width="240" height="40" class="cc"/><text class="ts" x="70" y="55">Beam</text>
+        <rect x="160" y="70" width="50" height="320" class="cc"/>
+        <rect x="100" y="390" width="170" height="40" class="cc"/><text class="ts" x="106" y="407">Footing</text>
+        <path d="M168 36V422H140M202 36V422H230" fill="none" style="stroke:var(--main)" stroke-width="2"/>
+        <g class="tie" stroke-width="2"><path d="M163 75H207M163 85H207M163 95H207M163 105H207M163 115H207M163 125H207M163 335H207M163 345H207M163 355H207M163 365H207M163 375H207M163 385H207"/></g>
+        <g style="stroke:var(--mat)" stroke-width="2"><path d="M163 150H207M163 170H207M163 190H207M163 210H207M163 230H207M163 250H207M163 270H207M163 290H207M163 310H207"/></g>
+        <path class="dim" d="M222 70V130M222 140V320M222 330V390"/>
+        <text class="t" x="232" y="96">450 zone</text><text class="ts" x="232" y="113">#12 @ 75</text>
+        <text class="t" x="232" y="226">Middle</text><text class="ts" x="232" y="243">#10 @ 150</text>
+        <text class="t" x="232" y="356">450 zone</text><text class="ts" x="232" y="373">#12 @ 75</text>
+        <text class="ts" x="40" y="226">Main bars</text><text class="t" x="40" y="243">4-#20</text>
+        <text class="ts" x="40" y="426">90° hook</text>
+      </svg>
+      <figcaption><b>Column ties, elevation</b>Tight 75mm ties within 450mm of each joint, 150mm in the middle. Keep ties going through the beam joint.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 380 330" role="img" aria-label="Tie beam cross section">
+        <rect x="110" y="40" width="160" height="240" class="cc"/>
+        <rect x="142" y="72" width="96" height="176" rx="8" class="tie" stroke-width="2.5"/>
+        <path class="tie" stroke-width="2.5" d="M149 79L165 95M149 79L163 75"/>
+        <g class="bar"><circle cx="153" cy="83" r="6"/><circle cx="227" cy="83" r="6"/><circle cx="153" cy="237" r="5"/><circle cx="227" cy="237" r="5"/></g>
+        <text class="ts" x="280" y="78">Top bars</text><text class="t" x="280" y="95">2-#16</text>
+        <text class="ts" x="280" y="154">Stirrup</text><text class="t" x="280" y="171">#10, 2-leg</text>
+        <text class="ts" x="280" y="232">Bottom</text><text class="t" x="280" y="249">2-#12</text>
+        <path class="dim" d="M110 296H270M92 40V280"/>
+        <text class="t" x="190" y="316" text-anchor="middle">B = 200</text>
+        <text class="t" x="82" y="156" text-anchor="end">D</text><text class="t" x="82" y="174" text-anchor="end">300</text>
+      </svg>
+      <figcaption><b>Footing tie beam B1, section</b>Runs between columns just below the ground slab. It ties the footings together and carries the ground-floor CHB walls.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 380 210" role="img" aria-label="Tie beam stirrup spacing between two columns">
+        <rect x="30" y="20" width="30" height="190" class="cc"/><rect x="320" y="20" width="30" height="190" class="cc"/>
+        <rect x="60" y="90" width="260" height="40" class="cc"/>
+        <path d="M40 96H340M40 124H340" style="stroke:var(--main)" stroke-width="2"/>
+        <g class="tie" stroke-width="1.5"><path d="M65 93V127M72 93V127M78 93V127M85 93V127M91 93V127M98 93V127M104 93V127M111 93V127M117 93V127M263 93V127M269 93V127M276 93V127M282 93V127M289 93V127M295 93V127M302 93V127M308 93V127M315 93V127"/></g>
+        <g style="stroke:var(--mat)" stroke-width="1.5"><path d="M125 93V127M133 93V127M141 93V127M149 93V127M157 93V127M165 93V127M173 93V127M181 93V127M189 93V127M197 93V127M205 93V127M213 93V127M221 93V127M229 93V127M237 93V127M245 93V127M253 93V127"/></g>
+        <text class="ts" x="190" y="76" text-anchor="middle">Top bars 2-#16, continuous</text>
+        <path class="dim" d="M65 146H117M125 146H253M263 146H315"/>
+        <text class="t" x="91" y="166" text-anchor="middle">9@75</text>
+        <text class="t" x="189" y="166" text-anchor="middle">18@90</text>
+        <text class="t" x="289" y="166" text-anchor="middle">9@75</text>
+        <text class="ts" x="45" y="14" text-anchor="middle">Col</text><text class="ts" x="335" y="14" text-anchor="middle">Col</text>
+      </svg>
+      <figcaption><b>Tie beam stirrups, elevation</b>B1 = 36 stirrups: 9 at 75 each end, 18 at 90 in the middle. First stirrup about 50mm from the column face.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section aria-labelledby="h-sched">
+  <div class="sechead">
+    <div class="eyebrow">Part 4</div>
+    <h2 id="h-sched">Schedules at a glance</h2>
+    <p>Copied from sheet S2-06. Tables scroll sideways on a phone.</p>
+  </div>
+  <div class="tables">
+    <div class="tbl">
+      <h3>Footings (C21, Fy415)</h3>
+      <p>All pads are square, 300mm thick (D1). Top mat is #12 @ 300 both ways on every footing.</p>
+      <table>
+        <thead><tr><th>Mark</th><th>Col</th><th>L × B</th><th>Bottom mat</th><th>Bars/way*</th></tr></thead>
+        <tbody id="ftBody"></tbody>
+      </table>
+      <p>*Approximate, with 75mm cover each side. The foundation plan labels the row-1 C footing "C12-FC12", but the schedule has C11/FC11 there, likely a typo. C12–C21 start at the 3rd floor and have no footings.</p>
+    </div>
+    <div class="tbl">
+      <h3>Columns (C28, Fy415)</h3>
+      <p>Schedule bands: 0–1.8, 1.8–4.65, 4.65–8.05 and 8.05–11.3m, measured from the footing. Most main columns stop at the 3rd floor. In the 3rd storey only C5 and C8 continue, joined by new columns C12–C21 on the cantilevered edges.</p>
+      <table>
+        <thead><tr><th>Band</th><th>Size</th><th>Main bars</th><th>Ties</th></tr></thead>
+        <tbody>
+          <tr><td>Footing → garage</td><td>300×300 / 400×400</td><td>4-#20 (C1–C9) · 8-#16 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
+          <tr><td>Garage storey</td><td>300×300 / 400×400</td><td>4-#20 (C1–C9) · 8-#16 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
+          <tr><td>2nd storey</td><td>300×300 / 400×400</td><td>4-#32, 4-#25, 4-#20 · 8-#20 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
+          <tr><td>3rd storey</td><td>C5, C8: 300×300 · C12: 300×300 · C13–C21: 200×300/400</td><td>4-#20 to 4-#32 · 4-#16 to 6-#16</td><td>#12@50 + #10@100</td></tr>
+        </tbody>
+      </table>
+      <p>SCR (confinement) zone is 450–545mm depending on the mark.</p>
+    </div>
+    <div class="tbl">
+      <h3>Beams (C21, Fy415)</h3>
+      <table>
+        <thead><tr><th>Level</th><th>B × D</th><th>Typical bars</th><th>Stirrups (ends / mid)</th></tr></thead>
+        <tbody>
+          <tr><td>Footing tie</td><td>200×300</td><td>2-#16 top, 2-#12/#16 bot</td><td>9 @ 75 / @ 90</td></tr>
+          <tr><td>2nd floor</td><td>200×400</td><td>2-#16 top, 2-#12 to #25 bot</td><td>11–12 @ 75–80 / @ 115</td></tr>
+          <tr><td>3rd floor</td><td>200×400, 150×500</td><td>2-#12/#16 top, up to #25 bot</td><td>@ 75–125 / @ 115–125</td></tr>
+          <tr><td>Roof beam</td><td>200×300, 150×500</td><td>2-#12 top and bottom</td><td>9 @ 75 / @ 90</td></tr>
+        </tbody>
+      </table>
+      <p>Several 3rd-floor and roof beams are cantilevered. Check each mark on S2-06.</p>
+    </div>
+    <div class="tbl">
+      <h3>Slabs</h3>
+      <table>
+        <thead><tr><th>Slab</th><th>Thick</th><th>Bars</th></tr></thead>
+        <tbody>
+          <tr><td>Ground (on fill)</td><td>100</td><td>#10 @ 600 both ways</td></tr>
+          <tr><td>2nd floor S1–S8</td><td>100</td><td>#10 @ 150, 1-way and 2-way</td></tr>
+          <tr><td>3rd floor S1–S21</td><td>100</td><td>#10 @ 150, 1-way and 2-way</td></tr>
+        </tbody>
+      </table>
+      <p>Top bars at supports (bent-up or continuous) per the slab schedule. Use L/4 for top-bar extension per detail 7.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-mep">
+  <div class="sechead">
+    <div class="eyebrow">Part 5</div>
+    <h2 id="h-mep">Plumbing and electrical</h2>
+    <p>The pipes and wiring also appear in the 3D build above (turn them on or off with "Pipes &amp; wiring"). Tap a pipe, tank or panel for its size. Below are the original sheets and the main data from them.</p>
+  </div>
+  <div class="card sheets">
+    <div class="tabs" role="tablist" id="shTabs">
+      <button role="tab" data-s="p1" aria-selected="true">P1 · Sewer, water, storm</button>
+      <button role="tab" data-s="p2" aria-selected="false">P2 · Isometrics, septic tank</button>
+      <button role="tab" data-s="e1" aria-selected="false">E1 · Power and lighting</button>
+      <button role="tab" data-s="e2" aria-selected="false">E2 · Load schedule, SLD</button>
+    </div>
+    <div class="zoomrow"><button id="zOut" aria-label="Zoom out">−</button><span id="zLbl">Fit</span><button id="zIn" aria-label="Zoom in">+</button><span class="zh">Zoom in and scroll to read the small text</span></div>
+    <div class="sheetbox" id="shBox"><img id="shImg" src="sheets/p1.jpg" alt="Sheet P1-07: sewer, water line and storm drainage layouts for ground, second and third floors" width="2600" height="1583"></div>
+  </div>
+  <div class="tables">
+    <div class="tbl">
+      <h3>Plumbing at a glance</h3>
+      <table class="wrap"><tbody>
+        <tr><td>Sewer</td><td>100mm PVC mains, 75mm branches, 1% min. slope</td></tr>
+        <tr><td>Soil and vent stacks</td><td>100ØSS (T&amp;B 1 and 2), 75ØSS (service area), 50ØVS</td></tr>
+        <tr><td>Septic tank</td><td>2.50 × 1.30 × 1.80m, digestive + leaching chambers, 150mm CHB</td></tr>
+        <tr><td>Water</td><td>20mm PPR main from GV, meter, CV at the front; 20ØCWR risers</td></tr>
+        <tr><td>Storm</td><td>75ØDS downspouts; perforated 100mm PVC with filter cloth around the garage</td></tr>
+        <tr><td>Catch basin</td><td>400 × 400 min., 100mm CHB, 10mm bars @ 300</td></tr>
+        <tr><td>Fixtures</td><td>WC, LAV, shower (×2 T&amp;B) · kitchen sink · floor drains · hose bibb</td></tr>
+      </tbody></table>
+    </div>
+    <div class="tbl">
+      <h3>Electrical service</h3>
+      <table class="wrap"><tbody>
+        <tr><td>Supply</td><td>230V, 1-phase, 2-wire + ground, 60Hz, overhead</td></tr>
+        <tr><td>Feeder</td><td>2-38mm² THHN + 1-8mm² THHN ground in 25mmØ RSC, concrete encased</td></tr>
+        <tr><td>Main breaker</td><td>125AT 125AF 2P, NEMA 3R, at the service post</td></tr>
+        <tr><td>Panel LPP</td><td>18 circuits · total 29,770 W · 129.42 A</td></tr>
+        <tr><td>Branch wiring</td><td>2-3.5mm² + 1-3.5mm² ground THHN in 20mm PVC</td></tr>
+        <tr><td>Solar</td><td>Roof panels → inverter + battery bank → net meter (25mmØ PVC)</td></tr>
+        <tr><td>Voltage drop</td><td>All circuits under 2% (feeder 0.75%), all acceptable</td></tr>
+      </tbody></table>
+    </div>
+    <div class="tbl">
+      <h3>Load schedule (E2-10)</h3>
+      <p>The lighting circuits match the floors: CKT 1 garage, CKT 2 2nd floor, CKT 3 3rd floor. The convenience circuits follow the same order (CKT 4–6).</p>
+      <table>
+        <thead><tr><th>CKT</th><th>Load</th><th>Qty</th><th>Watts</th><th>Amp</th><th>Breaker</th></tr></thead>
+        <tbody><tr><td>1</td><td>Lighting outlets</td><td>14</td><td>700</td><td>3.04</td><td>15AT 2P</td></tr><tr><td>2</td><td>Lighting outlets</td><td>26</td><td>1,300</td><td>5.65</td><td>15AT 2P</td></tr><tr><td>3</td><td>Lighting outlets</td><td>29</td><td>1,450</td><td>6.3</td><td>15AT 2P</td></tr><tr><td>4</td><td>Convenience outlets</td><td>3</td><td>540</td><td>2.35</td><td>20AT 2P</td></tr><tr><td>5</td><td>Convenience outlets</td><td>11</td><td>1,980</td><td>8.61</td><td>20AT 2P</td></tr><tr><td>6</td><td>Convenience outlets</td><td>13</td><td>2,340</td><td>10.17</td><td>20AT 2P</td></tr><tr><td>7</td><td>Range outlet</td><td>1</td><td>2,000</td><td>8.7</td><td>20AT 2P</td></tr><tr><td>8</td><td>Refrigerator outlet</td><td>1</td><td>500</td><td>2.17</td><td>20AT 2P</td></tr><tr><td>9</td><td>Microwave outlet</td><td>1</td><td>1,500</td><td>6.52</td><td>20AT 2P</td></tr><tr><td>10</td><td>ACU 2.0HP</td><td>1</td><td>2,760</td><td>12.0</td><td>20AT 2P</td></tr><tr><td>11</td><td>ACU 2.0HP</td><td>1</td><td>2,760</td><td>12.0</td><td>20AT 2P</td></tr><tr><td>12</td><td>ACU 2.0HP</td><td>1</td><td>2,760</td><td>12.0</td><td>20AT 2P</td></tr><tr><td>13</td><td>ACU 1.0HP</td><td>1</td><td>1,840</td><td>8.0</td><td>20AT 2P</td></tr><tr><td>14</td><td>ACU 1.0HP</td><td>1</td><td>1,840</td><td>8.0</td><td>20AT 2P</td></tr><tr><td>15</td><td>Water heater</td><td>1</td><td>1,500</td><td>6.52</td><td>20AT 2P</td></tr><tr><td>16</td><td>Water heater</td><td>1</td><td>1,500</td><td>6.52</td><td>20AT 2P</td></tr><tr><td>17</td><td>Spare</td><td></td><td>1,500</td><td>6.52</td><td>—</td></tr><tr><td>18</td><td>Spare</td><td></td><td>1,000</td><td>4.35</td><td>—</td></tr><tr><td></td><td><b>Total</b></td><td></td><td><b>29,770</b></td><td><b>129.42</b></td><td>125AT main</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-pour">
+  <div class="sechead">
+    <div class="eyebrow">Part 6</div>
+    <h2 id="h-pour">Before every pour</h2>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h3>Inspection checklist</h3>
+      <ul class="check">
+        <li>Bar sizes match the schedule for that mark</li>
+        <li>Spacing measured, especially tie and stirrup end zones</li>
+        <li>Spacers in place: about 75mm under footings, 40mm in columns and beams</li>
+        <li>Column cage plumb and centered on the gridline</li>
+        <li>Forms plumb, braced, tight at joints so grout doesn't leak</li>
+        <li>Pipes and conduits placed before slab pours</li>
+        <li>Correct concrete class: C21 footings/beams/slabs, C28 columns</li>
+        <li>Water ready for curing, at least 7 days</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Ask the engineer</h3>
+      <ol class="ask">
+        <li>Excavation depth for footings</li>
+        <li>Lap splice length for each bar size</li>
+        <li>Concrete cover per member</li>
+        <li>Confirm the row-1 C footing is FC11 (plan label says C12-FC12)</li>
+        <li>Whether 4-#32 in a 300 × 300 column (2nd storey) is final; it's very congested</li>
+        <li>Top-of-tie-beam elevation relative to ground FFL</li>
+        <li>Plaster thickness for finished dimensions</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>The 3D model follows the plan dimensions, but it simplifies stairs, openings and slopes. It is a teaching model, not shop drawings. Build only from the signed plans and the engineer's instructions.</footer>
+</div>
+
+<script>
+(function(){
+/* ---------- real geometry from S1-05 / A3-03 (mm) ----------
+   z = depth from gridline 1 (front, road) to gridline 4 (rear, hill)
+   x = across, gridline B at 0. A and C lines taper: 2650 each side at row 1, 3295 at row 4. */
+const ZR=[0,3980,6980,9980];                       /* rows 1,2,3,4 */
+const W=z=>2650+645*z/9980;
+const A=z=>-W(z), C=z=>W(z);
+const ZF=-1100, ZB=10480;                          /* 3rd floor / roof cantilever: 1100 front, 500 rear */
+const AO=z=>A(z)-(1030+105*Math.max(0,Math.min(1,z/9980)));
+const CO=z=>C(z)+(470+65*Math.max(0,Math.min(1,z/9980)));
+const MAIN=[ /* name, x, z, size, footing L */
+ ['C1',A(9980),9980,300,1400],['C2',0,9980,300,1500],['C3',C(9980),9980,300,1350],
+ ['C4',A(6980),6980,300,1500],['C5',0,6980,300,1650],['C6',C(6980),6980,300,1450],
+ ['C7',A(3980),3980,300,1500],['C8',0,3980,300,1500],['C9',C(3980),3980,300,1450],
+ ['C10',A(0),0,400,1700],['C11',C(0),0,400,1650]];
+const UP=[ /* 3rd-storey columns: C5, C8 continue; C12–C21 start on the 3rd floor slab */
+ [0,6980,300,300],[0,3980,300,300],[0,10300,300,300],
+ [A(9980)-250,9980,200,300],[C(9980)+250,9980,200,300],
+ [A(6980)-250,6980,200,300],[C(6980)+250,6980,200,300],
+ [A(3980)-250,3980,200,300],[C(3980)+250,3980,200,300],
+ [A(0)-250,0,200,400],[C(0)+250,0,200,400],[500,-400,200,300]];
+const S=0.05,DY=28,DP=24;let yaw=DY,pitch=DP,cy=1,sy=0,cp=1,sp=0;
+function setCam(){cy=Math.cos(yaw*Math.PI/180);sy=Math.sin(yaw*Math.PI/180);cp=Math.cos(pitch*Math.PI/180);sp=Math.sin(pitch*Math.PI/180)}setCam();
+function P(x,y,z){const zr=x*sy+z*cy;return[(x*cy-z*sy)*S,-(y*cp+zr*sp)*S]}
+function f(n){return n.toFixed(1)}
+function pt(a){const p=P(a[0],a[1],a[2]);return f(p[0])+','+f(p[1])}
+let prims=[],cur=0;
+function key(x,y,z){return -((x*sy+z*cy)*cp-y*sp)}
+function add(lv,sb,c,svg,born){prims.push({lv,sb,n:key(c[0],c[1],c[2]),svg,born})}
+function ln(lv,sb,a,b,cls,born){const p=P(...a),q=P(...b);
+  add(lv,sb,[(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2],`<line x1="${f(p[0])}" y1="${f(p[1])}" x2="${f(q[0])}" y2="${f(q[1])}" class="${cls}"/>`,born)}
+function pg(lv,sb,pts,cls,born){let c=[0,0,0];pts.forEach(p=>{c[0]+=p[0]/pts.length;c[1]+=p[1]/pts.length;c[2]+=p[2]/pts.length});
+  add(lv,sb,c,`<polygon points="${pts.map(pt).join(' ')}" class="${cls}"/>`,born)}
+/* prism: footprint [[x,z]...] extruded y0..y1, draws faces visible from front-left-above */
+let INF='';
+function prism(lv,sb,F,y0,y1,mat,born){
+  let cx=0,cz=0;F.forEach(p=>{cx+=p[0]/F.length;cz+=p[1]/F.length});let s='';
+  for(let i=0;i<F.length;i++){const a=F[i],b=F[(i+1)%F.length];let nx=b[1]-a[1],nz=-(b[0]-a[0]);
+    const mx=(a[0]+b[0])/2-cx,mz=(a[1]+b[1])/2-cz;if(nx*mx+nz*mz<0){nx=-nx;nz=-nz}
+    const L=Math.hypot(nx,nz);nx/=L;nz/=L;const vis=-(nx*sy+nz*cy);if(vis<=0.02)continue;
+    const cls=Math.abs(nz)>=Math.abs(nx)?'ff':'fs';
+    s+=`<polygon class="${cls}" points="${[[a[0],y0,a[1]],[b[0],y0,b[1]],[b[0],y1,b[1]],[a[0],y1,a[1]]].map(pt).join(' ')}"/>`}
+  s+=`<polygon class="ft" points="${F.map(p=>pt([p[0],y1,p[1]])).join(' ')}"/>`;
+  add(lv,sb,[cx,(y0+y1)/2,cz],`<g class="${mat}"${INF?` data-i="${INF}"`:''}>${s}</g>`,born)}
+function sq(x,z,hx,hz){return[[x-hx,z-hz],[x+hx,z-hz],[x+hx,z+hz],[x-hx,z+hz]]}
+function seg(a,b,w){const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),nx=-dz/L*w/2,nz=dx/L*w/2;
+  return[[a[0]+nx,a[1]+nz],[b[0]+nx,b[1]+nz],[b[0]-nx,b[1]-nz],[a[0]-nx,a[1]-nz]]}
+function dot(lv,a,born){const p=P(...a);add(lv,9,a,`<circle cx="${f(p[0])}" cy="${f(p[1])}" r="4" class="dot"/>`,born)}
+
+/* ---------- beam line sets ---------- */
+function gridBeams(bFull){const L=[];ZR.forEach(z=>L.push([[A(z),z],[C(z),z]]));
+  L.push([[A(0),0],[A(9980),9980]]);L.push([[C(0),0],[C(9980),9980]]);
+  L.push(bFull?[[0,0],[0,9980]]:[[0,3980],[0,9980]]);return L}
+function cantBeams(){const L=gridBeams(true);
+  ZR.forEach(z=>{L.push([[AO(z),z],[A(z),z]]);L.push([[C(z),z],[CO(z),z]])});
+  [A(0),0,C(0)].forEach(x=>L.push([[x,0],[x,ZF]]));
+  [A(9980),0,C(9980)].forEach(x=>L.push([[x,9980],[x,ZB]]));
+  L.push([[AO(ZF),ZF],[CO(ZF),ZF]]);L.push([[AO(ZB),ZB],[CO(ZB),ZB]]);
+  L.push([[AO(ZF),ZF],[AO(ZB),ZB]]);L.push([[CO(ZF),ZF],[CO(ZB),ZB]]);
+  return L}
+function trimSeg(s,c){const [a,b]=s,dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);const t=Math.min(c/L,0.45);
+  return[[a[0]+dx*t,a[1]+dz*t],[b[0]-dx*t,b[1]-dz*t]]}
+function beamSolids(lv,lines,yb,yt,w,mat,born,inf){lines.forEach(s=>{INF=inf?inf(s):'';prism(lv,1,seg(...s,w),yb,yt,mat,born)});INF=''}
+function beamForms(lv,lines,yb,yt,w,born){lines.forEach(s=>prism(lv,0,seg(...trimSeg(s,170),w+60),yb-30,yt,'fbox',born))}
+function beamCages(lv,lines,yb,yt,w,endN,endSp,midSp,born){const h=w/2-45;
+  lines.forEach(s0=>{const s=trimSeg(s0,160),a=s[0],b=s[1],dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),ux=dx/L,uz=dz/L,nx=-uz,nz=ux;
+    [[yb+45,-h],[yb+45,h],[yt-45,-h],[yt-45,h]].forEach(([y,o])=>ln(lv,1,[a[0]-ux*220+nx*o,y,a[1]-uz*220+nz*o],[b[0]+ux*220+nx*o,y,b[1]+uz*220+nz*o],'mb',born));
+    const ss=[];for(let i=0;i<endN;i++)ss.push(50+endSp*i);const e=L-50-endSp*(endN-1);
+    for(let v=ss[ss.length-1]+midSp;v<e-midSp*0.5;v+=midSp)ss.push(v);for(let i=0;i<endN;i++)ss.push(e+endSp*i);
+    ss.filter(v=>v>0&&v<L).forEach(v=>{const px=a[0]+ux*v,pz=a[1]+uz*v,o=h+7;
+      pg(lv,1,[[px-nx*o,yb+38,pz-nz*o],[px-nx*o,yt-38,pz-nz*o],[px+nx*o,yt-38,pz+nz*o],[px+nx*o,yb+38,pz+nz*o]],'tl',born)})})}
+
+/* ---------- members ---------- */
+function footings(born){MAIN.forEach(f=>{const[n,x,z,c,L]=f;INF=infoFooting(f);prism(0,3,sq(x,z,L/2,L/2),-1800,-1500,'conc',born)});INF=''}
+function pits(born){MAIN.forEach(([n,x,z,c,L])=>prism(0,0,sq(x,z,L/2+300,L/2+300),-1900,0,'pit',born))}
+function gravel(born){MAIN.forEach(([n,x,z,c,L])=>prism(0,1,sq(x,z,L/2,L/2),-1880,-1800,'pit',born))}
+function mat(y,sp,born){MAIN.forEach(([n,x,z,c,L])=>{const hl=L/2-75,k=Math.floor((L-150)/sp);
+  for(let i=0;i<=k;i++){const v=-hl+i*(2*hl/k);ln(0,2,[x-hl,y,z+v],[x+hl,y,z+v],'mt',born);ln(0,2,[x+v,y+14,z-hl],[x+v,y+14,z+hl],'mt',born)}})}
+function colBarsAt(list,y0,y1,lv,born,hook){list.forEach(c=>{const x=c[1],z=c[2],h=c[3]/2-40;
+  const pos=c[3]>=400?[[-h,-h],[0,-h],[h,-h],[-h,0],[h,0],[-h,h],[0,h],[h,h]]:[[-h,-h],[h,-h],[-h,h],[h,h]];
+  pos.forEach(([dx,dz])=>{ln(lv,2,[x+dx,y0,z+dz],[x+dx,y1,z+dz],'mb',born);
+    if(hook)ln(lv,2,[x+dx,y0,z+dz],[x+dx+(dx===0?0:Math.sign(dx))*260,y0,z+dz+(dx===0?Math.sign(dz)*260:0)],'mb',born)})})}
+function tie(lv,x,z,hx,hz,y,born){pg(lv,2,[[x-hx,y,z-hz],[x+hx,y,z-hz],[x+hx,y,z+hz],[x-hx,y,z+hz]],'tl',born)}
+function tieYs(y0,y1,zone){const a=[];for(let y=y0+50;y<=y0+zone;y+=75)a.push(y);for(let y=y0+zone+150;y<=y1-zone-75;y+=150)a.push(y);for(let y=y1-zone;y<=y1-40;y+=75)a.push(y);return a}
+function colTies(list,lv,y0,y1,joint,born){list.forEach(c=>{const x=c[1],z=c[2],hx=(c.hx||c[3]/2)-32,hz=(c.hz||c[3]/2)-32;
+  const ys=tieYs(y0,y1,450);for(let y=y1+60;y<y1+joint;y+=75)ys.push(y);ys.forEach(y=>tie(lv,x,z,hx,hz,y,born))})}
+function colForms(list,lv,y0,y1,born){list.forEach(c=>prism(lv,4,sq(c[1],c[2],(c.hx||c[3]/2)+35,(c.hz||c[3]/2)+35),y0,y1,'fbox',born))}
+function colSolid(list,lv,y0,y1,m,born,st){list.forEach(c=>{INF=st?infoCol(c,st,y0,y1):'';prism(lv,3,sq(c[1],c[2],c.hx||c[3]/2,c.hz||c[3]/2),y0,y1,m,born)});INF=''}
+const UPC=UP.map((u,i)=>{const o=['U'+i,u[0],u[1],300];o.hx=u[2]/2;o.hz=u[3]/2;return o});
+const LOWF=[[A(-150)-150,-150],[C(-150)+150,-150],[C(10130)+150,10130],[A(10130)-150,10130]];
+const OUT=[[AO(ZF),ZF],[CO(ZF),ZF],[CO(ZB),ZB],[AO(ZB),ZB]];
+function slabMesh(lv,F,y,sp,born){const z0=F[0][1],z1=F[2][1];
+  const xl=z=>F[0][0]+(F[3][0]-F[0][0])*(z-z0)/(z1-z0),xr=z=>F[1][0]+(F[2][0]-F[1][0])*(z-z0)/(z1-z0);
+  for(let z=z0+80;z<z1;z+=sp)ln(lv,2,[xl(z)+60,y,z],[xr(z)-60,y,z],'sm',born);
+  const n=Math.round((F[1][0]-F[0][0])/sp);for(let i=1;i<n;i++){const t=i/n;
+    ln(lv,2,[F[0][0]+(F[1][0]-F[0][0])*t,y+12,z0+60],[F[3][0]+(F[2][0]-F[3][0])*t,y+12,z1-60],'sm',born)}}
+function shoring(lv,F,yf,ys,deck,born){const z0=F[0][1],z1=F[2][1];
+  for(let z=z0+500;z<z1;z+=1400)for(let t=0.12;t<0.95;t+=0.19){const xl=F[0][0]+(F[3][0]-F[0][0])*(z-z0)/(z1-z0),xr=F[1][0]+(F[2][0]-F[1][0])*(z-z0)/(z1-z0);
+    const x=xl+(xr-xl)*t,out=z<-150||x<A(z)-150||x>C(z)+150;ln(lv,0,[x,out?-200:yf,z],[x,ys,z],'shore',born)}
+  if(deck)pg(lv,0,F.map(p=>[p[0],ys,p[1]]),'deck',born)}
+function slab(lv,F,yb,yt,m,born,inf){INF=inf||'';prism(lv,3,F,yb,yt,m,born);INF=''}
+function wallsAlong(lv,list,y0,y1,m,born){list.forEach(s=>{INF=infoWall(s,y1-y0);prism(lv,5,seg(...s,150),y0,y1,m,born)});INF=''}
+const GW=[[[A(0),0],[A(9980),9980]],[[A(9980),9980],[C(9980),9980]],[[C(0),0],[C(9980),9980]],[[A(0),0],[A(0)+700,0]],[[C(0)-700,0],[C(0),0]]];
+const W2=[[[A(0),0],[A(9980),9980]],[[A(9980),9980],[C(9980),9980]],[[C(0),0],[C(9980),9980]],[[A(0),0],[A(0)+700,0]],[[C(0)-700,0],[C(0),0]]];
+const W3=[[[AO(ZF+150)+75,ZF+75],[AO(ZB)+75,ZB-75]],[[AO(ZB)+75,ZB-75],[CO(ZB)-75,ZB-75]],[[CO(ZF)-75,ZF+75],[CO(ZB)-75,ZB-75]],[[AO(ZF)+75,ZF+75],[AO(ZF)+900,ZF+75]],[[CO(ZF)-900,ZF+75],[CO(ZF)-75,ZF+75]]];
+function faceRect(lv,x0,x1,z,y0,y1,cls,born){if(cy<=0.02)return;const q=[[x0,y0,z],[x1,y0,z],[x1,y1,z],[x0,y1,z]];pg(lv,7,q,cls,born);if(cls==='glass')GLOW.push(`<polygon class="wglow" points="${q.map(pt).join(' ')}"/>`)}
+function sideRect(lv,xf,za,zb,y0,y1,cls,born){if(sy<=0.02)return;const q=[[xf(za),y0,za],[xf(zb),y0,zb],[xf(zb),y1,zb],[xf(za),y1,za]];pg(lv,7,q,cls,born);if(cls==='glass')GLOW.push(`<polygon class="wglow" points="${q.map(pt).join(' ')}"/>`)}
+function openings(fin,born){const g=fin?'glass':'open';
+  faceRect(fin?1:6,A(0)+700,C(0)-700,-90,0,2250,fin?'gopen':'open',born);               /* garage */
+  faceRect(6,A(0)+700,C(0)-700,-90,2650,5650,g,born);                             /* 2nd floor glass wall */
+  faceRect(8,AO(ZF)+900,CO(ZF)-900,ZF-10,6350,8700,g,born);                         /* 3rd floor windows */
+  sideRect(6,z=>A(z)-90,2300,3700,3500,5300,g,born);sideRect(6,z=>A(z)-90,5000,6600,3500,5300,g,born);sideRect(6,z=>A(z)-90,8200,9200,2650,4900,g,born);
+  sideRect(8,z=>AO(z)+-10,700,2700,6500,8500,g,born);sideRect(8,z=>AO(z)-10,4100,5900,6500,8500,g,born);sideRect(8,z=>AO(z)-10,7300,8900,6500,8500,g,born)}
+function parapet(mt,born){const t=150;INF=`Parapet|450mm high on the roof edge · +9.30 to +9.75|Perimeter ≈ ${r1(m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF)))} m|#12 @ 400 vertical`;
+  prism(8,2,[[AO(ZF),ZF],[CO(ZF),ZF],[CO(ZF+t),ZF+t],[AO(ZF+t),ZF+t]],9300,9750,mt,born);
+  prism(8,0,[[AO(ZB-t),ZB-t],[CO(ZB-t),ZB-t],[CO(ZB),ZB],[AO(ZB),ZB]],9300,9750,mt,born);
+  prism(8,2,[[AO(ZF),ZF],[AO(ZF)+t,ZF],[AO(ZB)+t,ZB],[AO(ZB),ZB]],9300,9750,mt,born);
+  prism(8,2,[[CO(ZF)-t,ZF],[CO(ZF),ZF],[CO(ZB),ZB],[CO(ZB)-t,ZB]],9300,9750,mt,born);INF=''}
+const RYF=9620,RYR=9360,ryy=z=>RYF+(RYR-RYF)*(z-ZF)/(ZB-ZF);  /* roof plan arrow: slopes down toward the rear (row 4) */
+function roofFrame(born){const yy=ryy;
+  [0.06,0.27,0.5,0.73,0.94].forEach(t=>{const xa=AO(ZF)+(CO(ZF)-AO(ZF))*t,xb=AO(ZB)+(CO(ZB)-AO(ZB))*t;
+    ln(8,1,[xa-40,yy(ZF+150),ZF+150],[xb-40,yy(ZB-150),ZB-150],'pur',born);ln(8,1,[xa+40,yy(ZF+150),ZF+150],[xb+40,yy(ZB-150),ZB-150],'pur',born)});
+  for(let z=ZF+300;z<ZB-150;z+=800)ln(8,1,[AO(z)+200,yy(z)+90,z],[CO(z)-200,yy(z)+90,z],'tub',born)}
+function roofing(partial,born){const yy=z=>ryy(z)+110,z0=partial?ZF+0.42*(ZB-ZF):ZF+150,z1=ZB-150,xl=z=>AO(z)+150,xr=z=>CO(z)-150;
+  const area=r1(areaF(OUT)*1.03);
+  const pts=[[xl(z0),yy(z0),z0],[xr(z0),yy(z0),z0],[xr(z1),yy(z1),z1],[xl(z1),yy(z1),z1]];
+  add(8,1.5,[0,yy((z0+z1)/2),(z0+z1)/2],`<polygon class="roofs" data-i="Roofing sheets|Long-span rib-type, pre-painted (assumed: the plans show ribbed sheets but no material spec)|≈ ${area} m² · slopes down toward the rear (roof plan arrow)|Fixed to 2×2 tubular purlins @ 0.80m" points="${pts.map(pt).join(' ')}"/>`,born);
+  const n=Math.round((xr(z0)-xl(z0))/250);for(let k=1;k<n;k++){const t=k/n;
+    ln(8,1.6,[xl(z0)+(xr(z0)-xl(z0))*t,yy(z0)+8,z0],[xl(z1)+(xr(z1)-xl(z1))*t,yy(z1)+8,z1],'rib',born)}
+  if(partial)return;
+  INF=`Box gutter (rear)|Inside the rear parapet, ${m(CO(ZB)-AO(ZB)-300).toFixed(2)}m long · about 300 wide × 150 deep|Drains to 2 downspouts (DS) through scuppers`;
+  prism(8,1.7,[[AO(ZB)+150,ZB-450],[CO(ZB)-150,ZB-450],[CO(ZB)-150,ZB-150],[AO(ZB)+150,ZB-150]],9300,9450,'metal',born);
+  INF=`Downspout (DS)|Rear wall, from the gutter scupper to grade|≈ ${m(9400-2650).toFixed(2)}m long · size per plumbing plans (P1-07)`;
+  [AO(ZB)+700,CO(ZB)-700].forEach(x=>prism(6,9,[[x-50,ZB],[x+50,ZB],[x+50,ZB+100],[x-50,ZB+100]],2650,9400,'metal',born));INF='';
+  [[[AO(ZF)+150,ZF+150],[CO(ZF)-150,ZF+150]],[[AO(ZF)+150,ZF+150],[AO(ZB)+150,ZB-150]],[[CO(ZF)-150,ZF+150],[CO(ZB)-150,ZB-150]]].forEach(([a,b])=>
+    ln(8,1.8,[a[0],yy(a[1])+40,a[1]],[b[0],yy(b[1])+40,b[1]],'flash',born))}
+function stairs(mt,born){const n=14,z0=-2300,run=280,r=2850/n;INF=`Exterior stair (A side)|14 risers × 204mm · treads 280mm · width 1.20m|From −0.20 sidewalk to +2.65 landing|Concrete ≈ ${r2(1.2*(SLOPE*0.15+SN*0.28*0.204/2)+1.2*0.5*0.55+1.2*m(5200-SZT)*0.1)} m³ (waist slab 150)|12mm @ 200 main · 10mm distribution`;
+  for(let i=0;i<n;i++){const za=z0+i*run,zb=za+run;prism(2,8,[[A(za)-1500,za],[A(za)-300,za],[A(zb)-300,zb],[A(zb)-1500,zb]],-200,-200+r*(i+1),mt,born)}
+  const za=z0+n*run,zb=5200;prism(2,8,[[A(za)-1500,za],[A(za)-300,za],[A(zb)-300,zb],[A(zb)-1500,zb]],-200,2650,mt,born);INF=''}
+function trough(lv,sb,x0,x1,z0,z1,yb,yt,m,fin,born){const t=100;
+  prism(lv,sb,[[x0,z0],[x1,z0],[x1,z1],[x0,z1]],yb,yb+t,m,born);
+  prism(lv,sb,[[x0,z1-t],[x1,z1-t],[x1,z1],[x0,z1]],yb,yt,m,born);
+  prism(lv,sb,[[x1-t,z0],[x1,z0],[x1,z1],[x1-t,z1]],yb,yt,m,born);
+  if(fin){pg(lv,sb,[[x0+t,yt-90,z0+t],[x1-t,yt-90,z0+t],[x1-t,yt-90,z1-t],[x0+t,yt-90,z1-t]],'soil',born)}
+  prism(lv,sb,[[x0,z0],[x0+t,z0],[x0+t,z1],[x0,z1]],yb,yt,m,born);
+  prism(lv,sb,[[x0,z0],[x1,z0],[x1,z0+t],[x0,z0+t]],yb,yt,m,born);
+  if(fin){const zm=(z0+z1)/2,n=Math.max(2,Math.round((x1-x0)/450));
+    for(let k=0;k<n;k++){const x=x0+(x1-x0)*(k+0.5)/n,q=P(x,yt+120,zm);
+      add(lv,sb+1,[x,yt,zm],`<g class="leaf"><circle cx="${f(q[0])}" cy="${f(q[1])}" r="${f(260*S)}"/><circle cx="${f(q[0]+170*S)}" cy="${f(q[1]+60*S)}" r="${f(190*S)}"/><circle cx="${f(q[0]-170*S)}" cy="${f(q[1]+60*S)}" r="${f(190*S)}"/></g>`,born)}}}
+/* hanging planter: RC trough cantilevered off the 2nd floor front beam (bottom slab runs back into the beam) */
+function hangPlanter(mt,fin,born){const m2=v=>(v/1000).toFixed(2);INF=`Hanging planter (2nd floor front)|${m2(HP[1]-HP[0])} × 0.65 × 0.70m · walls and floor 100mm|Cantilevered off the front beam|Concrete ≈ ${r2(m(HP[1]-HP[0])*0.65*0.1+2*(m(HP[1]-HP[0])+0.65)*0.1*0.7)} m³|Bars: not detailed in plans`;trough(6,cy>0?8:4,A(0)+200,C(0)-200,-650,0,2350,3050,mt,fin,born);INF=''}
+function groundPlanter(m,fin,born){INF='Ground planter (C side)|1.15 × 1.50 × 0.70m · walls and floor 100mm|Bars: not detailed in plans';trough(1,6,C(0)+150,C(0)+1300,-1700,-200,-200,500,m,fin,born);INF=''}
+function strings(born){ZR.forEach(z=>ln(0,9,[A(z)-1000,0,z],[C(z)+1000,0,z],'str',born));
+  [A,z=>0,C].forEach(g=>ln(0,9,[g(-1000),0,-1000],[g(10980),0,10980],'str',born));
+  ZR.forEach(z=>{ln(0,9,[A(z)-1000,0,z],[A(z)-1000,500,z],'post',born);ln(0,9,[C(z)+1000,0,z],[C(z)+1000,500,z],'post',born)});
+  [[A,-1000],[A,10980],[z=>0,-1000],[z=>0,10980],[C,-1000],[C,10980]].forEach(([g,z])=>ln(0,9,[g(z),0,z],[g(z),500,z],'post',born));
+  MAIN.forEach(c=>dot(0,[c[1],0,c[2]],born))}
+function terrain(op,born){const H=z=>z<=-2000?-200:z>=5200?2650+350*Math.min(1,(z-5200)/7800):-200+2850*(z+2000)/7200;
+  const zs=[-3200,-2000,1000,3000,5200,13000];
+  for(let i=0;i<zs.length-1;i++){const a=zs[i],b=zs[i+1];
+    pg(-1,1,[[-9500,H(a),a],[A(a)-1520,H(a),a],[A(b)-1520,H(b),b],[-9500,H(b),b]],op?'hill':'hillx',born)}
+  pg(-1,0,[[A(10700)-1520,H(10700),10700],[CO(10700)+800,H(10700),10700],[CO(13000)+800,H(13000),13000],[-9500,H(13000),13000],[-9500,H(10700),10700]],op?'hill':'hillx',born);
+  pg(-1,0,[[-9500,-200,-3200],[7000,-200,-3200],[7000,-200,-1700],[C(-1700)+1300,-200,-1700],[C(-1700)+1300,-200,-150],[-9500,-200,-150]],'road',born)}
+
+/* ---------- scene per step ---------- */
+/* ---------- rebar for stairs, planters, parapet, CHB ---------- */
+const SN=14,SZ0=-2300,SRUN=280,SR=2850/SN,SZT=SZ0+SN*SRUN;
+const sy0=z=>-200+(z-SZ0)*SR/SRUN;
+function stairRebar(born){const offs=[];for(let o=350;o<=1450;o+=183)offs.push(o);
+  offs.forEach(o=>ln(2,8,[A(SZ0)-o,sy0(SZ0)-110,SZ0-200],[A(SZT)-o,sy0(SZT)-110,SZT],'mb',born));
+  for(let z=SZ0;z<=SZT;z+=300){const y=sy0(z)-95;ln(2,8,[A(z)-1450,y,z],[A(z)-350,y,z],'sm',born)}
+  for(let i=0;i<SN;i++){const za=SZ0+i*SRUN+40,yb=-200+i*SR,yt=yb+SR-40;
+    [400,900,1400].forEach(o=>{ln(2,8,[A(za)-o,yb,za],[A(za)-o,yt,za],'tl',born);ln(2,8,[A(za)-o,yt,za],[A(za+SRUN-80)-o,yt,za+SRUN-80],'tl',born)});
+    ln(2,8,[A(za)-1450,yt,za],[A(za)-350,yt,za],'mb',born)}
+  [[-650,-150],[-650,150],[-300,-150],[-300,150]].forEach(([y,dz])=>ln(2,8,[A(SZ0+dz)-1450,y,SZ0+dz],[A(SZ0+dz)-350,y,SZ0+dz],'mb',born));
+  prism(2,8,[[A(SZ0-250)-1500,SZ0-250],[A(SZ0)-300,SZ0-250],[A(SZ0+250)-300,SZ0+250],[A(SZ0+250)-1500,SZ0+250]],-750,-200,'fbox',born);
+  for(let z=SZT+150;z<5200;z+=200)ln(2,8,[A(z)-1450,2590,z],[A(z)-350,2590,z],'sm',born);
+  for(let o=350;o<=1450;o+=200)ln(2,8,[A(SZT)-o,2602,SZT],[A(5100)-o,2602,5100],'sm',born);
+  [1500,300].forEach(o=>{const pts=[[A(SZ0)-o,-200,SZ0]];for(let i=0;i<SN;i++){const za=SZ0+i*SRUN;pts.push([A(za)-o,-200+(i+1)*SR,za]);pts.push([A(za+SRUN)-o,-200+(i+1)*SR,za+SRUN])}
+    pts.push([A(5200)-o,2650,5200]);pts.push([A(5200)-o,-200,5200]);pg(2,8,pts,'formline',born)})}
+function troughBars(lv,x0,x1,z0,z1,yb,yt,born){const c=50;
+  for(let x=x0+c;x<=x1-c;x+=200)ln(lv,2,[x,yb+40,z0+c],[x,yb+40,z1-c],'sm',born);
+  for(let z=z0+c;z<=z1-c;z+=200)ln(lv,2,[x0+c,yb+52,z],[x1-c,yb+52,z],'sm',born);
+  const ring=[[x0+c,z0+c],[x1-c,z0+c],[x1-c,z1-c],[x0+c,z1-c]];
+  for(let k=0;k<4;k++){const a=ring[k],b=ring[(k+1)%4],L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.max(1,Math.round(L/250));
+    for(let j=0;j<n;j++){const t=j/n,x=a[0]+(b[0]-a[0])*t,z=a[1]+(b[1]-a[1])*t;ln(lv,2,[x,yb+40,z],[x,yt-30,z],'mb',born)}
+    [yb+250,yt-60].forEach(y=>ln(lv,2,[a[0],y,a[1]],[b[0],y,b[1]],'tl',born))}}
+function parapetBars(born){const ring=[[AO(ZF)+75,ZF+75],[CO(ZF)-75,ZF+75],[CO(ZB)-75,ZB-75],[AO(ZB)+75,ZB-75]];
+  for(let k=0;k<4;k++){const a=ring[k],b=ring[(k+1)%4],L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.round(L/400);
+    for(let j=0;j<n;j++){const t=j/n;ln(8,2,[a[0]+(b[0]-a[0])*t,9050,a[1]+(b[1]-a[1])*t],[a[0]+(b[0]-a[0])*t,9700,a[1]+(b[1]-a[1])*t],'mb',born)}
+    ln(8,2,[a[0],9650,a[1]],[b[0],9650,b[1]],'tl',born)}}
+function wallBars(lv,list,y0,y1,born){list.forEach(([a,b])=>{const L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.max(1,Math.round(L/400));
+  for(let j=0;j<=n;j++){const t=j/n;ln(lv,6,[a[0]+(b[0]-a[0])*t,y0,a[1]+(b[1]-a[1])*t],[a[0]+(b[0]-a[0])*t,y1,a[1]+(b[1]-a[1])*t],'mb',born)}
+  for(let y=y0+600;y<y1;y+=600)ln(lv,6,[a[0],y,a[1]],[b[0],y,b[1]],'tl',born)})}
+const HP=[A(0)+200,C(0)-200,-650,0,2350,3050],GP=[C(0)+150,C(0)+1300,-1700,-200,-200,500];
+
+function build(i){prims=[];GLOW=[];if(i===23)scenery(23);const fin=i>=23,fm=fin?'fin':'conc',fw=fin?'fin':'chb';
+  if(i<=1||i>=21)terrain(i>=21,i<=1?0:21);
+  if(i<=2)strings(0);
+  if(i>=1&&i<=7)pits(1);
+  if(i>=2&&i<=7)gravel(2);
+  if(i>=2&&i<=4)mat(-1725,200,2);
+  if(i===4)mat(-1590,300,4);
+  if(i>=5&&i<23)footings(5);
+  if(i>=3&&i<=7)colBarsAt(MAIN,-1730,3450,2,3,true);
+  if(i>=3&&i<=6)MAIN.forEach(c=>[-1650,-1500,-1350,-1200].forEach(y=>tie(2,c[1],c[2],c[3]/2-32,c[3]/2-32,y,3)));
+  const TB=gridBeams(false);
+  if(i>=6&&i<=7)beamCages(1,TB,-400,-100,200,9,75,90,6);
+  if(i===7){colTies(MAIN,2,-1500,2250,400,7);colForms(MAIN,2,-1500,2250,7)}
+  if(i>=8){colSolid(MAIN,2,i>=23?-200:-1500,2250,fm,8,'garage storey');if(i<23)beamSolids(1,TB,-400,-100,200,'conc',8,s=>infoBeam('Footing tie beam',s,200,300,'top 2-#16 · bottom 2-#12',[9,75,90],0))}
+  if(i>=8&&i<=14)colBarsAt(MAIN,2250,3450,4,8,false);
+  if(i===9){prism(1,0,LOWF,-200,-100,'pit',9);slabMesh(1,LOWF,-55,600,9)}
+  if(i>=10)slab(1,LOWF,-100,0,'conc',10,infoSlab('Garage slab on fill',LOWF,100,'#10 @ 600 both ways'));
+  if(i===11){stairRebar(11);troughBars(1,...GP,11);prism(1,0,[[GP[0],GP[2]],[GP[1],GP[2]],[GP[1],GP[3]],[GP[0],GP[3]]],GP[4],GP[5],'fbox',11)}
+  if(i>=12){stairs(fin?'stone':'conc',12);groundPlanter(fin?'stone':'conc',fin,12)}
+  const B2=gridBeams(true);
+  if(i>=13&&i<=15)shoring(3,LOWF,0,2550,i<=14,13);
+  if(i>=13&&i<=14)beamForms(3,B2,2250,2650,200,13);
+  if(i===14){beamCages(3,B2,2250,2650,200,11,80,115,14);slabMesh(3,LOWF,2580,300,14);troughBars(6,...HP,14);prism(6,0,[[HP[0],HP[2]],[HP[1],HP[2]],[HP[1],HP[3]],[HP[0],HP[3]]],HP[4],HP[5],'fbox',14)}
+  if(i>=15){beamSolids(3,B2,2250,2650,200,fm,15,s=>infoBeam('2nd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (check S2-06 per mark)',[11,80,115],100));slab(3,LOWF,2550,2650,fm,15,infoSlab('2nd floor slab',LOWF,100,'#10 @ 150 both ways'));hangPlanter(fin?'fin':'conc',fin,15)}
+  if(i>=16&&i<=17){colBarsAt(MAIN,2450,6650,4,16,false);colTies(MAIN,4,2650,5650,400,16)}
+  if(i===16)colForms(MAIN,4,2650,5650,16);
+  if(i>=17)colSolid(MAIN,4,2650,5650,fm,17,'2nd storey');
+  const B3=cantBeams();
+  if(i>=17&&i<=18)shoring(5,OUT,2650,5950,i===17,17);
+  if(i===17){beamForms(5,B3,5650,6050,200,17);beamCages(5,B3,5650,6050,200,11,80,115,17);slabMesh(5,OUT,5980,300,17)}
+  if(i>=18){beamSolids(5,B3,5650,6050,200,fm,18,s=>infoBeam('3rd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (many CANTILEVERED)',[11,80,115],100));slab(5,OUT,5950,6050,fm,18,infoSlab('3rd floor slab (cantilevered)',OUT,100,'#10 @ 150 both ways'))}
+  if(i===18){colBarsAt(UPC.map(c=>[c[0],c[1],c[2],Math.min(c.hx,c.hz)*2]),5850,9250,6,18,false);colTies(UPC,6,6050,9000,300,18);colForms(UPC,6,6050,9000,18)}
+  if(i>=19)colSolid(UPC,6,6050,9000,fin?'dk':'conc',19,'3rd storey');
+  if(i===19){beamForms(7,B3,9000,9300,200,19);beamCages(7,B3,9000,9300,200,9,75,90,19);parapetBars(19)}
+  if(i>=20){beamSolids(7,B3,9000,9300,200,fm,20,s=>infoBeam('Roof beam',s,200,300,'typ. 2-#12 top and bottom',[9,75,90],0));parapet(fin?'fin':'chb',20)}
+  if(i>=21&&i<23)roofFrame(21);
+  if(i>=21)roofing(i===21,21);
+  if(i===22){wallsAlong(2,GW,0,1250,'chb',22);wallsAlong(4,W2,2650,3850,'chb',22);wallsAlong(6,W3,6050,7250,'chb',22);
+    wallBars(2,GW,0,2250,22);wallBars(4,W2,2650,5650,22);wallBars(6,W3,6050,9000,22)}
+  if(i>=23){wallsAlong(2,GW,0,2250,'stone',23);wallsAlong(4,W2,2650,5650,fw,23);wallsAlong(6,W3,6050,9000,'dk',23);openings(true,23)}
+  mep(i);
+  prims.sort((a,b)=>a.lv-b.lv||a.sb-b.sb||a.n-b.n);
+  return prims.map(p=>p.born===i&&i>0?p.svg.replace(/class="/,'class="nw '):p.svg).join('')}
+
+/* ---------- measurements, member info and quantities ---------- */
+const KG={10:.617,12:.888,16:1.578,20:2.466,25:3.853,32:6.313};
+const FSP={C1:200,C2:215,C3:195,C4:215,C5:210,C6:210,C7:215,C8:215,C9:210,C10:190,C11:210};
+const BAR2={C1:[4,32],C2:[4,25],C3:[4,32],C4:[4,32],C5:[4,20],C6:[4,32],C7:[4,32],C8:[4,25],C9:[4,32],C10:[8,20],C11:[8,20]};
+const BAR1=n=>n==='C10'||n==='C11'?[8,16]:[4,20];
+const UPN=['C5','C8','C12','C13','C14','C15','C16','C17','C18','C19','C20','C21'];
+const BARU=[[4,20],[4,25],[4,32],[4,16],[4,20],[4,16],[4,25],[4,16],[4,20],[6,16],[6,16],[4,16]];
+const m=v=>v/1000, r2=v=>Math.round(v*100)/100, r1=v=>Math.round(v*10)/10;
+function segL(s){return Math.hypot(s[1][0]-s[0][0],s[1][1]-s[0][1])}
+function areaF(F){let a=0;for(let i=0;i<F.length;i++){const p=F[i],q=F[(i+1)%F.length];a+=p[0]*q[1]-q[0]*p[1]}return Math.abs(a)/2/1e6}
+function stirN(L,endN,endSp,midSp){L=L-320;if(L<=0)return 0;const ss=[];for(let i=0;i<endN;i++)ss.push(50+endSp*i);const e=L-50-endSp*(endN-1);
+  for(let v=ss[ss.length-1]+midSp;v<e-midSp*0.5;v+=midSp)ss.push(v);for(let i=0;i<endN;i++)ss.push(e+endSp*i);return ss.filter(v=>v>0&&v<L).length}
+function tieSplit(y0,y1,zone,joint){const ys=tieYs(y0,y1,zone);let z=ys.filter(y=>y<=y0+zone||y>=y1-zone).length;for(let y=y1+60;y<y1+joint;y+=75)z++;return[z,ys.length-ys.filter(y=>y<=y0+zone||y>=y1-zone).length]}
+const tieLen=(a,b)=>m(2*((a-80)+(b-80))+200);
+const stirLen=(w,d)=>m(2*((w-80)+(d-80))+200);
+function colName(c){return c[0][0]==='U'?UPN[+c[0].slice(1)]:c[0]}
+function colSize(c){return c[0][0]==='U'?[c.hx*2,c.hz*2]:[c[3],c[3]]}
+/* info strings for hover / tap */
+const infoFooting=([n,x,z,c,L])=>{const sp=FSP[n],k=Math.floor((L-150)/sp)+1,k2=Math.floor((L-150)/300)+1;
+  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom #12 @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top #12 @ 300: ${k2} bars each way`};
+function infoCol(c,storey,y0,y1){const n=colName(c),[a,b]=colSize(c),h=m(y1-y0);
+  const bars=storey==='3rd storey'?BARU[+c[0].slice(1)]:storey==='2nd storey'?BAR2[n]:BAR1(n);
+  return `Column ${n} · ${storey}|${a} × ${b}mm · height ${h.toFixed(2)}m · C28|Concrete ${r2(m(a)*m(b)*h)} m³|Main bars ${bars[0]}-#${bars[1]}|Formwork ${r2(2*(m(a)+m(b))*h)} m²`}
+function infoBeam(lbl,s,w,d,bars,st,slabT){const L=segL(s),cl=Math.max(0,L-300);
+  return `${lbl}|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)|Concrete ≈ ${r2(m(cl)*m(w)*m(d-slabT))} m³ (below slab)|Bars ${bars}|Stirrups #10: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
+function infoSlab(lbl,F,t,bars){const a=areaF(F);return `${lbl}|Area ${r1(a)} m² × ${t}mm thick|Concrete ${r2(a*m(t))} m³|Bars ${bars}`}
+function infoWall(s,h){const L=m(segL(s)),a=L*m(h);return `CHB wall 150mm|${L.toFixed(2)}m long × ${m(h).toFixed(2)}m high = ${r1(a)} m²|≈ ${Math.ceil(a*12.5)} blocks (12.5 per m², before openings)|#12 @ 400 vertical and every 3 courses`}
+
+/* quantities per step */
+function Q(){const it=[];return{it,c:(cls,v,lbl)=>it.push({k:'c',cls,v,lbl}),b:(d,len,n,lbl)=>it.push({k:'b',d,len,n,lbl}),bt:(d,tot,lbl)=>it.push({k:'b',d,len:tot,n:1,tot:true,lbl}),x:(lbl,v,u)=>it.push({k:'x',lbl,v,u})}}
+function beamQ(q,lines,w,d,top,bot,st,slabT,stage){lines.forEach(s=>{const L=m(segL(s));
+  if(stage==='bars'){q.b(top[1],L+0.6,top[0],'beam top bars');q.b(bot[1],L+0.6,bot[0],'beam bottom bars');q.b(10,stirLen(w,d),stirN(segL(s),...st),'stirrups')}
+  else q.c('C21',Math.max(0,L-0.3)*m(w)*m(d-slabT))})}
+function slabBarsQ(q,F,sp){q.bt(10,2*areaF(F)/m(sp),'slab bars both ways')}
+function postsCount(F){const z0=F[0][1],z1=F[2][1];let n=0;for(let z=z0+500;z<z1;z+=1400)for(let t=0.12;t<0.95;t+=0.19)n++;return n}
+function troughQ(q,x0,x1,z0,z1,yb,yt,stage){const W=m(x1-x0),D=m(z1-z0),H=m(yt-yb),per=2*(W+D);
+  if(stage==='bars'){q.bt(10,(W/0.2)*D+(D/0.2)*W+Math.round(per/0.25)*H+2*per,'planter bars (assumed 10mm @ 200)')}
+  else q.c('C21',W*D*0.1+per*0.1*H)}
+const SLOPE=Math.hypot(m(SN*SRUN),2.85);
+function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cantBeams();
+  const colH=(list,y0,y1)=>list.reduce((s,c)=>{const[a,b]=colSize(c);return s+m(a)*m(b)*m(y1-y0)},0);
+  const formH=(list,y0,y1)=>list.reduce((s,c)=>{const[a,b]=colSize(c);return s+2*(m(a)+m(b))*m(y1-y0)},0);
+  switch(i){
+  case 0:{let L=0;ZR.forEach(z=>L+=m(C(z)-A(z)+2000));L+=3*12;q.x('Column centers to mark',11,'pcs');q.x('Batter-board posts',14,'pcs');q.x('String line',Math.ceil(L),'m');break}
+  case 1:q.x('Excavation (11 pits, ≈1.9m deep)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9,0)),'m³');break;
+  case 2:q.x('Gravel bed 80mm',r2(MAIN.reduce((s,c)=>s+m(c[4])**2*0.08,0)),'m³');
+    MAIN.forEach(c=>{const L=c[4],k=Math.floor((L-150)/FSP[c[0]])+1;q.b(12,m(L-150),2*k,'footing bottom mat')});break;
+  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});MAIN.forEach(c=>q.b(12,tieLen(c[3],c[3]),4,'starter ties'));break;
+  case 4:MAIN.forEach(c=>{const L=c[4],k=Math.floor((L-150)/300)+1;q.b(12,m(L-150),2*k,'footing top mat')});break;
+  case 5:q.c('C21',MAIN.reduce((s,c)=>s+m(c[4])**2*0.3,0),'11 footings');q.x('Footing side forms',r1(MAIN.reduce((s,c)=>s+4*m(c[4])*0.3,0)),'m²');break;
+  case 6:beamQ(q,TB,200,300,[2,16],[2,12],[9,75,90],0,'bars');q.x('Tie beams',TB.length+' spans, '+r1(TB.reduce((s,x)=>s+m(segL(x)),0))+'m total','');break;
+  case 7:MAIN.forEach(c=>{const[z,mm]=tieSplit(-1500,2250,450,400);q.b(12,tieLen(c[3],c[3]),z,'column ties, end zones');q.b(10,tieLen(c[3],c[3]),mm,'column ties, middle')});
+    q.x('Column formwork',r1(formH(MAIN,-1500,2250)),'m²');break;
+  case 8:q.c('C28',colH(MAIN,-1500,2250),'ground columns');beamQ(q,TB,200,300,0,0,0,0,'conc');
+    q.x('Backfill (approx.)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9-m(c[4])**2*0.3-m(c[3])**2*1.5,0)),'m³');break;
+  case 9:{const a=areaF(LOWF);q.x('Gravel base 100mm',r1(a*0.1),'m³');q.bt(10,2*a/0.6,'slab-on-fill mesh @ 600');q.x('Slab area',r1(a),'m²');break}
+  case 10:q.c('C21',areaF(LOWF)*0.1,'garage slab 100mm');break;
+  case 11:q.b(12,SLOPE+0.5,7,'stair main bars @ 200');q.b(10,1.1,Math.ceil(SLOPE/0.3)+1,'stair distribution bars');q.b(12,0.58,SN*3,'step bars');q.b(12,1.1,SN,'nosing bars');q.b(12,1.1,4,'stair footing bars');
+    q.bt(10,2*1.2*m(5200-SZT)/0.2,'landing mesh');troughQ(q,...GP,'bars');break;
+  case 12:q.c('C21',1.2*(SLOPE*0.15+SN*0.28*0.204/2)+1.2*0.5*0.55+1.2*m(5200-SZT)*0.1,'stair + landing slab');troughQ(q,...GP,'conc');break;
+  case 13:q.x('Shoring posts',postsCount(LOWF),'pcs');q.x('Slab deck forms',r1(areaF(LOWF)),'m²');q.x('Beam forms (sides + bottom)',r1(B2.reduce((s,x)=>s+m(segL(x)-300)*(2*0.3+0.2),0)),'m²');break;
+  case 14:beamQ(q,B2,200,400,[2,16],[2,16],[11,80,115],100,'bars');slabBarsQ(q,LOWF,150);troughQ(q,...HP,'bars');break;
+  case 15:beamQ(q,B2,200,400,0,0,0,100,'conc');q.c('C21',areaF(LOWF)*0.1,'2nd floor slab');troughQ(q,...HP,'conc');break;
+  case 16:MAIN.forEach(c=>{const[n,d]=BAR2[c[0]];q.b(d,4.2,n,'column bars, 2nd storey');const[z,mm]=tieSplit(2650,5650,450,400);q.b(12,tieLen(c[3],c[3]),z,'ties, end zones');q.b(10,tieLen(c[3],c[3]),mm,'ties, middle')});
+    q.x('Column formwork',r1(formH(MAIN,2650,5650)),'m²');break;
+  case 17:q.c('C28',colH(MAIN,2650,5650),'2nd storey columns');beamQ(q,B3,200,400,[2,16],[2,16],[11,80,115],100,'bars');slabBarsQ(q,OUT,150);
+    q.x('Shoring posts',postsCount(OUT),'pcs');q.x('Slab deck forms',r1(areaF(OUT)),'m²');break;
+  case 18:beamQ(q,B3,200,400,0,0,0,100,'conc');q.c('C21',areaF(OUT)*0.1,'3rd floor slab');
+    UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');const[z,mm]=tieSplit(6050,9000,300,300);q.b(12,tieLen(c.hx*2,c.hz*2),z,'ties, end zones');q.b(10,tieLen(c.hx*2,c.hz*2),mm,'ties, middle')});
+    q.x('Column formwork',r1(formH(UPC,6050,9000)),'m²');break;
+  case 19:{q.c('C28',colH(UPC,6050,9000),'3rd storey columns');beamQ(q,B3,200,300,[2,12],[2,12],[9,75,90],0,'bars');
+    const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.b(12,0.65,Math.round(per/0.4),'parapet vertical bars');q.bt(12,per,'parapet horizontal bar');break}
+  case 20:{beamQ(q,B3,200,300,0,0,0,0,'conc');const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.x('Parapet CHB (450 high)',Math.ceil(per*0.45*12.5),'pcs');break}
+  case 21:{const len=m(ZB-ZF);let pl=0;for(let z=ZF+300;z<ZB-150;z+=800)pl+=m(CO(z)-AO(z)-400);
+    q.x('Rafters 2"×6"×2.0mm C-purlin (2 per rafter, 5 rafters)',Math.ceil(10*len*1.05/6),'pcs × 6m');q.x('Purlins 2"×2"×1.5mm tubular @ 0.80',Math.ceil(pl*1.05/6),'pcs × 6m');
+    q.x('Long-span rib-type roof sheets (material not specified)',r1(areaF(OUT)*1.03),'m²');q.x('Box gutter (rear)',r1(m(CO(ZB)-AO(ZB)-300)),'m');
+    q.x('Downspouts',2+' pcs × '+m(9400-2650).toFixed(1)+'m','');q.x('Flashing along parapets',r1(m(CO(ZF)-AO(ZF))+2*m(ZB-ZF)),'m');q.x('Roof screws / tek screws (≈6 per m²)',Math.ceil(areaF(OUT)*6),'pcs');break}
+  case 22:{let a=0,v=0,hz=0;[[GW,2250],[W2,3000],[W3,2950]].forEach(([L,h])=>L.forEach(s=>{const l=m(segL(s));a+=l*m(h);v+=(Math.round(l/0.4)+1)*m(h);hz+=Math.floor(h/600)*l}));
+    const open=OPEN_AREA();q.x('CHB wall area (net of openings)',r1(a-open),'m²');q.x('CHB 150mm blocks',Math.ceil((a-open)*12.5*1.05),'pcs');q.bt(12,v+hz,'CHB wall bars');break}
+  case 23:{let a=0;[[GW,2250],[W2,3000],[W3,2950]].forEach(([L,h])=>L.forEach(s=>a+=m(segL(s))*m(h)));const open=OPEN_AREA();
+    q.x('Plaster, both faces',r1(2*(a-open)),'m²');q.x('Paint, both faces',r1(2*(a-open)),'m²');const fw=m(C(0)-A(0)-1400),f3=m(CO(ZF)-AO(ZF)-1800);q.x('Glass: front walls + side windows (as modeled)',r1(open+fw*3.0+f3*2.35),'m²');q.x('Garage door',r1(fw*2.25)+' m² ('+fw.toFixed(2)+' × 2.25m)','');break}
+  }
+  mepQty(i,q);
+  return q.it}
+function OPEN_AREA(){return 1.4*1.8+1.6*1.8+1.0*2.25+2.0*2.0+1.8*2.0+1.6*2.0}
+function summarize(items){const conc={},bars={},xs=[];
+  items.forEach(t=>{if(t.k==='c'){conc[t.cls]=(conc[t.cls]||0)+t.v}else if(t.k==='b'){const b=bars[t.d]||(bars[t.d]={L:0,pcs:0});
+    if(t.tot){b.L+=t.len;b.pcs+=Math.ceil(t.len*1.1/6)}else{b.L+=t.len*t.n;b.pcs+=t.len<=6?Math.ceil(t.n/Math.max(1,Math.floor(6/t.len))):t.n*Math.ceil(t.len/5.4)}}else xs.push(t)});
+  return{conc,bars,xs}}
+const MIX={C21:[9,0.5,1.0],C28:[12,0.5,1.0]};
+function qtyHTML(i){const s=summarize(qty(i));let rows='';
+  Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k];rows+=`<tr><td>Concrete ${k}</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c)} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
+  Object.keys(s.bars).sort((a,b)=>a-b).forEach(d=>{const b=s.bars[d];rows+=`<tr><td>Rebar ${d}mm</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[d])} kg</td></tr>`});
+  s.xs.forEach(t=>rows+=`<tr><td>${t.lbl}</td><td>${t.v} ${t.u}</td><td></td></tr>`);
+  let tc=0,tk=0,tb=0;for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.keys(z.bars).forEach(d=>tk+=z.bars[d].L*KG[d])}
+  return `<div class="qh"><span>Materials for this step</span><span class="qn">model estimate</span></div>`+
+    (rows?`<div class="qwrap"><table class="qt"><tbody>${rows}</tbody></table></div>`:`<p class="qnone">No materials in this step.</p>`)+
+    `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete · <b>${Math.ceil(tb)}</b> bags cement · <b>${Math.round(tk).toLocaleString()} kg</b> rebar</div>`}
+
+/* dimension overlay */
+let dimsOn=true;
+let dimsFinal=false;
+function dimsSVG(i,w){if(i===23?!dimsFinal:!dimsOn)return'';const fs=w*0.024,o=[];
+  const T=(p,txt,anchor)=>{const q=P(...p);o.push(`<text class="dimt" x="${f(q[0])}" y="${f(q[1])}" font-size="${f(fs)}" text-anchor="${anchor||'middle'}" stroke-width="${f(fs*0.28)}">${txt}</text>`)};
+  const Ln=(a,b,cls)=>{const p=P(...a),q=P(...b);o.push(`<line class="${cls||'diml'}" x1="${f(p[0])}" y1="${f(p[1])}" x2="${f(q[0])}" y2="${f(q[1])}"/>`)};
+  const Bub=(p,txt)=>{const q=P(...p);o.push(`<circle class="dimc" cx="${f(q[0])}" cy="${f(q[1])}" r="${f(fs*0.85)}"/>`);o.push(`<text class="dimt" x="${f(q[0])}" y="${f(q[1]+fs*0.36)}" font-size="${f(fs)}" text-anchor="middle" stroke-width="0">${txt}</text>`)};
+  const zb=-2900,xr=z=>A(z)-2700,xd=z=>A(z)-2100;
+  [['A',A],['B',z=>0],['C',C]].forEach(([n,g])=>{Ln([g(zb+500),0,zb+500],[g(0),0,0],'dimg');Bub([g(zb),0,zb],n)});
+  ['1','2','3','4'].forEach((n,k)=>{const z=ZR[k];Ln([xr(z)+400,0,z],[A(z),0,z],'dimg');Bub([xr(z),0,z],n)});
+  for(let k=0;k<3;k++){const a=ZR[k],b=ZR[k+1];Ln([xd(a),0,a],[xd(b),0,b]);[a,b].forEach(z=>Ln([xd(z)-150,0,z],[xd(z)+150,0,z]));T([xd((a+b)/2)-250,0,(a+b)/2],String(b-a),'end')}
+  const zw=-1900;Ln([A(0),0,zw],[C(0),0,zw]);[A(0),0,C(0)].forEach(x=>Ln([x,0,zw-150],[x,0,zw+150]));T([A(0)/2,0,zw-300],'2650');T([C(0)/2,0,zw-300],'2650');
+  if(i<=10){const zr=ZR[3]+1100;Ln([A(9980),0,zr],[C(9980),0,zr]);T([A(9980)/2,0,zr+250],'3295');T([C(9980)/2,0,zr+250],'3295')}
+  if(i>=1&&i<=8)MAIN.forEach(c=>T([c[1],-1500,c[2]-c[4]/2-120],`FC${c[0].slice(1)} · ${c[4]}`));
+  if(i>=3&&i<=9)MAIN.forEach(c=>T([c[1],i>=8?2450:3600,c[2]],c[0]));
+  if(i>=18&&i<=19)UPC.forEach((c,k)=>T([c[1],9250,c[2]],UPN[k]));
+  const lv=[[-200,'−0.20 sidewalk',0],[0,'±0.00 garage FFL',10],[2650,'+2.65 2nd FFL',15],[6050,'+6.05 3rd FFL',18],[9300,'+9.30 roof beam',20],[9750,'+9.75 parapet',20]].filter(l=>i>=l[2]&&i>=9);
+  if(lv.length){const x=AO(ZF)-1400,z=ZF;Ln([x,lv[0][0],z],[x,lv[lv.length-1][0],z]);lv.forEach(([y,t],k)=>{Ln([x-150,y,z],[x+150,y,z]);const alt=y===-200||y===9750;T(alt?[x+250,y-60,z]:[x-250,y-60,z],t,alt?'start':'end')})}
+  if(i>=17){Ln([A(0)-200,6150,0],[A(0)-200,6150,ZF]);T([A(0)-300,6300,ZF/2],'1100','end');Ln([A(7500),6150,7500],[AO(7500),6150,7500]);T([AO(7500)-100,6300,7500],'≈1090','end')}
+  mepLabels(i,T);
+  if(i>=11&&i<=12)T([A(SZ0)-900,-200+2850/2+500,SZ0+SN*SRUN/2],'14 risers × 204 · treads 280','end');
+  return o.join('')}
+
+/* ---------- plumbing and electrical (P1-07, P2-08, E1-09, E2-10) ----------
+   positions scaled off the 1:100 layouts; schematic, verify on site */
+let mepOn=true,mepFinal=false;const mepShow=i=>i>=9&&(i===23?mepFinal:mepOn);
+function pipe(lv,sb,pts,cls,info,born){const c=pts[Math.floor(pts.length/2)];
+  add(lv,sb,c,`<g data-i="${info}"><polyline class="${cls}" points="${pts.map(pt).join(' ')}"/><polyline class="${cls} hit" points="${pts.map(pt).join(' ')}"/></g>`,born)}
+const plen=pts=>{let L=0;for(let k=1;k<pts.length;k++)L+=Math.hypot(pts[k][0]-pts[k-1][0],pts[k][1]-pts[k-1][1],pts[k][2]-pts[k-1][2]);return L/1000};
+/* sewer (100mm PVC, 1% min slope) */
+const SEW_MAIN=[[-150,-450,9750],[1630,-520,8070],[1630,-650,3450]];
+const SEW_B2=[[C(7390)-200,-470,7390],[1630,-560,6600]];
+const SEW_B1=[[-1000,-430,9650],[-150,-450,9750]];
+const SEW_OUT=[[1630,-900,850],[1630,-1000,-3500]];
+const STACK1=[[C(7700)-250,-470,7700],[C(7700)-250,2650,7700],[C(7700)-250,6050,7700]];      /* 100ØSS T&B1 / T&B2 */
+const STACK2=[[-1000,-430,9650],[-1000,2650,9650]];                                          /* 75ØSS service area */
+const VENT=[[C(7700)-250,6050,7700],[C(7700)-250,9900,7700]];                                 /* 50ØVS through roof */
+/* septic tank 2500 × 1300 × 1800, 150 CHB walls */
+const TANK={x0:980,x1:2280,z0:900,z1:3400,yb:-1900,yt:-100};
+/* water: 20mm PPR from meter at front, along C side to row 4 */
+const WAT_MAIN=[[C(-3200)+350,-300,-3200],[C(0)+350,-300,0],[C(9980)+350,-300,9980],[C(9980)+350,-300,10150],[-955,-300,10150]];
+const RISER1=[[-955,-300,10150],[-955,2650+300,10150]];                                      /* 20ØCWR to service area */
+const RISER2=[[C(7560)+350,-300,7560],[C(7560)-200,2650+300,7560],[C(7560)-200,6050+300,7560]]; /* 20ØCWR to T&B1, T&B2 */
+const WAT2=[[C(7560)-200,2650+300,7560],[840,2650+300,5650]];                                 /* kitchen sink */
+const WAT3=[[C(7560)-200,6050+300,7560],[2300,6050+300,7300]];                                /* T&B 2 */
+/* storm: perimeter perforated 100mm PVC + 2nd floor DS line */
+const STORM_A=[[A(10200)-300,-900,10200],[A(0)-300,-1000,0],[A(0)-300,-1100,-3500]];
+const STORM_R=[[A(10200)-300,-900,10200],[C(10200)+300,-900,10200]];
+const STORM_C=[[C(10200)+300,-900,10200],[C(3000)+300,-1000,3000],[C(0)+600,-1050,0],[C(0)+600,-1100,-3500]];
+const STORM_2=[[AO(ZB)+700,2650,ZB+150],[CO(ZB)-700,2650,ZB+150],[C(ZB)+600,2650,ZB+150],[C(6000)+600,1200,6000],[C(0)+800,-300,0],[C(0)+800,-600,-3500]];
+/* electrical: service post at front C side → meter/MCB → LPP in garage, C wall near row 1–2 */
+const POST={x:3700,z:-3100};
+const LPP={x:C(1700)-140,z:1700};
+const SVC=[[POST.x,-600,POST.z],[LPP.x-60,-600,LPP.z],[LPP.x-60,1100,LPP.z]];
+const ER1=[[LPP.x-60,1900,LPP.z],[LPP.x-60,2650,LPP.z],[LPP.x-60,6050,LPP.z]];
+const SOLAR=[[LPP.x-60,1900,LPP.z+300],[LPP.x-60,9300,LPP.z+300],[LPP.x-60,9700,LPP.z+300]];
+const HR=(y,z0,z1)=>[[LPP.x-60,y,LPP.z],[LPP.x-200,y,z0],[-200,y,z0],[-200,y,z1]];
+const LOAD=[[1,'Lighting outlets',14,700,15,91.84],[2,'Lighting outlets',26,1300,15,98.40],[3,'Lighting outlets',29,1450,15,101.68],[4,'Convenience outlets',3,540,20,59.04],[5,'Convenience outlets',11,1980,20,65.60],[6,'Convenience outlets',13,2340,20,68.88],
+ [7,'Range outlet',1,2000,20,32.80],[8,'Ref outlet',1,500,20,29.52],[9,'Microwave outlet',1,1500,20,42.64],[10,'ACU 2.0HP',1,2760,20,49.20],[11,'ACU 2.0HP',1,2760,20,36.08],[12,'ACU 2.0HP',1,2760,20,55.76],
+ [13,'ACU 1.0HP',1,1840,20,39.36],[14,'ACU 1.0HP',1,1840,20,32.80],[15,'Water heater',1,1500,20,32.80],[16,'Water heater',1,1500,20,49.20],[17,'Spare',1,1500,0,0],[18,'Spare',1,1000,0,0]];
+function box3(lv,sb,x,z,hx,hz,y0,y1,mat,info,born){INF=info;prism(lv,sb,sq(x,z,hx,hz),y0,y1,mat,born);INF=''}
+function mep(i){if(!mepShow(i))return;
+  const sw=`Sewer line 100mm PVC|Slope 1% min. (sheet P2 note)`, st=`Storm drain`, wt=`Cold water line 20mm PPR`;
+  /* underground: from step 9 */
+  box3(0,6,(TANK.x0+TANK.x1)/2,(TANK.z0+TANK.z1)/2,(TANK.x1-TANK.x0)/2,(TANK.z1-TANK.z0)/2,TANK.yb,TANK.yt,i>=10?'tank':'tankw',
+    `Septic tank (P2-08 detail 3)|2.50 × 1.30m · 1.80m deep · 2 chambers (digestive + leaching)|150mm CHB walls, 12mm bars @ 0.40 vertical, horizontal every 2 courses|100mm slab top with 2 manholes · base 12mm @ 0.20`,9);
+  pipe(1,1,SEW_MAIN,'sew',`${sw}|Main run ≈ ${plen(SEW_MAIN).toFixed(1)}m to septic tank|Cleanout (100ØCO) at the top end`,9);
+  pipe(1,1,SEW_B1,'sew',`Sewer 75mm PVC|From service area stack|≈ ${plen(SEW_B1).toFixed(1)}m`,9);
+  pipe(1,1,SEW_B2,'sew',`${sw}|Branch from T&B stack (100ØSS) ≈ ${plen(SEW_B2).toFixed(1)}m`,9);
+  pipe(1,1,SEW_OUT,'sew',`Septic outlet 100mm PVC|Tapped to street sewer line|≈ ${plen(SEW_OUT).toFixed(1)}m`,9);
+  pipe(1,1,WAT_MAIN,'wat',`${wt} (underground)|From water source: gate valve, meter, check valve at the front|≈ ${plen(WAT_MAIN).toFixed(1)}m · hose bibb (HB) near row 1`,9);
+  [[STORM_A,'A side'],[STORM_R,'rear'],[STORM_C,'C side']].forEach(([p,s])=>pipe(1,1,p,'sto',`${st}: perforated 100mm PVC, ${s}|Wrapped in filter cloth, around the buried garage walls|≈ ${plen(p).toFixed(1)}m · tapped to street drainage`,9));
+  pipe(1,1,SVC,'ele',`Service entrance|2-38mm² THHN + 1-8mm² THHN ground in 25mmØ RSC|Underground, 50mm concrete encased · ≈ ${plen(SVC).toFixed(1)}m`,9);
+  box3(1,6,POST.x,POST.z,100,100,-200,3500,'conc',`Concrete service post|3.50m min. above grade (E2-10 detail 6)|kWh meter + 125AT 2P main breaker (NEMA 3R) on the post|Ground rod 16mm × 2.4m`,9);
+  const v=(m,z0,z1)=>[[0,0,0]];
+  [[0,'Gate valve (GV)',-3130],[0,'Water meter (M)',-2600],[0,'Check valve (CV)',-1830]].forEach(([_,n,z])=>box3(1,7,C(z)+350,z,90,90,-300,-100,'valve',`${n}|On the 20mm water main at the front`,9));
+  /* risers in walls / slabs */
+  if(i>=13){pipe(3,6,STACK1,'sew',`Soil stack 100mm PVC (100ØSS)|Serves T&B 1 (2nd) and T&B 2 (3rd)|≈ ${plen(STACK1).toFixed(1)}m`,13);
+    pipe(3,6,STACK2,'sew',`Soil stack 75mm PVC|Service area, 2nd floor`,13);
+    pipe(3,6,RISER1,'wat',`Cold water riser 20mm (20ØCWR)|To 2nd floor service area`,13);
+    pipe(3,6,RISER2.slice(0,2),'wat',`Cold water riser 20mm (20ØCWR)|To 2nd floor T&B 1 and up to 3rd floor`,13);
+    pipe(3,6,ER1.slice(0,2),'ele',`Conduit risers from panel LPP|20mm PVC per circuit (branch wires 2-3.5mm² + 1-3.5mm² ground)`,13);
+    pipe(3,6,WAT2,'wat',`Water line 20mm|To kitchen sink (KS), 2nd floor`,13)}
+  if(i>=16){pipe(5,6,[STACK1[1],STACK1[2]],'sew',`Soil stack 100mm PVC|2nd to 3rd floor`,16);pipe(5,6,[RISER2[1],RISER2[2]],'wat',`Cold water riser 20mm|To 3rd floor T&B 2`,16);
+    pipe(5,6,WAT3,'wat',`Water line 20mm|T&B 2: WC, LAV, shower`,16);pipe(5,6,[ER1[1],ER1[2]],'ele',`Conduit risers to 3rd floor|Lighting CKT 3, convenience CKT 6, ACU, water heater`,16)}
+  if(i>=19){pipe(7,6,VENT,'sew',`Vent stack 50mm PVC (50ØVS)|Through the roof, capped`,19);pipe(7,6,SOLAR,'ele',`Solar PV conduit 25mmØ PVC|From roof solar panels to inverter (E1-09 note)`,19)}
+  if(i>=21){pipe(6,9,STORM_2,'sto',`Storm drain from downspouts (75ØDS)|Collector along the rear, then down the C side|100mm PVC · ≈ ${plen(STORM_2).toFixed(1)}m · tapped to street drainage`,21)}
+  if(i>=22){box3(2,7,LPP.x,LPP.z,80,300,1100,1900,'panel',`Panel board LPP (flush type)|18 circuits: 3 × 15AT 2P lighting, 13 × 20AT 2P, 2 spares|Main 125AT 125AF 2P · total load 29,770 W · 129.42 A`,22);
+    box3(2,7,LPP.x,LPP.z+700,80,250,1200,1800,'panel',`Solar power inverter|Fed from roof solar panels (25mmØ PVC)|To net meter`,22);
+    box3(2,7,LPP.x-150,LPP.z+1200,200,350,0,700,'panel',`Solar battery bank|Beside the inverter, garage C wall`,22)}
+}
+function mepLabels(i,T){if(!mepShow(i))return;
+  T([(TANK.x0+TANK.x1)/2,TANK.yt+150,TANK.z0-200],'Septic tank');
+  if(i>=22){T([LPP.x-300,2050,LPP.z],'Panel LPP','end')}
+  if(i>=22){T([0,1900,4000],'Garage: 14 lights · 3 outlets');T([0,5000,4000],'2nd: 26 lights · 11 outlets');T([0,8400,4000],'3rd: 29 lights · 13 outlets')}}
+function mepQty(i,q){
+  if(i===9){q.x('Sewer pipe 100mm PVC (underground)',r1(plen(SEW_MAIN)+plen(SEW_B2)+plen(SEW_OUT)),'m');q.x('Sewer pipe 75mm PVC',r1(plen(SEW_B1)),'m');
+    q.x('Perforated 100mm PVC subsoil drain + filter cloth',r1(plen(STORM_A)+plen(STORM_R)+plen(STORM_C)),'m');q.x('Water line 20mm PPR (underground)',r1(plen(WAT_MAIN)),'m');
+    q.x('Valves: gate, check · water meter · hose bibb','1 each','');q.x('Service conduit 25mmØ RSC',r1(plen(SVC)),'m');
+    q.x('Septic tank: excavation',r1(2.8*1.6*2.0),'m³');q.x('Septic tank: 150mm CHB',Math.ceil((2*(2.5+1.3)+1.3+0.85)*1.8*12.5),'pcs');q.x('Septic tank: slab top + base concrete',r2(2.5*1.3*0.1*2),'m³');q.x('Cleanouts (CO)',3,'pcs')}
+  if(i===13)q.x('Pipe sleeves through 2nd floor slab (100, 75, 20mm)',5,'pcs');
+  if(i===16)q.x('Pipe sleeves through 3rd floor slab',4,'pcs');
+  if(i===21){q.x('Storm collector 100mm PVC (from DS)',r1(plen(STORM_2)),'m');q.x('Downspout 75mm PVC',2+' × 6.8m','');q.x('Vent stack 50mm PVC',r1(plen(VENT)),'m')}
+  if(i===22){const ft=LOAD.reduce((s,l)=>s+l[5],0),mm=ft*0.3048;q.x('Branch wire 3.5mm² THHN (3 per circuit, homeruns only)',Math.ceil(mm*3),'m');
+    q.x('PVC conduit 20mm (homeruns, per voltage-drop table lengths)',Math.ceil(mm),'m');q.x('Feeder 38mm² THHN ×2 + 8mm² ground',Math.ceil(59.04*0.3048)+' m each','');
+    q.x('Utility boxes: lighting / convenience / special',`69 / 27 / 10`,'');q.x('Switches S1 / S2 / S3 / S3W','3 / 7 / 3 / 4','')}
+  if(i===23){q.x('Panel board LPP, 18 circuits','1','set');q.x('Breakers: 125AT main · 15AT 2P · 20AT 2P','1 · 3 · 13','pcs');
+    q.x('Plumbing fixtures: WC · LAV · shower · kitchen sink','2 · 2 · 2 · 1','pcs (verify on A2-02)');q.x('Floor drains (FD)',3,'pcs');q.x('Solar inverter + battery bank','1 each','')}}
+
+/* ---------- finished-house scenery: road, landscape, trees, street lights, cars, night ---------- */
+let GLOW=[],night=false;
+const HILL=z=>z<=-2000?-200:z>=5200?2650+350*Math.min(1,(z-5200)/7800):-200+2850*(z+2000)/7200;
+const ROAD={z0:-9300,z1:-3300,y:-260,x0:-16000,x1:15000};
+const treeLv=(x,z)=>(x*sy+z*cy)>(0*sy+5000*cy)+1500?-1:50;
+function tree(x,z,yb,h,r,born){const t=P(x,yb,z),k=P(x,yb+h*0.45,z),c1=P(x,yb+h*0.7,z),c2=P(x-r*0.5,yb+h*0.55,z),c3=P(x+r*0.55,yb+h*0.58,z),c4=P(x,yb+h*0.9,z);
+  add(treeLv(x,z),0,[x,yb,z],`<g class="tree" data-i="Tree|Landscaping (not in plans)"><line class="trunk" x1="${f(t[0])}" y1="${f(t[1])}" x2="${f(k[0])}" y2="${f(k[1])}" stroke-width="${f(Math.max(1.5,r*0.12*S))}"/>`+
+   `<circle class="fol2" cx="${f(c2[0])}" cy="${f(c2[1])}" r="${f(r*0.7*S)}"/><circle class="fol2" cx="${f(c3[0])}" cy="${f(c3[1])}" r="${f(r*0.65*S)}"/>`+
+   `<circle class="fol" cx="${f(c1[0])}" cy="${f(c1[1])}" r="${f(r*0.8*S)}"/><circle class="fol" cx="${f(c4[0])}" cy="${f(c4[1])}" r="${f(r*0.55*S)}"/></g>`,born)}
+function shrub(x,z,yb,r,born){const c=P(x,yb+r*0.6,z);add(treeLv(x,z),0,[x,yb,z],`<circle class="fol2" cx="${f(c[0])}" cy="${f(c[1])}" r="${f(r*S)}"/>`,born)}
+function streetLight(x,z,born){const b=P(x,-200,z),t=P(x,6200,z),a=P(x,6200,z-1400),g=P(x,6050,z-1400);
+  add(50,1,[x,0,z],`<g data-i="Street light|Along the sidewalk (not in plans)"><line class="pole" x1="${f(b[0])}" y1="${f(b[1])}" x2="${f(t[0])}" y2="${f(t[1])}"/><line class="pole" x1="${f(t[0])}" y1="${f(t[1])}" x2="${f(a[0])}" y2="${f(a[1])}"/><ellipse class="lamp" cx="${f(g[0])}" cy="${f(g[1])}" rx="${f(260*S)}" ry="${f(110*S)}"/></g>`,born);
+  const gr=P(x,ROAD.y,z-1600);GLOW.push(`<circle class="lglow" cx="${f(g[0])}" cy="${f(g[1])}" r="${f(500*S)}"/><ellipse class="pool" cx="${f(gr[0])}" cy="${f(gr[1])}" rx="${f(2600*S)}" ry="${f(900*S)}"/>`)}
+/* car: generic compact crossover modeled on the render (silver, nose out); profile extruded across the width */
+const CAR_BODY=[[-2150,380],[-2190,700],[-2120,930],[-1950,990],[1150,1000],[1500,975],[2000,860],[2150,700],[2170,420]];
+const CAR_GH=[[-1960,985],[-1830,1450],[-1650,1530],[300,1555],[650,1520],[1180,1005]];
+const CAR_SIDE=[[2170,420],[1680,380],[1600,560],[1330,660],[1060,560],[980,380],[-980,380],[-1060,560],[-1330,660],[-1600,560],[-1680,380],[-2150,380],...CAR_BODY.slice(1,-1)];
+const CPAL={silver:['#EDEFF1','#C4C9CE','#9EA5AB'],grey:['#6D767D','#565E64','#454B50'],red:['#D2493C','#B5382C','#932B21']};
+function carModel(ox,oz,ux,uz,yb,pal,lv,sb,born,info){const W=1780,nx=-uz,nz=ux,col=CPAL[pal],GW=W-200;
+  const W3=(l,y,sd)=>[ox+ux*l+nx*sd,yb+y,oz+uz*l+nz*sd];
+  const D=[sy*cp,-sp,cy*cp],BK=[[],[],[],[],[],[]],cc=[ox,yb+800,oz];
+  const face=(bk,pts,fill,extra)=>{const c=pts.reduce((a,p)=>[a[0]+p[0]/pts.length,a[1]+p[1]/pts.length,a[2]+p[2]/pts.length],[0,0,0]);
+    const e1=[pts[1][0]-pts[0][0],pts[1][1]-pts[0][1],pts[1][2]-pts[0][2]],e2=[pts[2][0]-pts[0][0],pts[2][1]-pts[0][1],pts[2][2]-pts[0][2]];
+    let N=[e1[1]*e2[2]-e1[2]*e2[1],e1[2]*e2[0]-e1[0]*e2[2],e1[0]*e2[1]-e1[1]*e2[0]];
+    if(N[0]*(c[0]-cc[0])+N[1]*(c[1]-cc[1])+N[2]*(c[2]-cc[2])<0)N=N.map(v=>-v);
+    if(N[0]*D[0]+N[1]*D[1]+N[2]*D[2]>=0)return false;const L=Math.hypot(...N),up=N[1]/L;
+    BK[bk].push(`<polygon style="fill:${fill||(up>0.6?col[0]:col[1])}${extra||''}" points="${pts.map(pt).join(' ')}"/>`);return true};
+  const strip=(bk,prof,w,fill)=>{for(let k=0;k<prof.length-1;k++){const a=prof[k],b=prof[k+1];face(bk,[W3(a[0],a[1],-w/2),W3(b[0],b[1],-w/2),W3(b[0],b[1],w/2),W3(a[0],a[1],w/2)],fill?fill(k):null)}};
+  const sideSd=(nx*D[0]+nz*D[2])>0?-1:1,frontVis=(ux*D[0]+uz*D[2])<0;
+  /* wheels first, so the body side covers their tops */
+  [1330,-1330].forEach(l=>{const c=P(...W3(l,330,sideSd*(W/2-120)));
+    BK[0].push(`<circle cx="${f(c[0])}" cy="${f(c[1])}" r="${f(330*S)}" style="fill:#1C1F22;stroke:#3A3F43;stroke-width:1"/><circle cx="${f(c[0])}" cy="${f(c[1])}" r="${f(200*S)}" style="fill:#C3C8CC;stroke:#7D8388;stroke-width:.8"/><circle cx="${f(c[0])}" cy="${f(c[1])}" r="${f(60*S)}" style="fill:#5E6469"/>`)});
+  /* body shell */
+  strip(1,[[-2150,380],...CAR_BODY.slice(1),[2170,420]],W);
+  [-1,1].forEach(sd=>{if(face(2,CAR_SIDE.map(([l,y])=>W3(l,y,sd*W/2)),col[2])){
+    BK[2].push(`<polygon style="fill:#2B3034" points="${[[2170,420],[1680,380],[1600,560],[1330,660],[1060,560],[980,380],[-980,380],[-1060,560],[-1330,660],[-1600,560],[-1680,380],[-2150,380],[-2160,500],[-1700,520],[-1330,780],[-960,520],[960,520],[1330,780],[1700,520],[2165,540]].map(([l,y])=>pt(W3(l,y,sd*(W/2+3)))).join(' ')}"/>`);
+    BK[2].push(`<polyline style="fill:none;stroke:${col[1]};stroke-width:.8" points="${[[-1900,880],[1500,900]].map(([l,y])=>pt(W3(l,y,sd*(W/2+4)))).join(' ')}"/>`)}});
+  /* greenhouse */
+  strip(3,CAR_GH,GW,k=>k===0?'#1F2B34':k===CAR_GH.length-2?'#22303A':col[0]);
+  [-1,1].forEach(sd=>{if(face(4,CAR_GH.map(([l,y])=>W3(l,y,sd*GW/2)),col[1])){
+    const win=[[-1700,1030],[-1620,1400],[-1480,1460],[250,1480],[560,1450],[1060,1040]];
+    BK[4].push(`<polygon style="fill:#26343E" points="${win.map(([l,y])=>pt(W3(l,y,sd*(GW/2+3)))).join(' ')}"/>`);
+    BK[4].push(`<line style="stroke:${col[1]};stroke-width:2.2" x1="${f(P(...W3(-450,1050,sd*(GW/2+4)))[0])}" y1="${f(P(...W3(-450,1050,sd*(GW/2+4)))[1])}" x2="${f(P(...W3(-420,1470,sd*(GW/2+4)))[0])}" y2="${f(P(...W3(-420,1470,sd*(GW/2+4)))[1])}"/>`);
+    const m=W3(1080,1020,sd*(W/2+120));const mm=P(...m);BK[4].push(`<ellipse cx="${f(mm[0])}" cy="${f(mm[1])}" rx="${f(110*S)}" ry="${f(70*S)}" style="fill:${col[1]};stroke:#2B3034;stroke-width:.5"/>`)}});
+  /* nose or tail details */
+  const poly=(pts,fill)=>BK[5].push(`<polygon style="fill:${fill}" points="${pts.map(pt).join(' ')}"/>`);
+  if(frontVis){[-1,1].forEach(sd=>poly([W3(2120,800,sd*(W/2-120)),W3(2165,690,sd*(W/2-90)),W3(2165,690,sd*(W/2-430)),W3(2080,830,sd*(W/2-470))],'#F4F1E2'));
+    poly([W3(2172,560,-430),W3(2172,560,430),W3(2163,690,380),W3(2163,690,-380)],'#1F2427');
+    poly([W3(2176,420,-W/2+60),W3(2176,420,W/2-60),W3(2176,520,W/2-60),W3(2176,520,-W/2+60)],'#2B3034')}
+  else{[-1,1].forEach(sd=>poly([W3(-2185,820,sd*(W/2-90)),W3(-2190,720,sd*(W/2-90)),W3(-2190,720,sd*(W/2-450)),W3(-2150,880,sd*(W/2-450))],'#B03227'));
+    poly([W3(-2190,420,-W/2+60),W3(-2190,420,W/2-60),W3(-2190,520,W/2-60),W3(-2190,520,-W/2+60)],'#2B3034')}
+  add(lv,sb,[ox,yb,oz],`<g class="car"${info?` data-i="${info}"`:''}>${BK.map(x=>x.join('')).join('')}</g>`,born);
+  if(frontVis)[-1,1].forEach(sd=>{const q=P(...W3(2160,740,sd*(W/2-280)));GLOW.push(`<circle class="hlight" cx="${f(q[0])}" cy="${f(q[1])}" r="${f(150*S)}"/>`)})}
+function car(x,z,yb,dir,col,lv,sb,born,info){if(dir==='x')carModel(x,z,1,0,yb,col==='carr'?'grey':'silver',lv,sb,born,info);else carModel(x,z,0,-1,yb,'silver',lv,sb,born,info)}
+function movingCarSVG(){const saved=prims,g0=GLOW.length;prims=[];car(0,-5000,ROAD.y,'x','carr',60,0,-1,'Car on the street|For scale: 4.3 × 1.78m crossover');
+  prims.sort((a,b)=>a.sb-b.sb||a.n-b.n);const s=prims.map(p=>p.svg).join('');prims=saved;const gl=GLOW.splice(g0).join('');return{s,gl}}
+function scenery(born){
+  /* road, curb, lane marks */
+  pg(-2,0,[[ROAD.x0,ROAD.y,ROAD.z0],[ROAD.x1,ROAD.y,ROAD.z0],[ROAD.x1,ROAD.y,ROAD.z1],[ROAD.x0,ROAD.y,ROAD.z1]],'asph',born);
+  for(let x=ROAD.x0+500;x<ROAD.x1;x+=3000)pg(-2,1,[[x,ROAD.y,-6380],[x+1500,ROAD.y,-6380],[x+1500,ROAD.y,-6220],[x,ROAD.y,-6220]],'lane',born);
+  ln(-2,1,[ROAD.x0,-200,ROAD.z1],[ROAD.x1,-200,ROAD.z1],'curb',born);
+  /* lot on the C side + lawn */
+  [[-3200,-2000],[-2000,5200],[5200,13000]].forEach(([a,b])=>pg(-1,0,[[C(a)+1300,HILL(a),a],[15000,HILL(a),a],[15000,HILL(b),b],[C(b)+1300,HILL(b),b]],'hill',born));
+  /* trees on the slopes and street */
+  [[-7600,-1200],[-9200,2600],[-7400,5600],[-9000,9000],[-6200,12200]].forEach(([x,z])=>tree(x,z,HILL(z),5200,1500,born));
+  [[-2200,12600],[2600,12900]].forEach(([x,z])=>tree(x,z,HILL(z),6000,1800,born));
+  [[7200,-800],[8600,3200],[7000,7400],[9400,11000]].forEach(([x,z])=>tree(x,z,HILL(z),5000,1500,born));
+  [[-12500,-2700],[11500,-2700]].forEach(([x,z])=>tree(x,z,-200,5600,1600,born));
+  for(let z=-1800;z<5200;z+=900)shrub(A(z)-1900,z,HILL(z),360,born);
+  for(let z=-1500;z<9000;z+=1100)shrub(C(z)+1700,z,HILL(z),420,born);
+  streetLight(-6000,-3050,born);streetLight(6800,-3050,born);
+  /* parked car in the garage */
+  car(-200,2500,0,'z','carw',1,9,born,'Car in the garage|Silver crossover, parked nose out like the render|4.3 × 1.78m · garage door clear width ≈ 3.9m');
+  if(night)ROOMS();
+}
+/* night: glowing room lights behind the glass */
+function ROOMS(){}
+
+/* ---------- views ---------- */
+function vb(r){const cx=(r.x[0]+r.x[1])/2,cyy=(r.y[0]+r.y[1])/2,cz=(r.z[0]+r.z[1])/2;
+  const rad=Math.hypot(r.x[1]-r.x[0],r.y[1]-r.y[0],r.z[1]-r.z[0])/2*S*0.78,q=P(cx,cyy,cz);return[q[0]-rad,q[1]-rad,2*rad,2*rad]}
+const FULL={x:[-5300,4200],y:[-2000,9800],z:[-2400,10600]};
+const FINAL={x:[-9000,8500],y:[-300,10500],z:[-9300,12500]};
+const SITE={x:[-5200,4600],y:[-2000,600],z:[-1600,11600]};
+function close(y0,y1,x0,z1){return{x:[x0||-3900,600],y:[y0,y1],z:[-1300,z1||1900]}}
+
+/* ---------- content ---------- */
+const STEPS=[
+ {p:"Foundation",t:"Layout and gridlines",v:"site",c:close(-300,600),
+  b:["Pull strings for rows 1–4 (front to back: 3980, 3000, 3000) and lines A–B–C.","Lines A and C are not parallel. The house is 5.30m wide at row 1 (road) and 6.59m at row 4 (rear).","Orange dots mark 11 columns: three each on rows 2–4, and only A and C on row 1."],
+  s:"A–B and B–C: 2650 at row 1 → 3295 at row 4 (645mm taper per side)",w:"The bays are trapezoids, so the diagonals will NOT match. Set out from measured offsets off line B, not by squaring diagonals."},
+ {p:"Foundation",t:"Excavation into the slope",v:"site",c:close(-2000,300),
+  b:["The lot rises from the road to the rear. The garage floor (±0.00) is cut into the hill.","Dig 11 footing pits, about 300mm wider than each footing per side.","The rear pits (row 4) start from a much higher natural grade, so they are deeper cuts."],
+  s:"Column schedule band 0–1.8m suggests about 1.8m from footing base to ground slab",w:"Confirm the excavation depth with the engineer. Cut faces near the rear need shoring or a retaining wall plan."},
+ {p:"Foundation",t:"Gravel bed and bottom mat",v:"close",c:close(-2000,0),
+  b:["Spread and compact 50–100mm of gravel in each pit.","Lay the bottom mat of 12mm bars both ways.","Raise it 75mm on concrete spacers."],
+  s:"#12 @ 190–215 per footing mark (FC1 = #12 @ 200, 7 bars each way)",w:"Each footing has its own size and spacing. Check the table in Part 4."},
+ {p:"Foundation",t:"Column bars on the mat",v:"close",c:close(-2000,1700),
+  b:["C1–C9: four 20mm bars each (36 bars total).","C10 and C11 at the front (row 1) are bigger: 400×400 with eight 16mm bars.","Hook the bars onto the mat, add a few ties, and plumb each cage."],
+  s:"C1–C9: 300×300, 4-#20 · C10–C11: 400×400, 8-#16",w:"The front columns are bigger because they carry the 1.1m cantilevered 3rd floor above."},
+ {p:"Foundation",t:"Footing top mat",v:"close",c:close(-2000,0),
+  b:["Lay the top mat of 12mm bars at 300mm both ways.","Tie it to the column bars.","Inspect sizes, spacing and cover before pouring."],
+  s:"Top mat #12 @ 300 both ways on every footing",w:"This is the last chance to fix the footing steel."},
+ {p:"Foundation",t:"Pour the footings",v:"site",c:close(-2000,600),
+  b:["Pour C21 concrete, 300mm thick.","Rod or vibrate so there are no voids.","Keep the concrete wet 3–7 days."],
+  s:"FC1–FC11 · D1 = 300 · C21 : Fy415",w:"The foundation plan labels the row-1 C footing \"C12-FC12\". The schedule only goes to C11/FC11, so it is most likely a typo for FC11 (1650 × 1650). Confirm."},
+ {p:"Foundation",t:"Footing tie beams",v:"site",c:close(-2000,600),
+  b:["200×300 beams along all four rows and along lines A and C.","Line B has tie beams only from row 2 to row 4.","Stirrups: 9 at 75 near each column, 90 in the middle."],
+  s:"B1: top 2-#16 · bottom 2-#12 · 9-2L-#10@75 | @90 | 9@75",w:"The A and C beams run on a slant because of the taper. Cut bars to the real slanted length."},
+ {p:"Garage level",t:"Ground column ties and forms",v:"close",c:close(-1600,3200),
+  b:["Finish the column ties: tight in the 450mm end zones, 150mm in the middle.","Keep ties going through the beam joints.","Form, brace and plumb each column."],
+  s:"#12 @ 75 within 450mm of each end · #10 @ 150 middle · C28",w:"The garage storey is 2.65m tall, the shortest in the house."},
+ {p:"Garage level",t:"Pour columns, backfill",v:"site",c:close(-2000,3300),
+  b:["Pour the columns in C28 and the tie beams in C21.","Strip the forms after 1–2 days and keep curing.","Backfill around the footings in compacted layers."],
+  s:"Columns C28 (≈1:1.5:3) · tie beams C21 (≈1:2:4)",w:"The rear and A-side walls of the garage hold back the hill. Waterproof them before backfilling."},
+ {p:"Garage level",t:"Underground pipes, septic tank, slab rebar",v:"site",c:close(-1400,900),
+  b:["Build the septic tank (2.50 × 1.30 × 1.80m, 2 chambers) between lines B and C, rows 1–2. Run the 100mm PVC sewer from the rear cleanout to the tank, and from the tank to the street.","Lay the perforated 100mm storm drain around the buried garage walls, the 20mm water main up the C side, and the 25mm RSC service conduit to the panel (P1-07, E2-10).","Test the pipes, backfill, compact, add 100mm gravel, then lay 10mm bars at 600mm both ways on 50mm chairs."],
+  s:"Slab on fill: 100mm · #10 @ 600 both ways (foundation plan note)",w:"Tie the mesh to the tie beam bars at the edges."},
+ {p:"Garage level",t:"Pour the garage slab",v:"site",c:close(-1400,900),
+  b:["Pour 100mm of C21 at ±0.00.","Slope the floor slightly toward the front drain.","The driveway and sidewalk outside are at −0.20."],
+  s:"Garage FFL ±0.00 · sidewalk −0.20",w:"Keep the slab wet for 7 days."},
+ {p:"Garage level",t:"Stair and planter rebar",v:"close",c:{x:[-5600,-1900],y:[-900,2900],z:[-2900,5300]},
+  b:["Exterior stair on the A side: 12mm main bars @ 200 along the slope (blue), 10mm distribution bars across (green).","One bent bar per step follows the riser and tread, with a nosing bar at each step edge (orange), per stair detail 9.","A thickened footing at the bottom with 4-12mm bars. The landing gets its own mesh. The C-side ground planter gets bars in its floor and walls."],
+  s:"Stair detail 9: 12mm top and bottom bars @ 200 · 12mm @ 250 at the step footing · 10mm nosing bar",w:"The plans give no riser count or landing size. About 14 risers of 200mm with 280mm treads are assumed. Confirm before forming."},
+ {p:"Garage level",t:"Pour stairs and ground planter",v:"full",c:close(-500,3000,-5200,5400),
+  b:["Pour the stair and landing in C21, from the bottom up.","Pour the planter floor first, then its walls.","Cure 7 days before anyone walks on the stairs."],
+  s:"Stairs run from −0.20 at the sidewalk to +2.65 at the 2nd floor",w:"Leave a weep hole in the planter floor for drainage."},
+ {p:"2nd floor",t:"Shoring and formwork",v:"full",c:close(-200,3200),
+  b:["Shore the 2nd floor deck from the garage slab.","Form the beam bottoms at +2.25 and the slab deck at +2.55.","The 2nd floor stays inside the gridlines, with no cantilever."],
+  s:"Beam soffit +2.25 · slab soffit +2.55 · 2nd FFL +2.65",w:"Keep the shoring until the engineer releases it (usually 14–28 days)."},
+ {p:"2nd floor",t:"Beams and slab rebar",v:"close",c:close(1900,3500),
+  b:["Place 200×400 beam cages along all rows and lines A, B, C.","Lay slab bars, 10mm at 150mm both ways (drawn here at half density). Leave the stair opening in the A–B bay near row 3.","Hanging planter at the front: floor and wall bars, with the floor bars run back into the front beam (formwork dashed)."],
+  s:"2nd floor beams B1–B18 · 2-#16 top · stirrups 11–12 @ 75–80 ends, @115 mid",w:"The planter's size and bars aren't detailed in the plans. 10mm @ 200 is shown as an assumption, so get the engineer's detail."},
+ {p:"2nd floor",t:"Pour 2nd floor",v:"full",c:close(1900,3500),
+  b:["Pour beams and slab together in C21.","Cast the hanging planter at the same time: a hollow concrete trough cantilevered off the front beam, with its bottom slab bars anchored into the beam.","Screed to +2.65 and cure for 7 days."],
+  s:"Slab 100mm · C21 : FY276",w:"The column bars stick up to lap with the 2nd-storey columns."},
+ {p:"2nd floor",t:"2nd storey columns",v:"close",c:close(2400,6300),
+  b:["Lap the new bars onto the stubs.","This storey is heavier: 4-#25 or 4-#32 in most 300×300 columns, 8-#20 in C10–C11.","Tie, form and plumb."],
+  s:"Band 4.65–8.05: 4-#32 (C1, C3, C4, C6, C7, C9), 4-#25 (C2, C8), 4-#20 (C5)",w:"4-#32 in a 300 column is very congested. Use small aggregate and vibrate well."},
+ {p:"3rd floor",t:"Cantilevered 3rd floor",v:"full",c:close(5200,6800,-4800,1900),
+  b:["The 3rd floor slab sticks out 1.1m past row 1 at the front, about 1.1m past line A and 0.5m past line C.","Cantilever beams extend from every column out to the slab edge.","Shore the overhang from the 2nd floor and the ground below."],
+  s:"3rd floor framing: 200×400 and 150×500 beams, many marked CANTILEVERED · slab #10 @ 150",w:"Cantilevers need their top bars anchored well back into the span. Never cut top bars short here."},
+ {p:"3rd floor",t:"Pour 3rd floor, start upper columns",v:"close",c:close(5600,9400,-4800,1900),
+  b:["Pour the 3rd floor beams and slab.","Most main columns stop here. Only C5 and C8 on line B continue up.","New columns C12–C21 start on the 3rd floor slab, along the cantilevered edges."],
+  s:"C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100",w:"These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour."},
+ {p:"Roof",t:"Roof beam cages",v:"full",c:close(8600,9900,-4800,1900),
+  b:["Pour the 3rd-storey columns.","The roof beam frame follows the same cantilevered outline as the 3rd floor.","Stand the parapet bars on the edge beams (#12 @ 400), and set anchor plates for the rafters."],
+  s:"Roof beams 200×300 and 150×500 · top of roof beam +9.30",w:"Many roof beams are also marked CANTILEVERED. Treat their top bars the same way."},
+ {p:"Roof",t:"Pour roof beams and parapet",v:"full",c:close(8600,10000,-4800,1900),
+  b:["Pour the roof beams.","Build the parapet around the whole edge to +9.75 (450mm high)."],
+  s:"Top of roof beam +9.30 · top of parapet +9.75",w:"Leave 2 scupper openings in the rear parapet for the gutter outlets."},
+ {p:"Roof",t:"Roof framing and roofing",v:"full",c:close(8600,10200,-4800,1900),
+  b:["Rafters: 2 pcs 2\"×6\"×2.0mm C-purlins, running front to back. Purlins: 2\"×2\"×1.5mm tubulars at 0.80m.","Lay the ribbed roof sheets front to back (shown half laid). Per the roof plan arrow they slope down toward the rear, hidden behind the front and side parapets.","At the rear, a box gutter inside the parapet drains through scuppers to 2 downspouts. Flashing seals the sheets against the parapets."],
+  s:"Rafter 2-2\"×6\"×2.0mm C · purlins 2\"×2\"×1.5mm @ 0.80 · ribbed long-span sheets (material, gauge and color not specified)",w:"The plans don't specify the sheet material, thickness or slope. Agree on them with the owner and engineer before ordering."},
+ {p:"Walls & finish",t:"Walls and openings",v:"full",c:close(-200,9900,-5200,1900),
+  b:["Stand the vertical bars first: 12mm @ 400, tied to dowels in the beams and slabs.","Lay the blocks up around the bars. Horizontal 12mm bars go every 3 courses (orange lines), and the bar cells are filled with mortar.","The walls are shown half built here. The garage walls on the rear and sides face the hill."],
+  s:"CHB: #12 @ 400 vertical and horizontal",w:"Embed conduits and boxes while laying blocks."},
+ {p:"Walls & finish",t:"Finished house",v:"full",c:close(-200,9900,-5200,1900),
+  b:["Plaster and paint: a white frame around the 3rd-floor box with a dark wall inside it, as in the perspective. Shown with the street, trees, landscaping and cars, like the render. Tap Night to turn the lights on.","Install aluminum windows (6mm glass), doors and the garage door. Pull the wires, mount panel LPP and fit the fixtures, outlets and switches.","Landscape the slope and the planters. Tap \"Pipes & wiring\" to see the hidden lines through the finished walls."],
+  s:"300 column → about 330–340mm finished",w:"Compare this view with the perspective on sheet A1-01."}
+];
+const FT=[["FC1","C1",1400,"200"],["FC2","C2",1500,"215"],["FC3","C3",1350,"195"],["FC4","C4",1500,"215"],["FC5","C5",1650,"210"],["FC6","C6",1450,"210"],["FC7","C7",1500,"215"],["FC8","C8",1500,"215"],["FC9","C9",1450,"210"],["FC10","C10",1700,"190"],["FC11","C11",1650,"210"]];
+document.getElementById('ftBody').innerHTML=FT.map(([m,c,l,sp])=>`<tr><td>${m}</td><td>${c}</td><td>${l} × ${l}</td><td>#12 @ ${sp}</td><td>${Math.floor((l-150)/sp)+1}</td></tr>`).join('');
+
+/* ---------- UI ---------- */
+const $=id=>document.getElementById(id);let mode='auto';
+const phases=[...new Set(STEPS.map(s=>s.p))];
+$('phases').innerHTML=phases.map(p=>`<button data-p="${p}">${p}</button>`).join('');
+$('phases').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=STEPS.findIndex(s=>s.p===b.dataset.p);render()});
+function setMode(m){mode=m;[['vAuto','auto'],['vFull','full'],['vClose','close']].forEach(([id,v])=>$(id).setAttribute('aria-pressed',m===v));render(true)}
+$('vAuto').onclick=()=>setMode('auto');
+let raf=0;function redraw(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;setCam();render(true)})}
+const sc=$('scene');let drag=null;
+sc.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,yw:yaw,pt:pitch};sc.setPointerCapture(e.pointerId);sc.classList.add('grab')});
+sc.addEventListener('pointermove',e=>{if(!drag)return;yaw=((drag.yw-(e.clientX-drag.x)*0.45)%360+360)%360;pitch=Math.max(6,Math.min(75,drag.pt+(e.clientY-drag.y)*0.3));redraw()});
+function endDrag(){drag=null;sc.classList.remove('grab')}sc.addEventListener('pointerup',endDrag);sc.addEventListener('pointercancel',endDrag);
+const tip=$('tip');let pinned=false,downXY=null;
+function showTip(el,cx,cy){const g=el&&el.closest?el.closest('[data-i]'):null;document.querySelectorAll('#scene .hl').forEach(e=>e.classList.remove('hl'));
+  if(!g){tip.hidden=true;return}g.classList.add('hl');const p=g.dataset.i.split('|');tip.innerHTML='<b>'+p[0]+'</b>'+p.slice(1).join('<br>');tip.hidden=false;
+  const r=$('stage').getBoundingClientRect();let x=cx-r.left+14,y=cy-r.top+14;const tw=tip.offsetWidth,th=tip.offsetHeight;if(x+tw>r.width-8)x=cx-r.left-tw-14;if(y+th>r.height-8)y=cy-r.top-th-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
+sc.addEventListener('pointerdown',e=>{downXY=[e.clientX,e.clientY]},true);
+sc.addEventListener('pointermove',e=>{if(drag||e.pointerType!=='mouse'||pinned)return;showTip(e.target,e.clientX,e.clientY)});
+sc.addEventListener('pointerleave',()=>{if(!pinned)showTip(null)});
+sc.addEventListener('pointerup',e=>{if(!downXY)return;const mv=Math.hypot(e.clientX-downXY[0],e.clientY-downXY[1]);downXY=null;if(mv>6)return;
+  requestAnimationFrame(()=>{const el=document.elementFromPoint(e.clientX,e.clientY);const hit=el&&el.closest&&el.closest('[data-i]');pinned=!!hit;showTip(hit,e.clientX,e.clientY)})});
+$('rMep').onclick=()=>{if(cur===23)mepFinal=!mepFinal;else mepOn=!mepOn;render(true)};
+$('rDim').onclick=()=>{if(cur===23)dimsFinal=!dimsFinal;else dimsOn=!dimsOn;render(true)};
+$('rNight').onclick=()=>{night=!night;render(true)};
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+function carPos(t){const g=document.getElementById('car');if(!g)return;t=t??performance.now();const span=ROAD.x1-ROAD.x0-9000;
+  const x=RM.matches?-4000:ROAD.x0+4500+((t/1000*7000)%span);const tr=`translate(${f(x*cy*S)},${f(-x*sy*sp*S)})`;g.setAttribute('transform',tr);const h=document.getElementById('carglow');if(h)h.setAttribute('transform',tr)}
+(function loop(t){if(cur===23&&!RM.matches)carPos(t);requestAnimationFrame(loop)})();
+$('rL').onclick=()=>{yaw=(yaw+330)%360;redraw()};$('rR').onclick=()=>{yaw=(yaw+30)%360;redraw()};$('rReset').onclick=()=>{yaw=DY;pitch=DP;redraw()};$('vFull').onclick=()=>setMode('full');$('vClose').onclick=()=>setMode('close');
+function render(keepAnim){const st=STEPS[cur];$('rDim').setAttribute('aria-pressed',cur===23?dimsFinal:dimsOn);$('rNight').setAttribute('aria-pressed',night);$('rNight').hidden=cur!==23;$('rMep').setAttribute('aria-pressed',cur===23?mepFinal:mepOn);if(keepAnim!==true){tip.hidden=true;pinned=false}
+  let v=mode==='auto'?st.v:mode;const r=v==='full'?(cur===23?FINAL:FULL):v==='site'?SITE:st.c;const b=vb(r);
+  const svg=$('scene');svg.setAttribute('viewBox',b.map(f).join(' '));
+  const body=build(cur);let extra='';if(cur===23){const mc=movingCarSVG();extra='<g id="car">'+mc.s+'</g>';if(night)extra+=`<rect class="nightsky" x="${f(b[0]-b[2])}" y="${f(b[1]-b[3])}" width="${f(b[2]*3)}" height="${f(b[3]*3)}"/><g class="glows">${GLOW.join('')}</g><g id="carglow">${mc.gl}</g>`}
+  svg.innerHTML='<title id="scT">'+st.t+'</title>'+body+extra+'<g class="dims">'+dimsSVG(cur,b[2])+'</g>';carPos();
+  if(!keepAnim||$('qty').dataset.step!=String(cur)){$('qty').innerHTML=qtyHTML(cur);$('qty').dataset.step=cur}
+  if(keepAnim===true)svg.querySelectorAll('.nw').forEach(e=>e.classList.remove('nw'));
+  $('viewLbl').textContent=v==='full'?'Whole house':v==='site'?'Foundation':'Close-up';
+  $('stN').textContent=String(cur+1).padStart(2,'0');$('stOf').textContent=`of ${STEPS.length} · ${st.p}`;
+  $('stTitle').textContent=st.t;$('stList').innerHTML=st.b.map(x=>`<li>${x}</li>`).join('');
+  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;
+  $('prog').style.width=((cur+1)/STEPS.length*100)+'%';
+  $('bBack').disabled=cur===0;$('bNext').textContent=cur===STEPS.length-1?'Start over':'Next step';
+  document.querySelectorAll('#phases button').forEach(b=>b.classList.toggle('on',b.dataset.p===st.p));
+  try{localStorage.setItem('drb-step2',cur)}catch(e){}}
+$('bNext').onclick=()=>{cur=cur===STEPS.length-1?0:cur+1;render()};
+$('bBack').onclick=()=>{if(cur>0){cur--;render()}};
+document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowRight'){cur=Math.min(STEPS.length-1,cur+1);render()}if(e.key==='ArrowLeft'){cur=Math.max(0,cur-1);render()}});
+let zoom=1;const Z=[1,1.6,2.4,3.5];
+function setZoom(k){zoom=Math.max(0,Math.min(Z.length-1,k));$('shImg').style.width=(Z[zoom]*100)+'%';$('zLbl').textContent=zoom?Z[zoom]+'×':'Fit'}
+$('zIn').onclick=()=>setZoom(zoom+1);$('zOut').onclick=()=>setZoom(zoom-1);
+const SHALT={p1:'Sheet P1-07: sewer, water line and storm drainage layouts',p2:'Sheet P2-08: isometric sewer and water lines, septic tank, catch basin and fixture details',e1:'Sheet E1-09: power and lighting layouts for all floors',e2:'Sheet E2-10: load schedule, voltage drop, short circuit analysis, single line diagram'};
+$('shTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#shTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$('shImg').src='sheets/'+b.dataset.s+'.jpg';$('shImg').alt=SHALT[b.dataset.s]});
+try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.length)cur=s}catch(e){}
+render(true);
+})();
+
+</script>
+
+</body>
+</html>
