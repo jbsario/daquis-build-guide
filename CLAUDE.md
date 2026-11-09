@@ -22,7 +22,9 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 6. MEP: `mep(i)`, `mepLabels`, `mepQty` (sewer, water, storm, septic tank, panel LPP, service post, solar conduit).
 7. Scenery for the finished step 23: road, trees, street lights, `carModel()` (silver crossover like the render), night mode.
 8. Rebar hover/tap details: `hits(i)` adds invisible hit boxes (`HB`) around cages, mats and meshes with spacing, stirrup and tie data.
-9. Views, dimension overlay `dimsSVG`, UI handlers (drag to rotate; wheel/pinch/double-tap zoom via `zoom3`, `panX`, `panY`; Shift-drag or two fingers to pan; tap for details, shown as a bottom sheet on phones), `render()`.
+9. Views, dimension overlay `dimsSVG`, UI handlers (drag to rotate; wheel/pinch/double-tap zoom via `zoom3`, `panX`, `panY`; Shift-drag or two fingers to pan; tap for details, shown as a bottom sheet on phones; floating Back/Next over the 3D view), `render()`.
+
+`CLAUDE-CODE-PROMPT.md` is the full rebuild/verify spec the owner pastes into Claude Code.
 
 ## Plan facts used (verify on the sheets before changing)
 - Levels: sidewalk −0.20, garage ±0.00, 2nd FFL +2.65, 3rd FFL +6.05, roof beam +9.30, parapet +9.75.
