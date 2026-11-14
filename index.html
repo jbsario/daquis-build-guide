@@ -253,6 +253,42 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
   body.printstep #printChk h3{font-size:16px;margin:8px 0 4px}
 }
 
+.stat{font:600 11px var(--f-mono);border-radius:10px;padding:2px 8px;border:1px solid var(--line);color:var(--muted);margin-left:auto}
+.stat.doing{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+.stat.done{color:var(--mat);border-color:var(--mat)}
+.sign summary{list-style:none;cursor:pointer;min-height:40px;display:flex;align-items:center}
+.sign summary::-webkit-details-marker{display:none}.sign summary .qh{width:100%}
+.signl{list-style:none;margin:8px 0;padding:0;display:grid;gap:4px}
+.signl label{display:flex;gap:10px;align-items:flex-start;font-size:14px;min-height:40px;cursor:pointer}
+.signl input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:0 0 auto}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.fgrid label,.recbar label{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+.fgrid input,.fgrid textarea,.recbar input,.ask textarea,.ask input,.sch input,.sch select{font:14px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px;min-height:40px;width:100%}
+.fgrid textarea,.ask textarea{min-height:64px;resize:vertical}
+.photos{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.photos figure{position:relative;margin:0;padding:0;border:0;background:none;width:96px}
+.photos img{width:96px;height:96px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
+.photos button{position:absolute;top:2px;right:2px;width:28px;height:28px;border-radius:14px;border:0;background:var(--ink);color:var(--paper);cursor:pointer}
+.filebtn{display:inline-flex;align-items:center;min-height:40px;font:600 13px var(--f-body)!important;color:var(--ink)!important;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--paper);cursor:pointer}
+.signok{color:var(--mat);font-weight:600;font-size:13px}
+.ask li.ok::marker{color:var(--mat)}
+.ask details{margin:4px 0 8px}
+.ask summary{cursor:pointer;font-size:12.5px;color:var(--accent-ink);min-height:32px;display:flex;align-items:center}
+.ask .ans{font-size:13px;border-left:3px solid var(--mat);padding:2px 0 2px 8px;margin:4px 0}
+.ask .qf{display:grid;gap:6px}
+.recbar{display:grid;gap:10px}
+.recsum{font-size:14px}
+.sch td{white-space:normal;vertical-align:top}
+.sch td:first-child{min-width:150px}
+.sch input{width:64px;min-height:36px;padding:4px 6px}
+.sch select{min-height:36px;padding:4px 6px;width:auto}
+.sch .bar{height:6px;background:var(--line);border-radius:3px;margin-top:6px;position:relative;overflow:hidden}
+.sch .bar i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:3px}
+.sch tr.done .bar i{background:var(--mat)}
+.sch tr.cur td:first-child{font-weight:600}
+.sch .today{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
+@media (max-width:600px){.sch thead{display:none}.sch tr{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:6px 8px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}.sch td{border:0;padding:0;white-space:nowrap}.sch td:first-child{grid-column:1/-1;white-space:normal;font-family:var(--f-body)}}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -348,7 +384,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
       <div class="phases" id="phases"></div>
       <div class="track" aria-hidden="true"><div id="prog"></div></div>
       <div class="card" aria-live="polite">
-        <div class="stepno"><span class="n" id="stN">01</span><span class="of" id="stOf">of 24 · Foundation</span></div>
+        <div class="stepno"><span class="n" id="stN">01</span><span class="of" id="stOf">of 24 · Foundation</span><span class="stat" id="stStat" hidden></span></div>
         <h3 id="stTitle">Layout and gridlines</h3>
         <ul id="stList"></ul>
         <div class="spec" id="stSpec"></div>
@@ -372,6 +408,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
       </div>
       <div class="card qty" id="qty"></div>
       <details class="card cut" id="cutCard"><summary><span class="qh"><span>Cutting list</span><span class="qn">for the bar bender · tap to open</span></span></summary><div id="cut"></div></details>
+      <details class="card sign" id="signCard"><summary><span class="qh"><span>Inspection sign-off</span><span class="qn" id="signSum">not started</span></span></summary><div id="sign"></div></details>
       <button class="printbtn" id="bPrint">Print or save this step as PDF</button>
       <div class="nav">
         <button id="bBack" aria-label="Previous step">Back</button>
@@ -692,8 +729,24 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <li>Rebar grade for items the schedules don't cover: slab on fill, stairs, CHB walls, parapet, planters, septic tank, catch basin</li>
         <li>Whether the #10 and #12 ties and stirrups must also be Grade 60, like the main bars of the same member</li>
       </ol>
+      <p class="qn" id="qaSum"></p>
     </div>
   </div>
+</section>
+
+<section id="record" aria-labelledby="h-rec">
+  <div class="sechead">
+    <div class="eyebrow">Part 7</div>
+    <h2 id="h-rec">Schedule and site record</h2>
+    <p>Plan the build, mark progress, and keep the sign-offs and the engineer's answers in one place. Everything saves on this device. Use Export to send the record to the owner or engineer, and Import to load one.</p>
+  </div>
+  <div class="card recbar">
+    <label><span>Start date</span><input type="date" id="schStart"></label>
+    <div class="recsum" id="schSum"></div>
+    <div class="optbtns"><button id="recExp">Export record</button><label class="filebtn">Import record<input type="file" id="recImp" accept="application/json,.json" hidden></label><button id="recClr">Clear all</button></div>
+  </div>
+  <div class="tbl"><table class="sch"><thead><tr><th>Step</th><th>Days</th><th>Dates</th><th>Status</th></tr></thead><tbody id="schBody"></tbody></table>
+  <p>Durations are assumed starting points that include curing waits. Change them to match your crew and weather.</p></div>
 </section>
 
 <footer>The 3D model follows the plan dimensions, but it simplifies stairs, openings and slopes. It is a teaching model, not shop drawings. Build only from the signed plans and the engineer's instructions.</footer>
@@ -1470,7 +1523,7 @@ function render(keepAnim){const st=STEPS[cur];$('rDim').setAttribute('aria-press
   $('viewLbl').textContent=v==='full'?'Whole house':v==='site'?'Foundation':'Close-up';
   $('stN').textContent=String(cur+1).padStart(2,'0');$('stOf').textContent=`of ${STEPS.length} · ${st.p}`;
   $('stTitle').textContent=st.t;$('stList').innerHTML=st.b.map(x=>`<li>${x}</li>`).join('');
-  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;{const on=optNote(cur);$('stOpt').hidden=!on;$('stOpt').innerHTML=on}
+  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;recStep();{const on=optNote(cur);$('stOpt').hidden=!on;$('stOpt').innerHTML=on}
   $('prog').style.width=((cur+1)/STEPS.length*100)+'%';
   $('bBack').disabled=cur===0;$('fB').disabled=cur===0;$('fX').textContent=cur===STEPS.length-1?'Start over ↺':'Next ›';$('fN').textContent=String(cur+1).padStart(2,'0')+' / '+STEPS.length;$('bNext').textContent=cur===STEPS.length-1?'Start over':'Next step';
   document.querySelectorAll('#phases button').forEach(b=>b.classList.toggle('on',b.dataset.p===st.p));
@@ -1520,6 +1573,69 @@ $('bPrint').onclick=()=>{const de=document.documentElement,th=de.getAttribute('d
   document.body.classList.add('printstep');
   const done=()=>{document.body.classList.remove('printstep');if(th)de.setAttribute('data-theme',th);else de.removeAttribute('data-theme');window.removeEventListener('afterprint',done)};
   window.addEventListener('afterprint',done);setTimeout(()=>window.print(),60)};
+/* ---------- site record: sign-off, engineer answers, schedule (saved on this device) ---------- */
+const DUR=[1,4,2,2,1,3,4,3,5,7,7,3,7,5,7,7,5,10,7,6,7,7,20,45];
+let REC={steps:{},qa:{},sched:{start:'',dur:{},status:{}}};
+try{const r=JSON.parse(localStorage.getItem('drb-rec')||'null');if(r&&typeof r==='object')REC={steps:r.steps||{},qa:r.qa||{},sched:Object.assign({start:'',dur:{},status:{}},r.sched||{})}}catch(e){}
+function saveRec(){try{localStorage.setItem('drb-rec',JSON.stringify(REC));return true}catch(e){alert('This device is out of storage for the site record. Export the record, then remove some photos.');return false}}
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const CHK=[...document.querySelectorAll('.check li')].map(l=>l.textContent.trim());
+const stepRec=i=>REC.steps[i]||(REC.steps[i]={chk:[],by:'',date:'',notes:'',photos:[],signed:''});
+function stepStatus(i){const s=REC.sched.status[i];if(s)return s;const r=REC.steps[i];return r&&r.signed?'done':r&&(r.chk.some(Boolean)||r.photos.length)?'doing':'todo'}
+const STL={todo:'Not started',doing:'In progress',done:'Done'};
+function signHTML(i){const r=REC.steps[i]||{chk:[],by:'',date:'',notes:'',photos:[],signed:''};
+  return `<ul class="signl">${CHK.map((t,k)=>`<li><label><input type="checkbox" data-c="${k}"${r.chk[k]?' checked':''}>${esc(t)}</label></li>`).join('')}</ul>
+  <div class="fgrid"><label>Inspected by<input data-f="by" value="${esc(r.by)}" placeholder="Name"></label><label>Date<input type="date" data-f="date" value="${esc(r.date||today())}"></label></div>
+  <div class="fgrid" style="margin-top:8px"><label>Notes<textarea data-f="notes" placeholder="What was checked, what was fixed">${esc(r.notes)}</textarea></label></div>
+  <div class="photos">${r.photos.map((p,k)=>`<figure><img src="${p}" alt="Site photo ${k+1} for step ${i+1}"><button data-rm="${k}" aria-label="Remove photo">×</button></figure>`).join('')}</div>
+  <div class="optbtns" style="margin-top:8px"><label class="filebtn">Add photo<input type="file" accept="image/*" capture="environment" data-ph multiple hidden></label>
+  ${r.signed?`<span class="signok">Signed off ${esc(r.signed)}${r.by?' by '+esc(r.by):''}</span><button data-un>Undo sign-off</button>`:`<button data-sign>Sign off this step</button>`}</div>`}
+function recStep(){const i=cur,r=REC.steps[i],st=stepStatus(i),n=r?r.chk.filter(Boolean).length:0;
+  $('sign').innerHTML=signHTML(i);$('signSum').textContent=r&&r.signed?`signed ${r.signed}`:`${n} of ${CHK.length} checked`;
+  const el=$('stStat');el.hidden=st==='todo';el.className='stat '+st;el.textContent=st==='done'?'Done ✓':STL[st];if($('schBody').dataset.cur!=String(i)){$('schBody').dataset.cur=i;schRender()}}
+function shrink(file){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const k=Math.min(1,900/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(img.src);res(c.toDataURL('image/jpeg',0.6))};img.onerror=rej;img.src=URL.createObjectURL(file)})}
+$('sign').addEventListener('change',async e=>{const t=e.target,r=stepRec(cur);
+  if(t.dataset.c!=null)r.chk[+t.dataset.c]=t.checked;else if(t.dataset.f)r[t.dataset.f]=t.value;
+  else if(t.hasAttribute('data-ph')){for(const f of [...t.files].slice(0,4)){try{r.photos.push(await shrink(f))}catch(err){}}}
+  if(!saveRec()&&t.hasAttribute('data-ph'))r.photos.pop();recStep();schRender()});
+$('sign').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const r=stepRec(cur);
+  if(t.dataset.rm!=null)r.photos.splice(+t.dataset.rm,1);
+  else if(t.hasAttribute('data-sign')){if(!r.by){const n=prompt('Inspected by (name):','');if(n===null)return;r.by=n.trim()}r.signed=(r.date||today());delete REC.sched.status[cur]}
+  else if(t.hasAttribute('data-un'))r.signed='';else return;
+  saveRec();recStep();schRender()});
+/* engineer answers */
+const qaKey=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,48);
+document.querySelectorAll('.ask li').forEach(li=>{const q=li.textContent.trim();li.dataset.q=qaKey(q);li.innerHTML=`<span class="qt0">${esc(q)}</span><div class="qbox"></div>`});
+function qaRender(){let n=0;const L=document.querySelectorAll('.ask li');L.forEach(li=>{const a=REC.qa[li.dataset.q];if(a&&a.a)n++;li.classList.toggle('ok',!!(a&&a.a));
+  li.querySelector('.qbox').innerHTML=(a&&a.a?`<div class="ans"><b>Engineer:</b> ${esc(a.a)}${a.by||a.date?` <span class="qn">(${esc(a.by)}${a.by&&a.date?', ':''}${esc(a.date)})</span>`:''}</div>`:'')+
+  `<details><summary>${a&&a.a?'Edit answer':'Record the answer'}</summary><div class="qf"><textarea data-a placeholder="Engineer's answer">${esc(a?a.a:'')}</textarea><div class="fgrid"><input data-by placeholder="Engineer's name" value="${esc(a?a.by:'')}"><input type="date" data-d value="${esc(a&&a.date?a.date:today())}"></div><button class="printbtn" data-save>Save answer</button></div></details>`});
+  $('qaSum').textContent=`${n} of ${L.length} answered${n?'. Answers are recorded here. The 3D view and quantities still use the assumptions until the guide is updated.':'.'}`}
+document.querySelector('.ask').addEventListener('click',e=>{const b=e.target.closest('[data-save]');if(!b)return;const li=b.closest('li'),k=li.dataset.q,a=li.querySelector('[data-a]').value.trim();
+  if(a)REC.qa[k]={a,by:li.querySelector('[data-by]').value.trim(),date:li.querySelector('[data-d]').value};else delete REC.qa[k];saveRec();qaRender()});
+/* schedule */
+const addD=(d,n)=>{const x=new Date(d+'T00:00:00');x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+const fmtD=d=>new Date(d+'T00:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});
+function schRender(){const st=REC.sched.start,D=STEPS.map((_,i)=>REC.sched.dur[i]!=null?REC.sched.dur[i]:DUR[i]),total=D.reduce((a,b)=>a+b,0);let off=0,rows='';
+  const tday=st?Math.round((new Date(today()+'T00:00:00')-new Date(st+'T00:00:00'))/864e5):null;
+  STEPS.forEach((s,i)=>{const a=off,b=off+D[i];off=b;const status=stepStatus(i);
+    rows+=`<tr class="${status}${i===cur?' cur':''}"><td>${String(i+1).padStart(2,'0')} ${esc(s.t)}<div class="bar"><i style="left:${a/total*100}%;width:${Math.max(.6,D[i]/total*100)}%"></i>${tday!=null&&tday>=0&&tday<=total?`<span class="today" style="left:${tday/total*100}%"></span>`:''}</div></td>
+      <td><input type="number" min="0" max="365" inputmode="numeric" data-dur="${i}" value="${D[i]}" aria-label="Days for step ${i+1}"></td>
+      <td>${st?`${fmtD(addD(st,a))} – ${fmtD(addD(st,Math.max(a,b-1)))}`:`day ${a+1}–${b}`}</td>
+      <td><select data-st="${i}" aria-label="Status of step ${i+1}">${['todo','doing','done'].map(v=>`<option value="${v}"${v===status?' selected':''}>${STL[v]}</option>`).join('')}</select></td></tr>`});
+  $('schBody').innerHTML=rows;const done=STEPS.filter((_,i)=>stepStatus(i)==='done').length;
+  $('schSum').innerHTML=`<b>${total} days</b> planned${st?`, finishing about <b>${new Date(addD(st,total-1)+'T00:00:00').toLocaleDateString()}</b>`:' (set a start date to see dates)'} · <b>${done} of ${STEPS.length}</b> steps done`;
+  $('schStart').value=st||''}
+$('schStart').onchange=e=>{REC.sched.start=e.target.value;saveRec();schRender()};
+$('schBody').addEventListener('change',e=>{const t=e.target;if(t.dataset.dur!=null){const v=Math.max(0,Math.min(365,Math.round(+t.value||0)));REC.sched.dur[t.dataset.dur]=v}
+  else if(t.dataset.st!=null){REC.sched.status[t.dataset.st]=t.value}saveRec();schRender();recStep()});
+/* export / import */
+$('recExp').onclick=()=>{const blob=new Blob([JSON.stringify({app:'daquis-build-guide',saved:new Date().toISOString(),rec:REC,opt:OPT,est:EST},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`daquis-site-record-${today()}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+$('recImp').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const j=JSON.parse(await f.text()),r=j.rec||j;if(!r||typeof r!=='object'||!('steps' in r))throw 0;
+  if(!confirm('Replace the site record on this device with the imported one?'))return;REC={steps:r.steps||{},qa:r.qa||{},sched:Object.assign({start:'',dur:{},status:{}},r.sched||{})};saveRec();recStep();qaRender();schRender()}catch(err){alert('That file is not a site record export.')}};
+$('recClr').onclick=()=>{if(!confirm('Delete all sign-offs, photos, answers and schedule changes on this device?'))return;REC={steps:{},qa:{},sched:{start:'',dur:{},status:{}}};saveRec();recStep();qaRender();schRender()};
+qaRender();schRender();
 /* rebar option controls */
 document.querySelectorAll('#opts select[data-k]').forEach(s=>{const k=s.dataset.k;s.innerHTML=OPTS[k].map(v=>`<option value="${v}">${v==='plan'?OPTPLAN[k]:optLbl(v)}</option>`).join('')});
 function optUI(){document.querySelectorAll('#opts select[data-k]').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value!=='plan')});document.querySelectorAll('#opts select[data-e]').forEach(s=>s.value=String(EST[s.dataset.e]));const any=Object.values(OPT).some(v=>v!=='plan');$('optWarn').hidden=!any;$('optBadge').hidden=!any}

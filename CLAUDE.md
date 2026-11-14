@@ -36,6 +36,7 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 - Bar choices are `'plan'` or `'<d>-<grade>'` per group (`OPTS`, `od()`, `eqS(dOld,sOld,gOld,dNew,gNew)`); substitute spacing never exceeds the plan's (slab capped at 200 = 2 × slab thickness).
 - Estimate settings `EST` (`localStorage['drb-est']`): lap splices 0/40/50 × d, waste 0/5/10%, concrete site-mixed or ready-mix (+5%, 6 m³ trucks assumed). Applied in `summarize()`; all defaults leave plan totals unchanged (≈ 59.8 m³, 9,794 kg).
 - Cutting list (`cutData`/`cutHTML`, card `#cutCard`): merges identical cuts from `qty(i)`, packs pieces into 6m bars (first fit, longest first), lists cutting patterns. `cutTot` feeds the 6m piece counts in the materials card so both agree. Print: `#bPrint` adds `body.printstep`, forces the light theme and prints the step (3D, card, materials, cutting list, checklist).
+- Site record (`REC`, `localStorage['drb-rec']`, Part 7 `#record`): per-step sign-off in `#signCard` (checklist from `.check li`, name, date, notes, photos shrunk to 900px JPEG), engineer answers on each `.ask li` (keyed by `qaKey(text)`), schedule (`DUR` default days per step, start date, status). Export/import as JSON; no server, so records live on each device until exported.
 - Part 4 "Using ordinary 12mm Grade 33 bars?" card: equal As × fy substitution (fy 230 MPa), built in script from `areaF`, `FSP`. Engineer must approve.
 - Roof slopes down toward row 4 (roof plan arrow); box gutter at the rear, 2 downspouts.
 
