@@ -31,6 +31,8 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 - Concrete: columns C28, everything else C21. Rebar Fy415 (Grade 60) for footings, tie beams, columns, beams; FY276 (Grade 40) for 2nd/3rd floor slabs. Not specified: slab on fill, stairs, CHB, parapet, planters, septic tank, catch basin. Materials card and tap details tag every bar with its grade (`q.G` in `qty`, `GRL`).
 - Footings FC1–FC11, all 300 thick; the plan's "C12-FC12" at row 1 C is treated as FC11.
 - Columns 0–4.65m: C1–C9 4-#20, C10–C11 400×400 8-#16. 2nd storey: 4-#32/#25/#20, C10–C11 8-#20.
+- 3rd-storey ties per column in `TIEU` (bar, end spacing, middle spacing, SCR zone): C19, C20 use #10 @ 50 end ties; C5, C8, C12 @ 75/150; others #12 @ 50/100.
+- Part 4 "Using ordinary 12mm Grade 33 bars?" card: equal As × fy substitution (fy 230 MPa), built in script from `areaF`, `FSP`. Engineer must approve.
 - Roof slopes down toward row 4 (roof plan arrow); box gutter at the rear, 2 downspouts.
 
 ## Conventions

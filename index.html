@@ -169,7 +169,7 @@ polyline.hit{stroke:transparent;stroke-width:14;stroke-dasharray:none}
 .sheets{gap:10px}
 table.wrap td{white-space:normal;vertical-align:top}
 table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
-#grades td,#grades td:first-child{white-space:normal;color:var(--ink);padding:7px 8px}#grades td:first-child{padding-left:14px;font-family:var(--f-body)}#grades th{padding:7px 8px}#grades th:first-child{padding-left:14px}
+#grades td,#grades td:first-child,#g33 td,#g33 td:first-child{white-space:normal;color:var(--ink);padding:7px 8px}#grades td:first-child,#g33 td:first-child{padding-left:14px;font-family:var(--f-body)}#grades th,#g33 th{padding:7px 8px;white-space:normal}#grades th:first-child,#g33 th:first-child{padding-left:14px}#g33 td b{color:var(--accent-ink)}
 .tabs{display:flex;flex-wrap:wrap;gap:6px}
 .tabs button{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -473,7 +473,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
           <tr><td>Footing → garage</td><td>300×300 / 400×400</td><td>4-#20 (C1–C9) · 8-#16 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
           <tr><td>Garage storey</td><td>300×300 / 400×400</td><td>4-#20 (C1–C9) · 8-#16 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
           <tr><td>2nd storey</td><td>300×300 / 400×400</td><td>4-#32, 4-#25, 4-#20 · 8-#20 (C10–C11)</td><td>#12@75 + #10@150</td></tr>
-          <tr><td>3rd storey</td><td>C5, C8: 300×300 · C12: 300×300 · C13–C21: 200×300/400</td><td>4-#20 to 4-#32 · 4-#16 to 6-#16</td><td>#12@50 + #10@100</td></tr>
+          <tr><td>3rd storey</td><td>C5, C8: 300×300 · C12: 300×300 · C13–C21: 200×300/400</td><td>4-#20 to 4-#32 · 4-#16 to 6-#16</td><td>C5, C8, C12: #12@75 + #10@150 · C13–C18, C21: #12@50 + #10@100 · C19, C20: #10@50 + #10@100</td></tr>
         </tbody>
       </table>
       <p>SCR (confinement) zone is 450–545mm depending on the mark.</p>
@@ -519,6 +519,20 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         </tbody>
       </table>
       <p>Fy is the minimum yield strength in MPa: Fy415 = 415 MPa (Grade 60), FY276 = 276 MPa (Grade 40). C21 and C28 are 21 and 28 MPa concrete. When the bars arrive, match the grade on the mill certificate and the mark rolled on the bar. Never use Grade 40 where Grade 60 is called for.</p>
+    </div>
+    <div class="tbl" id="g33">
+      <h3>Using ordinary 12mm Grade 33 bars?</h3>
+      <p>Grade 33 (fy 230 MPa) is weaker than what the plans call for. To keep the same strength, each meter of mat needs at least the same bar area × yield strength as the plan. These are the closest spacings, rounded down to 5mm. <b>The engineer must approve any substitution in writing.</b></p>
+      <table class="wrap">
+        <thead><tr><th>Mat</th><th>Plan</th><th>12mm Grade 33 instead</th></tr></thead>
+        <tbody id="g33Floor"></tbody>
+      </table>
+      <p>Footing mats are Grade 60. Grade 33 would need about 1.8 times the bars and crowd the footing. The numbers below are for reference only. Use the Grade 60 bars the plans call for.</p>
+      <table class="wrap">
+        <thead><tr><th>Footing</th><th>Plan: #12 Grade 60</th><th>12mm Grade 33 equivalent</th></tr></thead>
+        <tbody id="g33Foot"></tbody>
+      </table>
+      <p>Keep 20mm bottom cover in the slabs. 12mm bars both ways take 4mm more depth than 10mm, so check the top cover. Top bars at supports change the same way. Buy from a mill that gives a certificate showing the grade.</p>
     </div>
   </div>
 </section>
@@ -704,9 +718,12 @@ function colBarsAt(list,y0,y1,lv,born,hook){list.forEach(c=>{const x=c[1],z=c[2]
   pos.forEach(([dx,dz])=>{ln(lv,2,[x+dx,y0,z+dz],[x+dx,y1,z+dz],'mb',born);
     if(hook)ln(lv,2,[x+dx,y0,z+dz],[x+dx+(dx===0?0:Math.sign(dx))*260,y0,z+dz+(dx===0?Math.sign(dz)*260:0)],'mb',born)})})}
 function tie(lv,x,z,hx,hz,y,born){pg(lv,2,[[x-hx,y,z-hz],[x+hx,y,z-hz],[x+hx,y,z+hz],[x-hx,y,z+hz]],'tl',born)}
-function tieYs(y0,y1,zone){const a=[];for(let y=y0+50;y<=y0+zone;y+=75)a.push(y);for(let y=y0+zone+150;y<=y1-zone-75;y+=150)a.push(y);for(let y=y1-zone;y<=y1-40;y+=75)a.push(y);return a}
+function tieYs(y0,y1,zone,es=75,ms=150){const a=[];for(let y=y0+50;y<=y0+zone;y+=es)a.push(y);for(let y=y0+zone+ms;y<=y1-zone-es;y+=ms)a.push(y);for(let y=y1-zone;y<=y1-40;y+=es)a.push(y);return a}
+/* 3rd-storey ties per column (S2-06 column schedule, band 8.05–11.3m): [end-zone bar, end spacing, middle spacing, SCR zone] */
+const TIEU={C5:[12,75,150,495],C8:[12,75,150,495],C12:[12,75,150,495],C13:[12,50,100,545],C14:[12,50,100,495],C15:[12,50,100,545],C16:[12,50,100,495],C17:[12,50,100,545],C18:[12,50,100,495],C19:[10,50,100,545],C20:[10,50,100,495],C21:[12,50,100,545]};
+function tieSpec(c){return c[0][0]==='U'?TIEU[UPN[+c[0].slice(1)]]:[12,75,150,450]}
 function colTies(list,lv,y0,y1,joint,born){list.forEach(c=>{const x=c[1],z=c[2],hx=(c.hx||c[3]/2)-32,hz=(c.hz||c[3]/2)-32;
-  const ys=tieYs(y0,y1,450);for(let y=y1+60;y<y1+joint;y+=75)ys.push(y);ys.forEach(y=>tie(lv,x,z,hx,hz,y,born))})}
+  const[,es,ms,zn]=tieSpec(c);const ys=tieYs(y0,y1,zn,es,ms);for(let y=y1+60;y<y1+joint;y+=es)ys.push(y);ys.forEach(y=>tie(lv,x,z,hx,hz,y,born))})}
 function colForms(list,lv,y0,y1,born){list.forEach(c=>prism(lv,4,sq(c[1],c[2],(c.hx||c[3]/2)+35,(c.hz||c[3]/2)+35),y0,y1,'fbox',born))}
 function colSolid(list,lv,y0,y1,m,born,st){list.forEach(c=>{INF=st?infoCol(c,st,y0,y1):'';prism(lv,3,sq(c[1],c[2],c.hx||c[3]/2,c.hz||c[3]/2),y0,y1,m,born)});INF=''}
 const UPC=UP.map((u,i)=>{const o=['U'+i,u[0],u[1],300];o.hx=u[2]/2;o.hz=u[3]/2;return o});
@@ -874,7 +891,7 @@ function segL(s){return Math.hypot(s[1][0]-s[0][0],s[1][1]-s[0][1])}
 function areaF(F){let a=0;for(let i=0;i<F.length;i++){const p=F[i],q=F[(i+1)%F.length];a+=p[0]*q[1]-q[0]*p[1]}return Math.abs(a)/2/1e6}
 function stirN(L,endN,endSp,midSp){L=L-320;if(L<=0)return 0;const ss=[];for(let i=0;i<endN;i++)ss.push(50+endSp*i);const e=L-50-endSp*(endN-1);
   for(let v=ss[ss.length-1]+midSp;v<e-midSp*0.5;v+=midSp)ss.push(v);for(let i=0;i<endN;i++)ss.push(e+endSp*i);return ss.filter(v=>v>0&&v<L).length}
-function tieSplit(y0,y1,zone,joint){const ys=tieYs(y0,y1,zone);let z=ys.filter(y=>y<=y0+zone||y>=y1-zone).length;for(let y=y1+60;y<y1+joint;y+=75)z++;return[z,ys.length-ys.filter(y=>y<=y0+zone||y>=y1-zone).length]}
+function tieSplit(y0,y1,zone,joint,es=75,ms=150){const ys=tieYs(y0,y1,zone,es,ms);let z=ys.filter(y=>y<=y0+zone||y>=y1-zone).length;for(let y=y1+60;y<y1+joint;y+=es)z++;return[z,ys.length-ys.filter(y=>y<=y0+zone||y>=y1-zone).length]}
 const tieLen=(a,b)=>m(2*((a-80)+(b-80))+200);
 const stirLen=(w,d)=>m(2*((w-80)+(d-80))+200);
 function colName(c){return c[0][0]==='U'?UPN[+c[0].slice(1)]:c[0]}
@@ -930,7 +947,7 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   case 17:q.c('C28',colH(MAIN,2650,5650),'2nd storey columns');beamQ(q,B3,200,400,[2,16],[2,16],[11,80,115],100,'bars');slabBarsQ(q,OUT,150);
     q.x('Shoring posts',postsCount(OUT),'pcs');q.x('Slab deck forms',r1(areaF(OUT)),'m²');break;
   case 18:beamQ(q,B3,200,400,0,0,0,100,'conc');q.c('C21',areaF(OUT)*0.1,'3rd floor slab');
-    UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');const[z,mm]=tieSplit(6050,9000,300,300);q.b(12,tieLen(c.hx*2,c.hz*2),z,'ties, end zones');q.b(10,tieLen(c.hx*2,c.hz*2),mm,'ties, middle')});
+    UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');const[eb,es,ms,zn]=tieSpec(c),[z,mm]=tieSplit(6050,9000,zn,300,es,ms);q.b(eb,tieLen(c.hx*2,c.hz*2),z,'ties, end zones');q.b(10,tieLen(c.hx*2,c.hz*2),mm,'ties, middle')});
     q.x('Column formwork',r1(formH(UPC,6050,9000)),'m²');break;
   case 19:{q.c('C28',colH(UPC,6050,9000),'3rd storey columns');beamQ(q,B3,200,300,[2,12],[2,12],[9,75,90],0,'bars');
     const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.G='ns';q.b(12,0.65,Math.round(per/0.4),'parapet vertical bars');q.bt(12,per,'parapet horizontal bar');q.G='60';break}
@@ -1159,11 +1176,11 @@ function matInfo(c,top){const[n,x,z,cs,L]=c,sp=FSP[n],k=Math.floor((L-150)/sp)+1
   let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: #12 @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|Grade 60 (Fy415) per the footing schedule · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
   if(top){const k2=Math.floor((L-150)/300)+1;t+=`|Top mat: #12 @ 300 both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(12,2*k2*bl)} kg|Tie the top mat to the column bars`}
   return t}
-function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0);
+function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[eb,es,ms,zz]=tieSpec(c);zone=zz;const[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0,es,ms);
   const tl=tieLen(a,b);let t=`Column ${n} cage · ${storey}|${a} × ${b}mm · main bars ${bars[0]}-#${bars[1]}`;
   if(storey==='garage storey')t+=` (≈5.44m each, 90° hook on the footing mat)`;
   if(ties==='starter')t+=`|Starter ties #12 @ 150 inside the footing to keep the cage square`;
-  else t+=`|End zones (${zone}mm at top and bottom): #12 ties @ ${storey==='3rd storey'?'50':'75'} → ${zn} pcs|Middle: #10 ties @ ${storey==='3rd storey'?'100':'150'} → ${mn} pcs|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`;
+  else t+=`|End zones (SCR ${zone}mm at top and bottom): #${eb} ties @ ${es} → ${zn} pcs|Middle: #10 ties @ ${ms} → ${mn} pcs|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`;
   return t+`|Grade 60 (Fy415) main bars and ties · concrete C28 (column schedule)|Cover ≈ 40mm`}
 function beamCageInfo(lbl,s,w,d,top,bot,st){const L=segL(s),n=stirN(L,...st);
   return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot}|Grade 60 (Fy415) bars and stirrups · concrete C21 (beam schedule)|Bars run continuous through the columns|Stirrups #10 closed 2-leg: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${stirLen(w,d).toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*stirLen(w,d))}m · ${kgOf(10,n*stirLen(w,d))} kg`}
@@ -1176,9 +1193,9 @@ function hits(i){
   if(i>=8&&i<=15)MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),2650,3450,`Column ${c[0]} starter bars|${n}-#${d} sticking up past the 2nd floor|Grade 60 (Fy415)|Lap the 2nd-storey bars here: lap length not given (≈ 40 × bar diameter = ${40*d}mm, confirm with engineer)`)});
   if(i>=6&&i<=7)gridBeams(false).forEach(s=>HB(98,seg(...trimSeg(s,160),260),-400,-100,beamCageInfo('Footing tie beam',s,200,300,'2-#16','2-#12 (2-#16 at some ends)',[9,75,90])));
   if(i===9)HB(1,LOWF,-60,-40,meshInfo('Garage slab-on-fill mesh',LOWF,600,600,'Bar grade not specified in the plans: ask the engineer'));
-  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,meshInfo('2nd floor slab bars',LOWF,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21'))}
+  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,meshInfo('2nd floor slab bars',LOWF,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21|With 12mm Grade 33 instead: @ 180 both ways (engineer to approve; see Part 4)'))}
   if(i>=16&&i<=17)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+60,c[3]/2+60),2650,6650,colCageInfo(c,'2nd storey',2650,5650,450,150,BAR2[c[0]],'full')));
-  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,meshInfo('3rd floor slab bars',OUT,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21'))}
+  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,meshInfo('3rd floor slab bars',OUT,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21|With 12mm Grade 33 instead: @ 180 both ways (engineer to approve; see Part 4)'))}
   if(i===18)UPC.forEach((c,k)=>HB(98,sq(c[1],c[2],c.hx+60,c.hz+60),6050,9250,colCageInfo(c,'3rd storey',6050,9000,300,100,BARU[k],'full')));
   if(i===19){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),9000,9300,beamCageInfo('Roof beam',s,200,300,'2-#12','2-#12',[9,75,90])));
     const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));[[[AO(ZF),ZF],[CO(ZF),ZF]],[[AO(ZB),ZB],[CO(ZB),ZB]],[[AO(ZF),ZF],[AO(ZB),ZB]],[[CO(ZF),ZF],[CO(ZB),ZB]]].forEach(sg=>HB(98,seg(...sg,300),9300,9750,`Parapet bars|Vertical #12 @ 400 → ≈ ${Math.round(per/0.4)} pcs × 0.65m, anchored in the roof beam|1 horizontal #12 near the top · perimeter ≈ ${r1(per)}m|Bar grade not specified in the plans`))}
@@ -1255,7 +1272,7 @@ const STEPS=[
   s:"3rd floor framing: 200×400 and 150×500 beams, many marked CANTILEVERED · beams C21 : Fy415 (Grade 60) · slab #10 @ 150 FY276 (Grade 40)",w:"Cantilevers need their top bars anchored well back into the span. Never cut top bars short here."},
  {p:"3rd floor",t:"Pour 3rd floor, start upper columns",v:"close",c:close(5600,9400,-4800,1900),
   b:["Pour the 3rd floor beams and slab.","Most main columns stop here. Only C5 and C8 on line B continue up.","New columns C12–C21 start on the 3rd floor slab, along the cantilevered edges."],
-  s:"C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100 · C28 : Fy415 (Grade 60)",w:"These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour."},
+  s:"C13–C21: 200×300 or 200×400, 4-#16 to 6-#16 · ties #12 @ 50 + #10 @ 100 (C19, C20: #10 @ 50 + #10 @ 100) · C5, C8, C12: #12 @ 75 + #10 @ 150 · SCR zone 495/545 · C28 : Fy415 (Grade 60)",w:"These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour."},
  {p:"Roof",t:"Roof beam cages",v:"full",c:close(8600,9900,-4800,1900),
   b:["Pour the 3rd-storey columns.","The roof beam frame follows the same cantilevered outline as the 3rd floor.","Stand the parapet bars on the edge beams (#12 @ 400), and set anchor plates for the rafters."],
   s:"Roof beams 200×300 and 150×500 · C21 : Fy415 (Grade 60) · top of roof beam +9.30 · parapet bar grade not specified",w:"Many roof beams are also marked CANTILEVERED. Treat their top bars the same way."},
@@ -1356,6 +1373,16 @@ $('zIn').onclick=()=>setZoom(zoom+1);$('zOut').onclick=()=>setZoom(zoom-1);
 const SHALT={p1:'Sheet P1-07: sewer, water line and storm drainage layouts',p2:'Sheet P2-08: isometric sewer and water lines, septic tank, catch basin and fixture details',e1:'Sheet E1-09: power and lighting layouts for all floors',e2:'Sheet E2-10: load schedule, voltage drop, short circuit analysis, single line diagram'};
 $('shTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#shTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$('shImg').src='sheets/'+b.dataset.s+'.jpg';$('shImg').alt=SHALT[b.dataset.s]});
 try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.length)cur=s}catch(e){}
+/* Grade 33 substitution card: equal As × fy per meter */
+(function(){const AR=d=>Math.PI/4*d*d,FY={'60':415,'40':276,'33':230};
+  const sub=(d,sp,g)=>Math.floor(sp*AR(12)*FY['33']/(AR(d)*FY[g])/5+1e-6)*5;
+  let h='';[['2nd floor slab',LOWF],['3rd floor slab',OUT]].forEach(([nm,F])=>{const a=areaF(F),s=sub(10,150,'40'),L0=2*a/0.15,L1=2*a/m(s);
+    h+=`<tr><td>${nm} · ${r1(a)} m²</td><td>#10 @ 150 both ways, Grade 40 · ${Math.ceil(L0)} m · ${Math.ceil(L0*1.1/6)} pcs × 6m · ${kgOf(10,L0)} kg</td><td><b>12mm @ ${s} both ways</b> · ${Math.ceil(L1)} m · ${Math.ceil(L1*1.1/6)} pcs × 6m · ${kgOf(12,L1)} kg</td></tr>`});
+  {const a=areaF(LOWF),L1=2*a/0.6;h+=`<tr><td>Garage slab on fill · ${r1(a)} m²</td><td>#10 @ 600 both ways, grade not given</td><td><b>12mm @ 600</b> matches 10mm Grade 40 · use <b>@ ${sub(10,600,'60')}</b> if the engineer wants Grade 60 strength · ${Math.ceil(L1)} m · ${Math.ceil(L1*1.1/6)} pcs × 6m at 600</td></tr>`}
+  $('g33Floor').innerHTML=h;h='';
+  MAIN.forEach(([n,x,z,cs,L])=>{const sp=FSP[n],s=sub(12,sp,'60'),t=sub(12,300,'60'),k=v=>Math.floor((L-150)/v)+1;
+    h+=`<tr><td>FC${n.slice(1)} · ${L}×${L}</td><td>Bottom @ ${sp}: ${k(sp)} each way · top @ 300: ${k(300)} each way</td><td>Bottom @ ${s}: ${k(s)} each way · top @ ${t}: ${k(t)} each way</td></tr>`});
+  $('g33Foot').innerHTML=h})();
 render(true);
 })();
 

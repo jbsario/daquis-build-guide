@@ -26,7 +26,7 @@ You are working on the **Daquis Residence build guide**: a one-page, static, mob
 **Columns.** 11 foundation columns: rows 2–4 have A, B, C; row 1 has A and C only. C1/C2/C3 = row 4 A/B/C, C4–C6 row 3, C7–C9 row 2, C10 row 1 A, C11 row 1 C (the plan label "C12-FC12" at row 1 C is a typo for C11/FC11; flag it).
 - Footing → garage → 2nd floor (0–4.65m band): C1–C9 300×300 4-#20; C10–C11 400×400 8-#16. Ties #12 @ 75 within 450mm of each end, #10 @ 150 middle. C28.
 - 2nd storey (4.65–8.05): 4-#32 (C1, C3, C4, C6, C7, C9), 4-#25 (C2, C8), 4-#20 (C5); C10–C11 8-#20.
-- 3rd storey (8.05–11.3): only C5 (4-#20) and C8 (4-#25) continue. New columns start on the 3rd floor slab along the cantilever edges: C12 300×300 4-#32; C13–C21 200×300/200×400, 4-#16 to 6-#16; ties #12 @ 50 + #10 @ 100.
+- 3rd storey (8.05–11.3): only C5 (4-#20) and C8 (4-#25) continue. New columns start on the 3rd floor slab along the cantilever edges: C12 300×300 4-#32; C13–C21 200×300/200×400, 4-#16 to 6-#16; ties per column (S2-06): C5, C8, C12 #12 @ 75 + #10 @ 150; C13–C18, C21 #12 @ 50 + #10 @ 100; C19, C20 #10 @ 50 + #10 @ 100; SCR zone 495 or 545 per mark.
 **Footings** (all square, 300 thick, C21, Fy415, top mat #12 @ 300 both ways):
 | Mark | Col | L=B | Bottom mat |
 |---|---|---|---|
@@ -194,7 +194,7 @@ Footing top at −1.50, base −1.80 (from the 0–1.8m column band; excavation 
    - Pour the 3rd floor beams and slab.
    - Most main columns stop here. Only C5 and C8 on line B continue up.
    - New columns C12–C21 start on the 3rd floor slab, along the cantilevered edges.
-   - Spec: C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100
+   - Spec: C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100 (C19, C20: #10 @ 50 + #10 @ 100) · C5, C8, C12: #12 @ 75 + #10 @ 150
    - Watch: These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour.
 
 20. **Roof beam cages** (Roof)
