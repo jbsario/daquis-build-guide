@@ -218,6 +218,7 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 .opts select.g33{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
 .optwarn{margin:0;font-size:13px;border-left:3px solid var(--accent);padding:4px 0 4px 10px}
 .optbtns{display:flex;gap:8px;flex-wrap:wrap}
+.opthr{border-top:1px solid var(--line);margin:2px 0}
 .optbtns button{min-height:40px;font:600 13px var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
 .optnote{font-size:13px;background:var(--accent-soft);border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 6px 6px 0;color:var(--ink)}
 .optnote ul{margin:4px 0 0;padding-left:16px;display:grid;gap:3px}
@@ -291,7 +292,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
   <div class="viewer">
     <div class="stage" id="stage">
       <div class="stagebar">
-        <span class="eyebrow" id="viewLbl">Close-up</span><span class="optbadge" id="optBadge" hidden>Grade 33 option on</span>
+        <span class="eyebrow" id="viewLbl">Close-up</span><span class="optbadge" id="optBadge" hidden>Bar substitution on</span>
         <div class="seg" role="group" aria-label="Camera">
           <button id="vAuto" aria-pressed="true">Auto</button>
           <button id="vFull" aria-pressed="false">Whole house</button>
@@ -326,21 +327,26 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <div class="optnote" id="stOpt" hidden></div>
       </div>
       <div class="card opts" id="opts">
-        <div class="qh"><span>Rebar options</span><span class="qn">plan or 12mm Grade 33</span></div>
-        <label><span>Footing mats</span><select data-k="fmat"><option value="plan">Plan: #12 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
-        <label><span>Column ties</span><select data-k="ctie"><option value="plan">Plan: #12 / #10 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
-        <label><span>Beam stirrups</span><select data-k="stir"><option value="plan">Plan: #10 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
-        <label><span>Floor slab bars</span><select data-k="slab"><option value="plan">Plan: #10 Grade 40 @ 150</option><option value="g33">12mm Grade 33 @ 180</option></select></label>
-        <label><span>Slab on fill</span><select data-k="sof"><option value="plan">Plan: #10 @ 600</option><option value="g33">12mm Grade 33 @ 600</option></select></label>
-        <p class="optwarn" id="optWarn" hidden>You are off the plan. The 3D view, tap details and materials now use your choices. Grade 33 changes the signed design, so get the engineer's written approval first. Ties in earthquake confinement zones are the riskiest place to downgrade.</p>
-        <div class="optbtns"><button id="optReset">Back to plan</button><button id="optAll">All Grade 33</button></div>
+        <div class="qh"><span>Bars and estimate</span><span class="qn">plan or substitutes</span></div>
+        <label><span>Footing mats</span><select data-k="fmat"></select></label>
+        <label><span>Column ties</span><select data-k="ctie"></select></label>
+        <label><span>Beam stirrups</span><select data-k="stir"></select></label>
+        <label><span>Floor slab bars</span><select data-k="slab"></select></label>
+        <label><span>Slab on fill</span><select data-k="sof"></select></label>
+        <p class="optwarn" id="optWarn" hidden>You are off the plan. The 3D view, tap details and materials now use your choices. Any substitute changes the signed design, so get the engineer's written approval first. Ties in earthquake confinement zones are the riskiest place to downgrade.</p>
+        <div class="optbtns"><button id="optReset">Back to plan</button><button id="optAll">All 12mm Grade 33</button></div>
+        <div class="opthr"></div>
+        <label><span>Lap splices</span><select data-e="lap"><option value="0">None (bars only)</option><option value="40">40 × bar diameter</option><option value="50">50 × bar diameter</option></select></label>
+        <label><span>Waste allowance</span><select data-e="waste"><option value="0">0%</option><option value="5">5%</option><option value="10">10%</option></select></label>
+        <label><span>Concrete</span><select data-e="mix"><option value="site">Site-mixed (bags, sand, gravel)</option><option value="ready">Ready-mix (m³ order, trucks)</option></select></label>
+        <p class="qn" style="margin:0">Lap length is not given in the plans (assumed). Ask the engineer. 40 × diameter is a common starting point.</p>
       </div>
       <div class="card qty" id="qty"></div>
       <div class="nav">
         <button id="bBack" aria-label="Previous step">Back</button>
         <button id="bNext" class="primary">Next step</button>
       </div>
-      <div class="eyebrow">Quantities are estimates from the model, not a bill of quantities. No laps or waste beyond rounding up to 6m bars.</div>
+      <div class="eyebrow">Quantities are estimates from the model, not a bill of quantities. Set laps, waste and concrete supply under Bars and estimate.</div>
     </div>
   </div>
 </section>
@@ -913,29 +919,40 @@ const KG={10:.617,12:.888,16:1.578,20:2.466,25:3.853,32:6.313};
 const FYV={'60':415,'40':276,'33':230};
 const ARB=d=>Math.PI/4*d*d;
 const eqSp=(d,sp,g)=>Math.max(5,Math.floor(sp*ARB(12)*FYV['33']/(ARB(d)*FYV[g])/5+1e-6)*5);
+const eqS=(dO,sO,gO,dN,gN)=>Math.max(5,Math.floor(sO*ARB(dN)*FYV[gN]/(ARB(dO)*FYV[gO])/5+1e-6)*5);
+/* bar choices per group: 'plan' or '<diameter>-<grade>' */
+const OPTS={fmat:['plan','12-33','16-33','12-40','16-40'],ctie:['plan','12-33','12-40','10-40'],stir:['plan','12-33','10-33','12-40','10-40'],slab:['plan','12-33','10-33','12-40','10-60'],sof:['plan','12-33','10-33','10-40']};
+const OPTPLAN={fmat:'Plan: #12 Grade 60',ctie:'Plan: #12 / #10 Grade 60',stir:'Plan: #10 Grade 60',slab:'Plan: #10 Grade 40 @ 150',sof:'Plan: #10 @ 600'};
 const OPT={fmat:'plan',ctie:'plan',stir:'plan',slab:'plan',sof:'plan'};
-try{const o=JSON.parse(localStorage.getItem('drb-opt')||'{}');for(const k in OPT)if(o[k]==='g33')OPT[k]='g33'}catch(e){}
-const g33=k=>OPT[k]==='g33';
-function fmatSp(n,top){const sp=top?300:FSP[n];return g33('fmat')?{d:12,sp:eqSp(12,sp,'60'),g:'33'}:{d:12,sp,g:'60'}}
-function tieOpt(eb,es,ms){return g33('ctie')?[12,eqSp(eb,es,'60'),12,eqSp(10,ms,'60'),'33']:[eb,es,10,ms,'60']}
-function stirOpt(st){if(!g33('stir'))return{d:10,st,g:'60'};const es=eqSp(10,st[1],'60'),ms=eqSp(10,st[2],'60');
-  return{d:12,st:[Math.max(1,Math.round(st[0]*st[1]/es)),es,ms],g:'33'}}
-function slabOpt(){return g33('slab')?{d:12,sp:eqSp(10,150,'40'),g:'33'}:{d:10,sp:150,g:'40'}}
-function sofOpt(){return g33('sof')?{d:12,sp:600,g:'33'}:{d:10,sp:600,g:'ns'}}
-const tightWarn=s=>s-12<25?` · ⚠ ${s}mm spacing leaves only ${s-12}mm between bars: too tight for the concrete to flow. Not buildable as drawn`:s<50?` · ⚠ ${s}mm spacing leaves ${s-12}mm between bars: very tight, use 10mm aggregate and vibrate well`:'';
+try{const o=JSON.parse(localStorage.getItem('drb-opt')||'{}');for(const k in OPT){const v=o[k]==='g33'?'12-33':o[k];if(OPTS[k].includes(v))OPT[k]=v}}catch(e){}
+const od=k=>{if(OPT[k]==='plan')return null;const[d,g]=OPT[k].split('-');return{d:+d,g}};
+const g33=k=>OPT[k]!=='plan';
+const optLbl=v=>{const[d,g]=v.split('-');return `${d}mm Grade ${g}`};
+function fmatSp(n,top){const sp=top?300:FSP[n],o=od('fmat');return o?{d:o.d,sp:Math.min(300,eqS(12,sp,'60',o.d,o.g)),g:o.g}:{d:12,sp,g:'60'}}
+function tieOpt(eb,es,ms){const o=od('ctie');return o?[o.d,Math.min(es,eqS(eb,es,'60',o.d,o.g)),o.d,Math.min(ms,eqS(10,ms,'60',o.d,o.g)),o.g]:[eb,es,10,ms,'60']}
+function stirOpt(st){const o=od('stir');if(!o)return{d:10,st,g:'60'};const es=Math.min(st[1],eqS(10,st[1],'60',o.d,o.g)),ms=Math.min(st[2],eqS(10,st[2],'60',o.d,o.g));
+  return{d:o.d,st:[Math.max(1,Math.round(st[0]*st[1]/es)),es,ms],g:o.g}}
+function slabOpt(){const o=od('slab');return o?{d:o.d,sp:Math.min(200,eqS(10,150,'40',o.d,o.g)),g:o.g}:{d:10,sp:150,g:'40'}}
+function sofOpt(){const o=od('sof');return o?{d:o.d,sp:Math.min(600,eqS(10,600,'40',o.d,o.g)),g:o.g}:{d:10,sp:600,g:'ns'}}
+const tightWarn=(s,d=12)=>s-d<25?` · ⚠ ${s}mm spacing leaves only ${s-d}mm between bars: too tight for the concrete to flow. Not buildable as drawn`:s<50?` · ⚠ ${s}mm spacing leaves ${s-d}mm between bars: very tight, use 10mm aggregate and vibrate well`:'';
 const OPTSTEPS={fmat:[2,3,4,5],ctie:[3,7,16,18],stir:[6,14,17,19],slab:[14,15,17,18],sof:[9,10]};
 function optNote(i){const L=[],on=k=>g33(k)&&OPTSTEPS[k].includes(i);
-  if(on('fmat')){const v=Object.values(FSP).map(x=>eqSp(12,x,'60'));L.push(`Footing mats: 12mm Grade 33, bottom @ ${Math.min(...v)}–${Math.max(...v)}, top @ ${eqSp(12,300,'60')} both ways (plan: #12 Grade 60 @ 190–215 and @ 300)`)}
-  if(on('ctie'))L.push(`Column ties: 12mm Grade 33. End zones @ ${eqSp(12,75,'60')} (3rd storey: @ ${eqSp(12,50,'60')}, C19 and C20 @ ${eqSp(10,50,'60')}), middle @ ${eqSp(10,150,'60')} (3rd storey @ ${eqSp(10,100,'60')}). Plan: Grade 60. ⚠ ${i===18?'The 3rd-storey end zones come out too tight to build':'Very tight end zones: use 10mm aggregate and vibrate well'}`);
-  if(on('stir')){const a=stirOpt([9,75,90]).st,b=stirOpt([11,80,115]).st;L.push(`Beam stirrups: 12mm Grade 33. Tie and roof beams ${a[0]} @ ${a[1]} each end, @ ${a[2]} middle · floor beams ${b[0]} @ ${b[1]} each end, @ ${b[2]} middle (plan: #10 Grade 60)`)}
-  if(on('slab'))L.push(`Floor slab bars: 12mm Grade 33 @ ${slabOpt().sp} both ways (plan: #10 Grade 40 @ 150)`);
-  if(on('sof'))L.push('Slab on fill: 12mm Grade 33 @ 600 both ways (plan: #10 @ 600, grade not given)');
-  return L.length?'<b>Your rebar options, not the plan. Get the engineer\'s written approval.</b><ul><li>'+L.join('</li><li>')+'</li></ul>':''}
+  if(on('fmat')){const o=od('fmat'),v=Object.keys(FSP).map(n=>fmatSp(n,false).sp);L.push(`Footing mats: ${o.d}mm ${GRL[o.g]}, bottom @ ${Math.min(...v)}–${Math.max(...v)}, top @ ${fmatSp('C1',true).sp} both ways (plan: #12 Grade 60 @ 190–215 and @ 300)`)}
+  if(on('ctie')){const o=od('ctie'),a=tieOpt(12,75,150),b=tieOpt(12,50,100),c=tieOpt(10,50,100),mn=Math.min(a[1],b[1],c[1]);
+    L.push(`Column ties: ${o.d}mm ${GRL[o.g]}. End zones @ ${a[1]} (3rd storey @ ${b[1]}, C19 and C20 @ ${c[1]}), middle @ ${a[3]} (3rd storey @ ${b[3]}). Plan: #12 / #10 Grade 60${mn-o.d<25?'. ⚠ Some end zones come out too tight to build':mn<50?'. ⚠ Very tight end zones: use 10mm aggregate and vibrate well':''}`)}
+  if(on('stir')){const o=od('stir'),a=stirOpt([9,75,90]).st,b=stirOpt([11,80,115]).st;L.push(`Beam stirrups: ${o.d}mm ${GRL[o.g]}. Tie and roof beams ${a[0]} @ ${a[1]} each end, @ ${a[2]} middle · floor beams ${b[0]} @ ${b[1]} each end, @ ${b[2]} middle (plan: #10 Grade 60)`)}
+  if(on('slab')){const o=slabOpt();L.push(`Floor slab bars: ${o.d}mm ${GRL[o.g]} @ ${o.sp} both ways (plan: #10 Grade 40 @ 150; 200 is the most allowed in a 100mm slab)`)}
+  if(on('sof')){const o=sofOpt();L.push(`Slab on fill: ${o.d}mm ${GRL[o.g]} @ ${o.sp} both ways (plan: #10 @ 600, grade not given)`)}
+  return L.length?'<b>Your bar choices, not the plan. Get the engineer\'s written approval.</b><ul><li>'+L.join('</li><li>')+'</li></ul>':''}
 function colTieQ(q,c,y0,y1,joint){const[a,b]=colSize(c),[eb0,es0,ms0,zn]=tieSpec(c),[eb,es,mb,ms,g]=tieOpt(eb0,es0,ms0),[z,mm]=tieSplit(y0,y1,zn,joint,es,ms),tl=tieLen(a,b);
   q.G=g;q.b(eb,tl,z,'column ties, end zones');q.b(mb,tl,mm,'column ties, middle');q.G='60'}
 function stirTxt(L,st0){const so=stirOpt(st0),st=so.st;return `${so.d}mm ${GRL[so.g]}: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
 const slabTxt=()=>{const o=slabOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
 const sofTxt=()=>{const o=sofOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
+/* estimate settings: lap splices, waste, concrete supply */
+const EST={lap:0,waste:0,mix:'site'};
+try{const e=JSON.parse(localStorage.getItem('drb-est')||'{}');if([0,40,50].includes(e.lap))EST.lap=e.lap;if([0,5,10].includes(e.waste))EST.waste=e.waste;if(['site','ready'].includes(e.mix))EST.mix=e.mix}catch(e){}
+const estNote=()=>`${EST.lap?`Laps ${EST.lap} × bar diameter`:'No lap splices'} · ${EST.waste?`${EST.waste}% waste`:'no waste'} · ${EST.mix==='ready'?'ready-mix concrete (+5% order)':'site-mixed concrete'}`;
 const FSP={C1:200,C2:215,C3:195,C4:215,C5:210,C6:210,C7:215,C8:215,C9:210,C10:190,C11:210};
 const BAR2={C1:[4,32],C2:[4,25],C3:[4,32],C4:[4,32],C5:[4,20],C6:[4,32],C7:[4,32],C8:[4,25],C9:[4,32],C10:[8,20],C11:[8,20]};
 const BAR1=n=>n==='C10'||n==='C11'?[8,16]:[4,20];
@@ -953,7 +970,7 @@ function colName(c){return c[0][0]==='U'?UPN[+c[0].slice(1)]:c[0]}
 function colSize(c){return c[0][0]==='U'?[c.hx*2,c.hz*2]:[c[3],c[3]]}
 /* info strings for hover / tap */
 const infoFooting=([n,x,z,c,L])=>{const fo=fmatSp(n,false),to=fmatSp(n,true),sp=fo.sp,k=Math.floor((L-150)/sp)+1,k2=Math.floor((L-150)/to.sp)+1;
-  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom 12mm @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top 12mm @ ${to.sp}: ${k2} bars each way|Rebar ${GRL[fo.g]}`};
+  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom ${fo.d}mm @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top ${to.d}mm @ ${to.sp}: ${k2} bars each way|Rebar ${GRL[fo.g]}`};
 function infoCol(c,storey,y0,y1){const n=colName(c),[a,b]=colSize(c),h=m(y1-y0);
   const bars=storey==='3rd storey'?BARU[+c[0].slice(1)]:storey==='2nd storey'?BAR2[n]:BAR1(n);
   return `Column ${n} · ${storey}|${a} × ${b}mm · height ${h.toFixed(2)}m · C28|Concrete ${r2(m(a)*m(b)*h)} m³|Main bars ${bars[0]}-#${bars[1]} · Grade 60 (Fy415)|Formwork ${r2(2*(m(a)+m(b))*h)} m²`}
@@ -980,9 +997,9 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   case 0:{let L=0;ZR.forEach(z=>L+=m(C(z)-A(z)+2000));L+=3*12;q.x('Column centers to mark',11,'pcs');q.x('Batter-board posts',14,'pcs');q.x('String line',Math.ceil(L),'m');break}
   case 1:q.x('Excavation (11 pits, ≈1.9m deep)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9,0)),'m³');break;
   case 2:q.x('Gravel bed 80mm',r2(MAIN.reduce((s,c)=>s+m(c[4])**2*0.08,0)),'m³');
-    MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],false),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(12,m(L-150),2*k,'footing bottom mat')});q.G='60';break;
-  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});q.G=g33('ctie')?'33':'60';MAIN.forEach(c=>q.b(12,tieLen(c[3],c[3]),4,'starter ties'));q.G='60';break;
-  case 4:MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],true),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(12,m(L-150),2*k,'footing top mat')});q.G='60';break;
+    MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],false),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(o.d,m(L-150),2*k,'footing bottom mat')});q.G='60';break;
+  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});{const o=od('ctie');q.G=o?o.g:'60';MAIN.forEach(c=>q.b(o?o.d:12,tieLen(c[3],c[3]),4,'starter ties'))}q.G='60';break;
+  case 4:MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],true),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(o.d,m(L-150),2*k,'footing top mat')});q.G='60';break;
   case 5:q.c('C21',MAIN.reduce((s,c)=>s+m(c[4])**2*0.3,0),'11 footings');q.x('Footing side forms',r1(MAIN.reduce((s,c)=>s+4*m(c[4])*0.3,0)),'m²');break;
   case 6:beamQ(q,TB,200,300,[2,16],[2,12],[9,75,90],0,'bars');q.x('Tie beams',TB.length+' spans, '+r1(TB.reduce((s,x)=>s+m(segL(x)),0))+'m total','');break;
   case 7:MAIN.forEach(c=>colTieQ(q,c,-1500,2250,400));
@@ -1019,22 +1036,26 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   mepQty(i,q);
   return q.it}
 function OPEN_AREA(){return 1.4*1.8+1.6*1.8+1.0*2.25+2.0*2.0+1.8*2.0+1.6*2.0}
-function summarize(items){const conc={},bars={},xs=[];
+function summarize(items){const conc={},bars={},xs=[],lapM=d=>EST.lap*d/1000,W=EST.waste/100;
   items.forEach(t=>{if(t.k==='c'){conc[t.cls]=(conc[t.cls]||0)+t.v}else if(t.k==='b'){const kk=t.d+'|'+(t.g||'60'),b=bars[kk]||(bars[kk]={d:t.d,g:t.g||'60',L:0,pcs:0});
-    if(t.tot){b.L+=t.len;b.pcs+=Math.ceil(t.len*1.1/6)}else{b.L+=t.len*t.n;b.pcs+=t.len<=6?Math.ceil(t.n/Math.max(1,Math.floor(6/t.len))):t.n*Math.ceil(t.len/5.4)}}else xs.push(t)});
+    const lp=lapM(t.d);let L,pcs;
+    if(t.tot){L=t.len*(1+lp/6);pcs=Math.ceil(L*1.1/6)}
+    else if(t.len>6){const per=lp?Math.ceil((t.len-lp)/(6-lp)):Math.ceil(t.len/5.4);L=t.n*(t.len+(per-1)*lp);pcs=t.n*per}
+    else{const len=t.len+(/column bars, (2nd|3rd) storey/.test(t.lbl||'')?lp:0);L=t.n*len;pcs=Math.ceil(t.n/Math.max(1,Math.floor(6/len)))}
+    b.L+=L*(1+W);b.pcs+=Math.ceil(pcs*(1+W))}else xs.push(t)});
   return{conc,bars,xs}}
 const MIX={C21:[9,0.5,1.0],C28:[12,0.5,1.0]};
 const GRL={'60':'Grade 60 (Fy415)','40':'Grade 40 (FY276)','33':'Grade 33 (fy 230)',ns:'grade not specified'};
 const GRO={'60':0,'40':1,'33':2,ns:3};
 function qtyHTML(i){const s=summarize(qty(i));let rows='';
-  Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k];rows+=`<tr><td>Concrete ${k}</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c)} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
+  Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k],o=Math.ceil(v*1.05*2)/2;rows+=EST.mix==='ready'?`<tr><td>Concrete ${k}, ready-mix</td><td>${r2(v)} m³</td><td>order ${o} m³ (+5%) · ${Math.ceil(o/6)} truck${Math.ceil(o/6)>1?'s':''} of 6 m³ (assumed)</td></tr>`:`<tr><td>Concrete ${k}, site-mixed</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c*(1+EST.waste/100))} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
   Object.values(s.bars).sort((a,b)=>GRO[a.g]-GRO[b.g]||a.d-b.d).forEach(b=>{rows+=`<tr><td>Rebar ${b.d}mm · ${GRL[b.g]}</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[b.d])} kg</td></tr>`});
   s.xs.forEach(t=>rows+=`<tr><td>${t.lbl}</td><td>${t.v} ${t.u}</td><td></td></tr>`);
   let tc=0,tk=0,tb=0;const tg={'60':0,'40':0,'33':0,ns:0};for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.values(z.bars).forEach(b=>{const w=b.L*KG[b.d];tk+=w;tg[b.g]+=w})}
   const gs=['60','40','33','ns'].filter(g=>tg[g]>0).map(g=>`${Math.round(tg[g]).toLocaleString()} kg ${GRL[g]}`).join(' · ');
   return `<div class="qh"><span>Materials for this step</span><span class="qn">model estimate</span></div>`+
     (rows?`<div class="qwrap"><table class="qt"><tbody>${rows}</tbody></table></div>`:`<p class="qnone">No materials in this step.</p>`)+
-    `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete · <b>${Math.ceil(tb)}</b> bags cement · <b>${Math.round(tk).toLocaleString()} kg</b> rebar${gs?`<br>${gs}`:''}</div>`}
+    `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete${EST.mix==='ready'?` (order ≈ ${Math.ceil(tc*1.05)} m³ ready-mix)`:` · <b>${Math.ceil(tb*(1+EST.waste/100))}</b> bags cement`} · <b>${Math.round(tk).toLocaleString()} kg</b> rebar${gs?`<br>${gs}`:''}<br><span class="qn">${estNote()}</span></div>`}
 
 /* dimension overlay */
 let dimsOn=true;
@@ -1228,19 +1249,19 @@ function ROOMS(){}
 function HB(lv,F,y0,y1,info){INF=info;prism(lv,0,F,y0,y1,'hitbox',0);INF=''}
 const kgOf=(d,L)=>Math.round(L*KG[d]);
 function matInfo(c,top){const[n,x,z,cs,L]=c,fo=fmatSp(n,false),sp=fo.sp,k=Math.floor((L-150)/sp)+1,bl=m(L-150);
-  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: 12mm @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|${GRL[fo.g]}${fo.g==='33'?` (your option; plan: #12 @ ${FSP[n]} Grade 60)`:' per the footing schedule'} · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
-  if(top){const to=fmatSp(n,true),k2=Math.floor((L-150)/to.sp)+1;t+=`|Top mat: 12mm @ ${to.sp} both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(12,2*k2*bl)} kg|Tie the top mat to the column bars`}
+  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: ${fo.d}mm @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|${GRL[fo.g]}${fo.g==='33'?` (your option; plan: #12 @ ${FSP[n]} Grade 60)`:' per the footing schedule'} · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(fo.d,2*k*bl)} kg`;
+  if(top){const to=fmatSp(n,true),k2=Math.floor((L-150)/to.sp)+1;t+=`|Top mat: ${to.d}mm @ ${to.sp} both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(to.d,2*k2*bl)} kg|Tie the top mat to the column bars`}
   return t}
 function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[eb0,es0,ms0,zz]=tieSpec(c),[eb,es,mb,ms,tg]=tieOpt(eb0,es0,ms0);zone=zz;const[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0,es,ms);
   const tl=tieLen(a,b);let t=`Column ${n} cage · ${storey}|${a} × ${b}mm · main bars ${bars[0]}-#${bars[1]} · Grade 60 (Fy415)`;
   if(storey==='garage storey')t+=` (≈5.44m each, 90° hook on the footing mat)`;
   if(ties==='starter')t+=`|Starter ties ${eb}mm @ 150 inside the footing to keep the cage square · ${GRL[tg]}`;
   else{t+=`|End zones (SCR ${zone}mm at top and bottom): ${eb}mm ties @ ${es} → ${zn} pcs|Middle: ${mb}mm ties @ ${ms} → ${mn} pcs|Ties ${GRL[tg]}`;
-    if(tg==='33')t+=` (your option; plan: #${eb0} @ ${es0} + #10 @ ${ms0}, Grade 60)`+tightWarn(es);
+    if(tg==='33')t+=` (your option; plan: #${eb0} @ ${es0} + #10 @ ${ms0}, Grade 60)`+tightWarn(es,eb);
     t+=`|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`}
   return t+`|Concrete C28 (column schedule) · cover ≈ 40mm`}
 function beamCageInfo(lbl,s,w,d,top,bot,st0){const L=segL(s),so=stirOpt(st0),st=so.st,n=stirN(L,...st),sl=stirLen(w,d);
-  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot} · Grade 60 (Fy415) · concrete C21|Bars run continuous through the columns|Stirrups ${so.d}mm closed 2-leg, ${GRL[so.g]}: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs${so.g==='33'?` (your option; plan: #10 ${st0[0]} @ ${st0[1]}, @ ${st0[2]}, Grade 60)`+tightWarn(st[1]):''}|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${sl.toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*sl)}m · ${kgOf(so.d,n*sl)} kg`}
+  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot} · Grade 60 (Fy415) · concrete C21|Bars run continuous through the columns|Stirrups ${so.d}mm closed 2-leg, ${GRL[so.g]}: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs${so.g==='33'?` (your option; plan: #10 ${st0[0]} @ ${st0[1]}, @ ${st0[2]}, Grade 60)`+tightWarn(st[1],so.d):''}|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${sl.toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*sl)}m · ${kgOf(so.d,n*sl)} kg`}
 function meshInfo(lbl,F,sp,shownAt,gr,d=10){const a=areaF(F),tot=2*a/m(sp);
   return `${lbl}|${d}mm @ ${sp} both ways${shownAt&&shownAt!==sp?` (drawn at ${shownAt} for clarity)`:''}|Area ${r1(a)} m² → ≈ ${Math.ceil(tot)}m of ${d}mm bar · ${kgOf(d,tot)} kg · ${Math.ceil(tot*1.1/6)} pcs × 6m|${gr}|Set on 25–50mm chairs; lap ≈ 400mm (confirm)`}
 function slabMeshInfo(lbl,F){const o=slabOpt();return meshInfo(lbl,F,o.sp,o.sp*2,`${GRL[o.g]}${o.g==='33'?' (your option; plan: #10 @ 150 Grade 40)':' per the slab schedule'} · concrete C21`,o.d)}
@@ -1433,11 +1454,13 @@ const SHALT={p1:'Sheet P1-07: sewer, water line and storm drainage layouts',p2:'
 $('shTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#shTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$('shImg').src='sheets/'+b.dataset.s+'.jpg';$('shImg').alt=SHALT[b.dataset.s]});
 try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.length)cur=s}catch(e){}
 /* rebar option controls */
-function optUI(){document.querySelectorAll('#opts select').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value==='g33')});const any=Object.values(OPT).includes('g33');$('optWarn').hidden=!any;$('optBadge').hidden=!any}
-function setOpt(){try{localStorage.setItem('drb-opt',JSON.stringify(OPT))}catch(e){}optUI();$('qty').dataset.step='';render(true)}
-document.querySelectorAll('#opts select').forEach(s=>s.onchange=()=>{OPT[s.dataset.k]=s.value==='g33'?'g33':'plan';setOpt()});
+document.querySelectorAll('#opts select[data-k]').forEach(s=>{const k=s.dataset.k;s.innerHTML=OPTS[k].map(v=>`<option value="${v}">${v==='plan'?OPTPLAN[k]:optLbl(v)}</option>`).join('')});
+function optUI(){document.querySelectorAll('#opts select[data-k]').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value!=='plan')});document.querySelectorAll('#opts select[data-e]').forEach(s=>s.value=String(EST[s.dataset.e]));const any=Object.values(OPT).some(v=>v!=='plan');$('optWarn').hidden=!any;$('optBadge').hidden=!any}
+function setOpt(){try{localStorage.setItem('drb-opt',JSON.stringify(OPT));localStorage.setItem('drb-est',JSON.stringify(EST))}catch(e){}optUI();$('qty').dataset.step='';render(true)}
+document.querySelectorAll('#opts select[data-k]').forEach(s=>s.onchange=()=>{const k=s.dataset.k;OPT[k]=OPTS[k].includes(s.value)?s.value:'plan';setOpt()});
+document.querySelectorAll('#opts select[data-e]').forEach(s=>s.onchange=()=>{const k=s.dataset.e;EST[k]=k==='mix'?(s.value==='ready'?'ready':'site'):(+s.value||0);setOpt()});
 $('optReset').onclick=()=>{for(const k in OPT)OPT[k]='plan';setOpt()};
-$('optAll').onclick=()=>{for(const k in OPT)OPT[k]='g33';setOpt()};
+$('optAll').onclick=()=>{for(const k in OPT)OPT[k]='12-33';setOpt()};
 optUI();
 /* Grade 33 substitution card: equal As × fy per meter */
 (function(){const AR=d=>Math.PI/4*d*d,FY={'60':415,'40':276,'33':230};
@@ -1449,7 +1472,7 @@ optUI();
   MAIN.forEach(([n,x,z,cs,L])=>{const sp=FSP[n],s=sub(12,sp,'60'),t=sub(12,300,'60'),k=v=>Math.floor((L-150)/v)+1;
     h+=`<tr><td>FC${n.slice(1)} · ${L}×${L}</td><td>Bottom @ ${sp}: ${k(sp)} each way · top @ 300: ${k(300)} each way</td><td>Bottom @ ${s}: ${k(s)} each way · top @ ${t}: ${k(t)} each way</td></tr>`});
   $('g33Foot').innerHTML=h;
-  const T=(nm,pl,g)=>`<tr><td>${nm}</td><td>${pl}</td><td>${g}</td></tr>`,w=s=>s-12<25?` <b>⚠ too tight to build</b>`:s<50?` <b>⚠ very tight</b>`:'',SA=stirOpt,ST=st=>{const b=OPT.stir;OPT.stir='g33';const r=stirOpt(st).st;OPT.stir=b;return r};
+  const T=(nm,pl,g)=>`<tr><td>${nm}</td><td>${pl}</td><td>${g}</td></tr>`,w=s=>s-12<25?` <b>⚠ too tight to build</b>`:s<50?` <b>⚠ very tight</b>`:'',SA=stirOpt,ST=st=>{const b=OPT.stir;OPT.stir='12-33';const r=stirOpt(st).st;OPT.stir=b;return r};
   const t1=ST([9,75,90]),t2=ST([11,80,115]);
   $('g33Ties').innerHTML=T('Column ties, garage and 2nd storey; 3rd storey C5, C8, C12','#12 @ 75 ends · #10 @ 150 middle',`@ ${eqSp(12,75,'60')} ends${w(eqSp(12,75,'60'))} · @ ${eqSp(10,150,'60')} middle`)+
     T('Column ties, 3rd storey C13–C18, C21','#12 @ 50 ends · #10 @ 100 middle',`@ ${eqSp(12,50,'60')} ends${w(eqSp(12,50,'60'))} · @ ${eqSp(10,100,'60')} middle`)+
