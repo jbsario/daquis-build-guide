@@ -32,6 +32,7 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 - Footings FC1–FC11, all 300 thick; the plan's "C12-FC12" at row 1 C is treated as FC11.
 - Columns 0–4.65m: C1–C9 4-#20, C10–C11 400×400 8-#16. 2nd storey: 4-#32/#25/#20, C10–C11 8-#20.
 - 3rd-storey ties per column in `TIEU` (bar, end spacing, middle spacing, SCR zone): C19, C20 use #10 @ 50 end ties; C5, C8, C12 @ 75/150; others #12 @ 50/100.
+- Rebar options card (`OPT`, saved in `localStorage['drb-opt']`): footing mats, column ties, beam stirrups, floor slab bars, slab on fill, each "plan" or "g33" (12mm Grade 33). `eqSp()` keeps bar area × yield per meter (fy 230 vs 415/276), rounded down to 5mm. `fmatSp`, `tieOpt`, `stirOpt`, `slabOpt`, `sofOpt` feed the 3D drawing, `qty`, tap details and the step-card note (`optNote`). Spacing under 50mm is flagged very tight; clear gap under 25mm is flagged not buildable.
 - Part 4 "Using ordinary 12mm Grade 33 bars?" card: equal As × fy substitution (fy 230 MPa), built in script from `areaF`, `FSP`. Engineer must approve.
 - Roof slopes down toward row 4 (roof plan arrow); box gutter at the rear, 2 downspouts.
 

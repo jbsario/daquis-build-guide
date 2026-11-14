@@ -212,6 +212,18 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 @keyframes pop{0%{opacity:.15}100%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.nw{animation:none}.track div{transition:none}}
 
+.opts{gap:10px}
+.opts label{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:10px;align-items:center;font-size:14px}
+.opts select{min-height:40px;width:100%;font:13px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.opts select.g33{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.optwarn{margin:0;font-size:13px;border-left:3px solid var(--accent);padding:4px 0 4px 10px}
+.optbtns{display:flex;gap:8px;flex-wrap:wrap}
+.optbtns button{min-height:40px;font:600 13px var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.optnote{font-size:13px;background:var(--accent-soft);border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 6px 6px 0;color:var(--ink)}
+.optnote ul{margin:4px 0 0;padding-left:16px;display:grid;gap:3px}
+.optbadge{font:600 11px var(--f-mono);color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:2px 8px}
+@media (max-width:480px){.opts label{grid-template-columns:minmax(0,1fr);gap:4px}}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -279,7 +291,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
   <div class="viewer">
     <div class="stage" id="stage">
       <div class="stagebar">
-        <span class="eyebrow" id="viewLbl">Close-up</span>
+        <span class="eyebrow" id="viewLbl">Close-up</span><span class="optbadge" id="optBadge" hidden>Grade 33 option on</span>
         <div class="seg" role="group" aria-label="Camera">
           <button id="vAuto" aria-pressed="true">Auto</button>
           <button id="vFull" aria-pressed="false">Whole house</button>
@@ -311,6 +323,17 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <ul id="stList"></ul>
         <div class="spec" id="stSpec"></div>
         <div class="watch" id="stWatch"></div>
+        <div class="optnote" id="stOpt" hidden></div>
+      </div>
+      <div class="card opts" id="opts">
+        <div class="qh"><span>Rebar options</span><span class="qn">plan or 12mm Grade 33</span></div>
+        <label><span>Footing mats</span><select data-k="fmat"><option value="plan">Plan: #12 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
+        <label><span>Column ties</span><select data-k="ctie"><option value="plan">Plan: #12 / #10 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
+        <label><span>Beam stirrups</span><select data-k="stir"><option value="plan">Plan: #10 Grade 60</option><option value="g33">12mm Grade 33, closer spacing</option></select></label>
+        <label><span>Floor slab bars</span><select data-k="slab"><option value="plan">Plan: #10 Grade 40 @ 150</option><option value="g33">12mm Grade 33 @ 180</option></select></label>
+        <label><span>Slab on fill</span><select data-k="sof"><option value="plan">Plan: #10 @ 600</option><option value="g33">12mm Grade 33 @ 600</option></select></label>
+        <p class="optwarn" id="optWarn" hidden>You are off the plan. The 3D view, tap details and materials now use your choices. Grade 33 changes the signed design, so get the engineer's written approval first. Ties in earthquake confinement zones are the riskiest place to downgrade.</p>
+        <div class="optbtns"><button id="optReset">Back to plan</button><button id="optAll">All Grade 33</button></div>
       </div>
       <div class="card qty" id="qty"></div>
       <div class="nav">
@@ -532,6 +555,11 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <thead><tr><th>Footing</th><th>Plan: #12 Grade 60</th><th>12mm Grade 33 equivalent</th></tr></thead>
         <tbody id="g33Foot"></tbody>
       </table>
+      <p>Ties and stirrups hold the main bars in place and confine the concrete in an earthquake. Grade 33 ties need much closer spacing, and many engineers won't accept them in confinement zones. Under 50mm spacing is very tight; under about 37mm the gap between ties is smaller than the gravel and the concrete can't flow.</p>
+      <table class="wrap">
+        <thead><tr><th>Ties / stirrups</th><th>Plan (Grade 60)</th><th>12mm Grade 33 equivalent</th></tr></thead>
+        <tbody id="g33Ties"></tbody>
+      </table>
       <p>Keep 20mm bottom cover in the slabs. 12mm bars both ways take 4mm more depth than 10mm, so check the top cover. Top bars at supports change the same way. Buy from a mill that gives a certificate showing the grade.</p>
     </div>
   </div>
@@ -699,7 +727,7 @@ function trimSeg(s,c){const [a,b]=s,dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz
   return[[a[0]+dx*t,a[1]+dz*t],[b[0]-dx*t,b[1]-dz*t]]}
 function beamSolids(lv,lines,yb,yt,w,mat,born,inf){lines.forEach(s=>{INF=inf?inf(s):'';prism(lv,1,seg(...s,w),yb,yt,mat,born)});INF=''}
 function beamForms(lv,lines,yb,yt,w,born){lines.forEach(s=>prism(lv,0,seg(...trimSeg(s,170),w+60),yb-30,yt,'fbox',born))}
-function beamCages(lv,lines,yb,yt,w,endN,endSp,midSp,born){const h=w/2-45;
+function beamCages(lv,lines,yb,yt,w,endN,endSp,midSp,born){const h=w/2-45;[endN,endSp,midSp]=stirOpt([endN,endSp,midSp]).st;
   lines.forEach(s0=>{const s=trimSeg(s0,160),a=s[0],b=s[1],dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),ux=dx/L,uz=dz/L,nx=-uz,nz=ux;
     [[yb+45,-h],[yb+45,h],[yt-45,-h],[yt-45,h]].forEach(([y,o])=>ln(lv,1,[a[0]-ux*220+nx*o,y,a[1]-uz*220+nz*o],[b[0]+ux*220+nx*o,y,b[1]+uz*220+nz*o],'mb',born));
     const ss=[];for(let i=0;i<endN;i++)ss.push(50+endSp*i);const e=L-50-endSp*(endN-1);
@@ -711,7 +739,7 @@ function beamCages(lv,lines,yb,yt,w,endN,endSp,midSp,born){const h=w/2-45;
 function footings(born){MAIN.forEach(f=>{const[n,x,z,c,L]=f;INF=infoFooting(f);prism(0,3,sq(x,z,L/2,L/2),-1800,-1500,'conc',born)});INF=''}
 function pits(born){MAIN.forEach(([n,x,z,c,L])=>prism(0,0,sq(x,z,L/2+300,L/2+300),-1900,0,'pit',born))}
 function gravel(born){MAIN.forEach(([n,x,z,c,L])=>prism(0,1,sq(x,z,L/2,L/2),-1880,-1800,'pit',born))}
-function mat(y,sp,born){MAIN.forEach(([n,x,z,c,L])=>{const hl=L/2-75,k=Math.floor((L-150)/sp);
+function mat(y,top,born){MAIN.forEach(([n,x,z,c,L])=>{const hl=L/2-75,k=Math.floor((L-150)/fmatSp(n,top).sp);
   for(let i=0;i<=k;i++){const v=-hl+i*(2*hl/k);ln(0,2,[x-hl,y,z+v],[x+hl,y,z+v],'mt',born);ln(0,2,[x+v,y+14,z-hl],[x+v,y+14,z+hl],'mt',born)}})}
 function colBarsAt(list,y0,y1,lv,born,hook){list.forEach(c=>{const x=c[1],z=c[2],h=c[3]/2-40;
   const pos=c[3]>=400?[[-h,-h],[0,-h],[h,-h],[-h,0],[h,0],[-h,h],[0,h],[h,h]]:[[-h,-h],[h,-h],[-h,h],[h,h]];
@@ -723,7 +751,7 @@ function tieYs(y0,y1,zone,es=75,ms=150){const a=[];for(let y=y0+50;y<=y0+zone;y+
 const TIEU={C5:[12,75,150,495],C8:[12,75,150,495],C12:[12,75,150,495],C13:[12,50,100,545],C14:[12,50,100,495],C15:[12,50,100,545],C16:[12,50,100,495],C17:[12,50,100,545],C18:[12,50,100,495],C19:[10,50,100,545],C20:[10,50,100,495],C21:[12,50,100,545]};
 function tieSpec(c){return c[0][0]==='U'?TIEU[UPN[+c[0].slice(1)]]:[12,75,150,450]}
 function colTies(list,lv,y0,y1,joint,born){list.forEach(c=>{const x=c[1],z=c[2],hx=(c.hx||c[3]/2)-32,hz=(c.hz||c[3]/2)-32;
-  const[,es,ms,zn]=tieSpec(c);const ys=tieYs(y0,y1,zn,es,ms);for(let y=y1+60;y<y1+joint;y+=es)ys.push(y);ys.forEach(y=>tie(lv,x,z,hx,hz,y,born))})}
+  const[eb0,es0,ms0,zn]=tieSpec(c),[,es,,ms]=tieOpt(eb0,es0,ms0);const ys=tieYs(y0,y1,zn,es,ms);for(let y=y1+60;y<y1+joint;y+=es)ys.push(y);ys.forEach(y=>tie(lv,x,z,hx,hz,y,born))})}
 function colForms(list,lv,y0,y1,born){list.forEach(c=>prism(lv,4,sq(c[1],c[2],(c.hx||c[3]/2)+35,(c.hz||c[3]/2)+35),y0,y1,'fbox',born))}
 function colSolid(list,lv,y0,y1,m,born,st){list.forEach(c=>{INF=st?infoCol(c,st,y0,y1):'';prism(lv,3,sq(c[1],c[2],c.hx||c[3]/2,c.hz||c[3]/2),y0,y1,m,born)});INF=''}
 const UPC=UP.map((u,i)=>{const o=['U'+i,u[0],u[1],300];o.hx=u[2]/2;o.hz=u[3]/2;return o});
@@ -839,8 +867,8 @@ function build(i){prims=[];GLOW=[];if(i===23)scenery(23);const fin=i>=23,fm=fin?
   if(i<=2)strings(0);
   if(i>=1&&i<=7)pits(1);
   if(i>=2&&i<=7)gravel(2);
-  if(i>=2&&i<=4)mat(-1725,200,2);
-  if(i===4)mat(-1590,300,4);
+  if(i>=2&&i<=4)mat(-1725,false,2);
+  if(i===4)mat(-1590,true,4);
   if(i>=5&&i<23)footings(5);
   if(i>=3&&i<=7)colBarsAt(MAIN,-1730,3450,2,3,true);
   if(i>=3&&i<=6)MAIN.forEach(c=>[-1650,-1500,-1350,-1200].forEach(y=>tie(2,c[1],c[2],c[3]/2-32,c[3]/2-32,y,3)));
@@ -850,21 +878,21 @@ function build(i){prims=[];GLOW=[];if(i===23)scenery(23);const fin=i>=23,fm=fin?
   if(i>=8){colSolid(MAIN,2,i>=23?-200:-1500,2250,fm,8,'garage storey');if(i<23)beamSolids(1,TB,-400,-100,200,'conc',8,s=>infoBeam('Footing tie beam',s,200,300,'top 2-#16 · bottom 2-#12',[9,75,90],0))}
   if(i>=8&&i<=14)colBarsAt(MAIN,2250,3450,4,8,false);
   if(i===9){prism(1,0,LOWF,-200,-100,'pit',9);slabMesh(1,LOWF,-55,600,9)}
-  if(i>=10)slab(1,LOWF,-100,0,'conc',10,infoSlab('Garage slab on fill',LOWF,100,'#10 @ 600 both ways'));
+  if(i>=10)slab(1,LOWF,-100,0,'conc',10,infoSlab('Garage slab on fill',LOWF,100,sofTxt()));
   if(i===11){stairRebar(11);troughBars(1,...GP,11);prism(1,0,[[GP[0],GP[2]],[GP[1],GP[2]],[GP[1],GP[3]],[GP[0],GP[3]]],GP[4],GP[5],'fbox',11)}
   if(i>=12){stairs(fin?'stone':'conc',12);groundPlanter(fin?'stone':'conc',fin,12)}
   const B2=gridBeams(true);
   if(i>=13&&i<=15)shoring(3,LOWF,0,2550,i<=14,13);
   if(i>=13&&i<=14)beamForms(3,B2,2250,2650,200,13);
-  if(i===14){beamCages(3,B2,2250,2650,200,11,80,115,14);slabMesh(3,LOWF,2580,300,14);troughBars(6,...HP,14);prism(6,0,[[HP[0],HP[2]],[HP[1],HP[2]],[HP[1],HP[3]],[HP[0],HP[3]]],HP[4],HP[5],'fbox',14)}
-  if(i>=15){beamSolids(3,B2,2250,2650,200,fm,15,s=>infoBeam('2nd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (check S2-06 per mark)',[11,80,115],100));slab(3,LOWF,2550,2650,fm,15,infoSlab('2nd floor slab',LOWF,100,'#10 @ 150 both ways'));hangPlanter(fin?'fin':'conc',fin,15)}
+  if(i===14){beamCages(3,B2,2250,2650,200,11,80,115,14);slabMesh(3,LOWF,2580,slabOpt().sp*2,14);troughBars(6,...HP,14);prism(6,0,[[HP[0],HP[2]],[HP[1],HP[2]],[HP[1],HP[3]],[HP[0],HP[3]]],HP[4],HP[5],'fbox',14)}
+  if(i>=15){beamSolids(3,B2,2250,2650,200,fm,15,s=>infoBeam('2nd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (check S2-06 per mark)',[11,80,115],100));slab(3,LOWF,2550,2650,fm,15,infoSlab('2nd floor slab',LOWF,100,slabTxt()));hangPlanter(fin?'fin':'conc',fin,15)}
   if(i>=16&&i<=17){colBarsAt(MAIN,2450,6650,4,16,false);colTies(MAIN,4,2650,5650,400,16)}
   if(i===16)colForms(MAIN,4,2650,5650,16);
   if(i>=17)colSolid(MAIN,4,2650,5650,fm,17,'2nd storey');
   const B3=cantBeams();
   if(i>=17&&i<=18)shoring(5,OUT,2650,5950,i===17,17);
-  if(i===17){beamForms(5,B3,5650,6050,200,17);beamCages(5,B3,5650,6050,200,11,80,115,17);slabMesh(5,OUT,5980,300,17)}
-  if(i>=18){beamSolids(5,B3,5650,6050,200,fm,18,s=>infoBeam('3rd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (many CANTILEVERED)',[11,80,115],100));slab(5,OUT,5950,6050,fm,18,infoSlab('3rd floor slab (cantilevered)',OUT,100,'#10 @ 150 both ways'))}
+  if(i===17){beamForms(5,B3,5650,6050,200,17);beamCages(5,B3,5650,6050,200,11,80,115,17);slabMesh(5,OUT,5980,slabOpt().sp*2,17)}
+  if(i>=18){beamSolids(5,B3,5650,6050,200,fm,18,s=>infoBeam('3rd floor beam',s,200,400,'typ. 2-#16 top, 2-#16 bottom (many CANTILEVERED)',[11,80,115],100));slab(5,OUT,5950,6050,fm,18,infoSlab('3rd floor slab (cantilevered)',OUT,100,slabTxt()))}
   if(i===18){colBarsAt(UPC.map(c=>[c[0],c[1],c[2],Math.min(c.hx,c.hz)*2]),5850,9250,6,18,false);colTies(UPC,6,6050,9000,300,18);colForms(UPC,6,6050,9000,18)}
   if(i>=19)colSolid(UPC,6,6050,9000,fin?'dk':'conc',19,'3rd storey');
   if(i===19){beamForms(7,B3,9000,9300,200,19);beamCages(7,B3,9000,9300,200,9,75,90,19);parapetBars(19)}
@@ -881,6 +909,33 @@ function build(i){prims=[];GLOW=[];if(i===23)scenery(23);const fin=i>=23,fm=fin?
 
 /* ---------- measurements, member info and quantities ---------- */
 const KG={10:.617,12:.888,16:1.578,20:2.466,25:3.853,32:6.313};
+/* ---------- rebar options: plan vs ordinary 12mm Grade 33 (equal bar area × yield per meter) ---------- */
+const FYV={'60':415,'40':276,'33':230};
+const ARB=d=>Math.PI/4*d*d;
+const eqSp=(d,sp,g)=>Math.max(5,Math.floor(sp*ARB(12)*FYV['33']/(ARB(d)*FYV[g])/5+1e-6)*5);
+const OPT={fmat:'plan',ctie:'plan',stir:'plan',slab:'plan',sof:'plan'};
+try{const o=JSON.parse(localStorage.getItem('drb-opt')||'{}');for(const k in OPT)if(o[k]==='g33')OPT[k]='g33'}catch(e){}
+const g33=k=>OPT[k]==='g33';
+function fmatSp(n,top){const sp=top?300:FSP[n];return g33('fmat')?{d:12,sp:eqSp(12,sp,'60'),g:'33'}:{d:12,sp,g:'60'}}
+function tieOpt(eb,es,ms){return g33('ctie')?[12,eqSp(eb,es,'60'),12,eqSp(10,ms,'60'),'33']:[eb,es,10,ms,'60']}
+function stirOpt(st){if(!g33('stir'))return{d:10,st,g:'60'};const es=eqSp(10,st[1],'60'),ms=eqSp(10,st[2],'60');
+  return{d:12,st:[Math.max(1,Math.round(st[0]*st[1]/es)),es,ms],g:'33'}}
+function slabOpt(){return g33('slab')?{d:12,sp:eqSp(10,150,'40'),g:'33'}:{d:10,sp:150,g:'40'}}
+function sofOpt(){return g33('sof')?{d:12,sp:600,g:'33'}:{d:10,sp:600,g:'ns'}}
+const tightWarn=s=>s-12<25?` · ⚠ ${s}mm spacing leaves only ${s-12}mm between bars: too tight for the concrete to flow. Not buildable as drawn`:s<50?` · ⚠ ${s}mm spacing leaves ${s-12}mm between bars: very tight, use 10mm aggregate and vibrate well`:'';
+const OPTSTEPS={fmat:[2,3,4,5],ctie:[3,7,16,18],stir:[6,14,17,19],slab:[14,15,17,18],sof:[9,10]};
+function optNote(i){const L=[],on=k=>g33(k)&&OPTSTEPS[k].includes(i);
+  if(on('fmat')){const v=Object.values(FSP).map(x=>eqSp(12,x,'60'));L.push(`Footing mats: 12mm Grade 33, bottom @ ${Math.min(...v)}–${Math.max(...v)}, top @ ${eqSp(12,300,'60')} both ways (plan: #12 Grade 60 @ 190–215 and @ 300)`)}
+  if(on('ctie'))L.push(`Column ties: 12mm Grade 33. End zones @ ${eqSp(12,75,'60')} (3rd storey: @ ${eqSp(12,50,'60')}, C19 and C20 @ ${eqSp(10,50,'60')}), middle @ ${eqSp(10,150,'60')} (3rd storey @ ${eqSp(10,100,'60')}). Plan: Grade 60. ⚠ ${i===18?'The 3rd-storey end zones come out too tight to build':'Very tight end zones: use 10mm aggregate and vibrate well'}`);
+  if(on('stir')){const a=stirOpt([9,75,90]).st,b=stirOpt([11,80,115]).st;L.push(`Beam stirrups: 12mm Grade 33. Tie and roof beams ${a[0]} @ ${a[1]} each end, @ ${a[2]} middle · floor beams ${b[0]} @ ${b[1]} each end, @ ${b[2]} middle (plan: #10 Grade 60)`)}
+  if(on('slab'))L.push(`Floor slab bars: 12mm Grade 33 @ ${slabOpt().sp} both ways (plan: #10 Grade 40 @ 150)`);
+  if(on('sof'))L.push('Slab on fill: 12mm Grade 33 @ 600 both ways (plan: #10 @ 600, grade not given)');
+  return L.length?'<b>Your rebar options, not the plan. Get the engineer\'s written approval.</b><ul><li>'+L.join('</li><li>')+'</li></ul>':''}
+function colTieQ(q,c,y0,y1,joint){const[a,b]=colSize(c),[eb0,es0,ms0,zn]=tieSpec(c),[eb,es,mb,ms,g]=tieOpt(eb0,es0,ms0),[z,mm]=tieSplit(y0,y1,zn,joint,es,ms),tl=tieLen(a,b);
+  q.G=g;q.b(eb,tl,z,'column ties, end zones');q.b(mb,tl,mm,'column ties, middle');q.G='60'}
+function stirTxt(L,st0){const so=stirOpt(st0),st=so.st;return `${so.d}mm ${GRL[so.g]}: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
+const slabTxt=()=>{const o=slabOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
+const sofTxt=()=>{const o=sofOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
 const FSP={C1:200,C2:215,C3:195,C4:215,C5:210,C6:210,C7:215,C8:215,C9:210,C10:190,C11:210};
 const BAR2={C1:[4,32],C2:[4,25],C3:[4,32],C4:[4,32],C5:[4,20],C6:[4,32],C7:[4,32],C8:[4,25],C9:[4,32],C10:[8,20],C11:[8,20]};
 const BAR1=n=>n==='C10'||n==='C11'?[8,16]:[4,20];
@@ -897,22 +952,22 @@ const stirLen=(w,d)=>m(2*((w-80)+(d-80))+200);
 function colName(c){return c[0][0]==='U'?UPN[+c[0].slice(1)]:c[0]}
 function colSize(c){return c[0][0]==='U'?[c.hx*2,c.hz*2]:[c[3],c[3]]}
 /* info strings for hover / tap */
-const infoFooting=([n,x,z,c,L])=>{const sp=FSP[n],k=Math.floor((L-150)/sp)+1,k2=Math.floor((L-150)/300)+1;
-  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom #12 @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top #12 @ 300: ${k2} bars each way|Rebar Grade 60 (Fy415)`};
+const infoFooting=([n,x,z,c,L])=>{const fo=fmatSp(n,false),to=fmatSp(n,true),sp=fo.sp,k=Math.floor((L-150)/sp)+1,k2=Math.floor((L-150)/to.sp)+1;
+  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom 12mm @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top 12mm @ ${to.sp}: ${k2} bars each way|Rebar ${GRL[fo.g]}`};
 function infoCol(c,storey,y0,y1){const n=colName(c),[a,b]=colSize(c),h=m(y1-y0);
   const bars=storey==='3rd storey'?BARU[+c[0].slice(1)]:storey==='2nd storey'?BAR2[n]:BAR1(n);
   return `Column ${n} · ${storey}|${a} × ${b}mm · height ${h.toFixed(2)}m · C28|Concrete ${r2(m(a)*m(b)*h)} m³|Main bars ${bars[0]}-#${bars[1]} · Grade 60 (Fy415)|Formwork ${r2(2*(m(a)+m(b))*h)} m²`}
 function infoBeam(lbl,s,w,d,bars,st,slabT){const L=segL(s),cl=Math.max(0,L-300);
-  return `${lbl}|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)|Concrete ≈ ${r2(m(cl)*m(w)*m(d-slabT))} m³ (below slab)|Bars ${bars} · Grade 60 (Fy415)|Stirrups #10: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
+  return `${lbl}|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)|Concrete ≈ ${r2(m(cl)*m(w)*m(d-slabT))} m³ (below slab)|Bars ${bars} · Grade 60 (Fy415)|Stirrups ${stirTxt(L,st)}`}
 function infoSlab(lbl,F,t,bars){const a=areaF(F);return `${lbl}|Area ${r1(a)} m² × ${t}mm thick|Concrete ${r2(a*m(t))} m³|Bars ${bars}`}
 function infoWall(s,h){const L=m(segL(s)),a=L*m(h);return `CHB wall 150mm|${L.toFixed(2)}m long × ${m(h).toFixed(2)}m high = ${r1(a)} m²|≈ ${Math.ceil(a*12.5)} blocks (12.5 per m², before openings)|#12 @ 400 vertical and every 3 courses · bar grade not specified`}
 
 /* quantities per step */
 function Q(){const it=[];let g='60';return{it,set G(v){g=v},c:(cls,v,lbl)=>it.push({k:'c',cls,v,lbl}),b:(d,len,n,lbl)=>it.push({k:'b',d,len,n,lbl,g}),bt:(d,tot,lbl)=>it.push({k:'b',d,len:tot,n:1,tot:true,lbl,g}),x:(lbl,v,u)=>it.push({k:'x',lbl,v,u})}}
 function beamQ(q,lines,w,d,top,bot,st,slabT,stage){lines.forEach(s=>{const L=m(segL(s));
-  if(stage==='bars'){q.b(top[1],L+0.6,top[0],'beam top bars');q.b(bot[1],L+0.6,bot[0],'beam bottom bars');q.b(10,stirLen(w,d),stirN(segL(s),...st),'stirrups')}
+  if(stage==='bars'){q.b(top[1],L+0.6,top[0],'beam top bars');q.b(bot[1],L+0.6,bot[0],'beam bottom bars');{const so=stirOpt(st);q.G=so.g;q.b(so.d,stirLen(w,d),stirN(segL(s),...so.st),'stirrups');q.G='60'}}
   else q.c('C21',Math.max(0,L-0.3)*m(w)*m(d-slabT))})}
-function slabBarsQ(q,F,sp){q.G='40';q.bt(10,2*areaF(F)/m(sp),'slab bars both ways');q.G='60'}
+function slabBarsQ(q,F){const o=slabOpt();q.G=o.g;q.bt(o.d,2*areaF(F)/m(o.sp),'slab bars both ways @ '+o.sp);q.G='60'}
 function postsCount(F){const z0=F[0][1],z1=F[2][1];let n=0;for(let z=z0+500;z<z1;z+=1400)for(let t=0.12;t<0.95;t+=0.19)n++;return n}
 function troughQ(q,x0,x1,z0,z1,yb,yt,stage){const W=m(x1-x0),D=m(z1-z0),H=m(yt-yb),per=2*(W+D);
   if(stage==='bars'){q.G='ns';q.bt(10,(W/0.2)*D+(D/0.2)*W+Math.round(per/0.25)*H+2*per,'planter bars (assumed 10mm @ 200)');q.G='60'}
@@ -925,16 +980,16 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   case 0:{let L=0;ZR.forEach(z=>L+=m(C(z)-A(z)+2000));L+=3*12;q.x('Column centers to mark',11,'pcs');q.x('Batter-board posts',14,'pcs');q.x('String line',Math.ceil(L),'m');break}
   case 1:q.x('Excavation (11 pits, ≈1.9m deep)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9,0)),'m³');break;
   case 2:q.x('Gravel bed 80mm',r2(MAIN.reduce((s,c)=>s+m(c[4])**2*0.08,0)),'m³');
-    MAIN.forEach(c=>{const L=c[4],k=Math.floor((L-150)/FSP[c[0]])+1;q.b(12,m(L-150),2*k,'footing bottom mat')});break;
-  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});MAIN.forEach(c=>q.b(12,tieLen(c[3],c[3]),4,'starter ties'));break;
-  case 4:MAIN.forEach(c=>{const L=c[4],k=Math.floor((L-150)/300)+1;q.b(12,m(L-150),2*k,'footing top mat')});break;
+    MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],false),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(12,m(L-150),2*k,'footing bottom mat')});q.G='60';break;
+  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});q.G=g33('ctie')?'33':'60';MAIN.forEach(c=>q.b(12,tieLen(c[3],c[3]),4,'starter ties'));q.G='60';break;
+  case 4:MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],true),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(12,m(L-150),2*k,'footing top mat')});q.G='60';break;
   case 5:q.c('C21',MAIN.reduce((s,c)=>s+m(c[4])**2*0.3,0),'11 footings');q.x('Footing side forms',r1(MAIN.reduce((s,c)=>s+4*m(c[4])*0.3,0)),'m²');break;
   case 6:beamQ(q,TB,200,300,[2,16],[2,12],[9,75,90],0,'bars');q.x('Tie beams',TB.length+' spans, '+r1(TB.reduce((s,x)=>s+m(segL(x)),0))+'m total','');break;
-  case 7:MAIN.forEach(c=>{const[z,mm]=tieSplit(-1500,2250,450,400);q.b(12,tieLen(c[3],c[3]),z,'column ties, end zones');q.b(10,tieLen(c[3],c[3]),mm,'column ties, middle')});
+  case 7:MAIN.forEach(c=>colTieQ(q,c,-1500,2250,400));
     q.x('Column formwork',r1(formH(MAIN,-1500,2250)),'m²');break;
   case 8:q.c('C28',colH(MAIN,-1500,2250),'ground columns');beamQ(q,TB,200,300,0,0,0,0,'conc');
     q.x('Backfill (approx.)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9-m(c[4])**2*0.3-m(c[3])**2*1.5,0)),'m³');break;
-  case 9:{const a=areaF(LOWF);q.x('Gravel base 100mm',r1(a*0.1),'m³');q.G='ns';q.bt(10,2*a/0.6,'slab-on-fill mesh @ 600');q.G='60';q.x('Slab area',r1(a),'m²');break}
+  case 9:{const a=areaF(LOWF);q.x('Gravel base 100mm',r1(a*0.1),'m³');{const o=sofOpt();q.G=o.g;q.bt(o.d,2*a/m(o.sp),'slab-on-fill mesh @ '+o.sp)}q.G='60';q.x('Slab area',r1(a),'m²');break}
   case 10:q.c('C21',areaF(LOWF)*0.1,'garage slab 100mm');break;
   case 11:q.G='ns';q.b(12,SLOPE+0.5,7,'stair main bars @ 200');q.b(10,1.1,Math.ceil(SLOPE/0.3)+1,'stair distribution bars');q.b(12,0.58,SN*3,'step bars');q.b(12,1.1,SN,'nosing bars');q.b(12,1.1,4,'stair footing bars');
     q.bt(10,2*1.2*m(5200-SZT)/0.2,'landing mesh');troughQ(q,...GP,'bars');break;
@@ -942,12 +997,12 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   case 13:q.x('Shoring posts',postsCount(LOWF),'pcs');q.x('Slab deck forms',r1(areaF(LOWF)),'m²');q.x('Beam forms (sides + bottom)',r1(B2.reduce((s,x)=>s+m(segL(x)-300)*(2*0.3+0.2),0)),'m²');break;
   case 14:beamQ(q,B2,200,400,[2,16],[2,16],[11,80,115],100,'bars');slabBarsQ(q,LOWF,150);troughQ(q,...HP,'bars');break;
   case 15:beamQ(q,B2,200,400,0,0,0,100,'conc');q.c('C21',areaF(LOWF)*0.1,'2nd floor slab');troughQ(q,...HP,'conc');break;
-  case 16:MAIN.forEach(c=>{const[n,d]=BAR2[c[0]];q.b(d,4.2,n,'column bars, 2nd storey');const[z,mm]=tieSplit(2650,5650,450,400);q.b(12,tieLen(c[3],c[3]),z,'ties, end zones');q.b(10,tieLen(c[3],c[3]),mm,'ties, middle')});
+  case 16:MAIN.forEach(c=>{const[n,d]=BAR2[c[0]];q.b(d,4.2,n,'column bars, 2nd storey');colTieQ(q,c,2650,5650,400)});
     q.x('Column formwork',r1(formH(MAIN,2650,5650)),'m²');break;
   case 17:q.c('C28',colH(MAIN,2650,5650),'2nd storey columns');beamQ(q,B3,200,400,[2,16],[2,16],[11,80,115],100,'bars');slabBarsQ(q,OUT,150);
     q.x('Shoring posts',postsCount(OUT),'pcs');q.x('Slab deck forms',r1(areaF(OUT)),'m²');break;
   case 18:beamQ(q,B3,200,400,0,0,0,100,'conc');q.c('C21',areaF(OUT)*0.1,'3rd floor slab');
-    UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');const[eb,es,ms,zn]=tieSpec(c),[z,mm]=tieSplit(6050,9000,zn,300,es,ms);q.b(eb,tieLen(c.hx*2,c.hz*2),z,'ties, end zones');q.b(10,tieLen(c.hx*2,c.hz*2),mm,'ties, middle')});
+    UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');colTieQ(q,c,6050,9000,300)});
     q.x('Column formwork',r1(formH(UPC,6050,9000)),'m²');break;
   case 19:{q.c('C28',colH(UPC,6050,9000),'3rd storey columns');beamQ(q,B3,200,300,[2,12],[2,12],[9,75,90],0,'bars');
     const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.G='ns';q.b(12,0.65,Math.round(per/0.4),'parapet vertical bars');q.bt(12,per,'parapet horizontal bar');q.G='60';break}
@@ -969,14 +1024,14 @@ function summarize(items){const conc={},bars={},xs=[];
     if(t.tot){b.L+=t.len;b.pcs+=Math.ceil(t.len*1.1/6)}else{b.L+=t.len*t.n;b.pcs+=t.len<=6?Math.ceil(t.n/Math.max(1,Math.floor(6/t.len))):t.n*Math.ceil(t.len/5.4)}}else xs.push(t)});
   return{conc,bars,xs}}
 const MIX={C21:[9,0.5,1.0],C28:[12,0.5,1.0]};
-const GRL={'60':'Grade 60 (Fy415)','40':'Grade 40 (FY276)',ns:'grade not specified'};
-const GRO={'60':0,'40':1,ns:2};
+const GRL={'60':'Grade 60 (Fy415)','40':'Grade 40 (FY276)','33':'Grade 33 (fy 230)',ns:'grade not specified'};
+const GRO={'60':0,'40':1,'33':2,ns:3};
 function qtyHTML(i){const s=summarize(qty(i));let rows='';
   Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k];rows+=`<tr><td>Concrete ${k}</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c)} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
   Object.values(s.bars).sort((a,b)=>GRO[a.g]-GRO[b.g]||a.d-b.d).forEach(b=>{rows+=`<tr><td>Rebar ${b.d}mm · ${GRL[b.g]}</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[b.d])} kg</td></tr>`});
   s.xs.forEach(t=>rows+=`<tr><td>${t.lbl}</td><td>${t.v} ${t.u}</td><td></td></tr>`);
-  let tc=0,tk=0,tb=0;const tg={'60':0,'40':0,ns:0};for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.values(z.bars).forEach(b=>{const w=b.L*KG[b.d];tk+=w;tg[b.g]+=w})}
-  const gs=['60','40','ns'].filter(g=>tg[g]>0).map(g=>`${Math.round(tg[g]).toLocaleString()} kg ${GRL[g]}`).join(' · ');
+  let tc=0,tk=0,tb=0;const tg={'60':0,'40':0,'33':0,ns:0};for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.values(z.bars).forEach(b=>{const w=b.L*KG[b.d];tk+=w;tg[b.g]+=w})}
+  const gs=['60','40','33','ns'].filter(g=>tg[g]>0).map(g=>`${Math.round(tg[g]).toLocaleString()} kg ${GRL[g]}`).join(' · ');
   return `<div class="qh"><span>Materials for this step</span><span class="qn">model estimate</span></div>`+
     (rows?`<div class="qwrap"><table class="qt"><tbody>${rows}</tbody></table></div>`:`<p class="qnone">No materials in this step.</p>`)+
     `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete · <b>${Math.ceil(tb)}</b> bags cement · <b>${Math.round(tk).toLocaleString()} kg</b> rebar${gs?`<br>${gs}`:''}</div>`}
@@ -1172,30 +1227,34 @@ function ROOMS(){}
 /* ---------- rebar hover/tap details: invisible hit boxes around each cage, mat and mesh ---------- */
 function HB(lv,F,y0,y1,info){INF=info;prism(lv,0,F,y0,y1,'hitbox',0);INF=''}
 const kgOf=(d,L)=>Math.round(L*KG[d]);
-function matInfo(c,top){const[n,x,z,cs,L]=c,sp=FSP[n],k=Math.floor((L-150)/sp)+1,bl=m(L-150);
-  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: #12 @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|Grade 60 (Fy415) per the footing schedule · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
-  if(top){const k2=Math.floor((L-150)/300)+1;t+=`|Top mat: #12 @ 300 both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(12,2*k2*bl)} kg|Tie the top mat to the column bars`}
+function matInfo(c,top){const[n,x,z,cs,L]=c,fo=fmatSp(n,false),sp=fo.sp,k=Math.floor((L-150)/sp)+1,bl=m(L-150);
+  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: 12mm @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|${GRL[fo.g]}${fo.g==='33'?` (your option; plan: #12 @ ${FSP[n]} Grade 60)`:' per the footing schedule'} · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
+  if(top){const to=fmatSp(n,true),k2=Math.floor((L-150)/to.sp)+1;t+=`|Top mat: 12mm @ ${to.sp} both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(12,2*k2*bl)} kg|Tie the top mat to the column bars`}
   return t}
-function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[eb,es,ms,zz]=tieSpec(c);zone=zz;const[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0,es,ms);
-  const tl=tieLen(a,b);let t=`Column ${n} cage · ${storey}|${a} × ${b}mm · main bars ${bars[0]}-#${bars[1]}`;
+function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[eb0,es0,ms0,zz]=tieSpec(c),[eb,es,mb,ms,tg]=tieOpt(eb0,es0,ms0);zone=zz;const[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0,es,ms);
+  const tl=tieLen(a,b);let t=`Column ${n} cage · ${storey}|${a} × ${b}mm · main bars ${bars[0]}-#${bars[1]} · Grade 60 (Fy415)`;
   if(storey==='garage storey')t+=` (≈5.44m each, 90° hook on the footing mat)`;
-  if(ties==='starter')t+=`|Starter ties #12 @ 150 inside the footing to keep the cage square`;
-  else t+=`|End zones (SCR ${zone}mm at top and bottom): #${eb} ties @ ${es} → ${zn} pcs|Middle: #10 ties @ ${ms} → ${mn} pcs|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`;
-  return t+`|Grade 60 (Fy415) main bars and ties · concrete C28 (column schedule)|Cover ≈ 40mm`}
-function beamCageInfo(lbl,s,w,d,top,bot,st){const L=segL(s),n=stirN(L,...st);
-  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot}|Grade 60 (Fy415) bars and stirrups · concrete C21 (beam schedule)|Bars run continuous through the columns|Stirrups #10 closed 2-leg: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${stirLen(w,d).toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*stirLen(w,d))}m · ${kgOf(10,n*stirLen(w,d))} kg`}
-function meshInfo(lbl,F,sp,shownAt,gr){const a=areaF(F),tot=2*a/m(sp);
-  return `${lbl}|#10 @ ${sp} both ways${shownAt&&shownAt!==sp?` (drawn at ${shownAt} for clarity)`:''}|Area ${r1(a)} m² → ≈ ${Math.ceil(tot)}m of 10mm bar · ${kgOf(10,tot)} kg · ${Math.ceil(tot*1.1/6)} pcs × 6m|${gr}|Set on 25–50mm chairs; lap ≈ 400mm (confirm)`}
+  if(ties==='starter')t+=`|Starter ties ${eb}mm @ 150 inside the footing to keep the cage square · ${GRL[tg]}`;
+  else{t+=`|End zones (SCR ${zone}mm at top and bottom): ${eb}mm ties @ ${es} → ${zn} pcs|Middle: ${mb}mm ties @ ${ms} → ${mn} pcs|Ties ${GRL[tg]}`;
+    if(tg==='33')t+=` (your option; plan: #${eb0} @ ${es0} + #10 @ ${ms0}, Grade 60)`+tightWarn(es);
+    t+=`|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`}
+  return t+`|Concrete C28 (column schedule) · cover ≈ 40mm`}
+function beamCageInfo(lbl,s,w,d,top,bot,st0){const L=segL(s),so=stirOpt(st0),st=so.st,n=stirN(L,...st),sl=stirLen(w,d);
+  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot} · Grade 60 (Fy415) · concrete C21|Bars run continuous through the columns|Stirrups ${so.d}mm closed 2-leg, ${GRL[so.g]}: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs${so.g==='33'?` (your option; plan: #10 ${st0[0]} @ ${st0[1]}, @ ${st0[2]}, Grade 60)`+tightWarn(st[1]):''}|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${sl.toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*sl)}m · ${kgOf(so.d,n*sl)} kg`}
+function meshInfo(lbl,F,sp,shownAt,gr,d=10){const a=areaF(F),tot=2*a/m(sp);
+  return `${lbl}|${d}mm @ ${sp} both ways${shownAt&&shownAt!==sp?` (drawn at ${shownAt} for clarity)`:''}|Area ${r1(a)} m² → ≈ ${Math.ceil(tot)}m of ${d}mm bar · ${kgOf(d,tot)} kg · ${Math.ceil(tot*1.1/6)} pcs × 6m|${gr}|Set on 25–50mm chairs; lap ≈ 400mm (confirm)`}
+function slabMeshInfo(lbl,F){const o=slabOpt();return meshInfo(lbl,F,o.sp,o.sp*2,`${GRL[o.g]}${o.g==='33'?' (your option; plan: #10 @ 150 Grade 40)':' per the slab schedule'} · concrete C21`,o.d)}
+function sofMeshInfo(){const o=sofOpt();return meshInfo('Garage slab-on-fill mesh',LOWF,o.sp,o.sp,o.g==='33'?'Grade 33 (your option; plan: #10 @ 600, grade not given)':'Bar grade not specified in the plans: ask the engineer',o.d)}
 function hits(i){
   if(i>=2&&i<=4)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[4]/2,c[4]/2),-1800,-1500,matInfo(c,i===4)));
   if(i>=3&&i<=6)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),-1500,3450,colCageInfo(c,'garage storey',-1500,2250,450,150,BAR1(c[0]),'starter')));
   if(i===7)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+60,c[3]/2+60),-1500,3450,colCageInfo(c,'garage storey',-1500,2250,450,150,BAR1(c[0]),'full')));
   if(i>=8&&i<=15)MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),2650,3450,`Column ${c[0]} starter bars|${n}-#${d} sticking up past the 2nd floor|Grade 60 (Fy415)|Lap the 2nd-storey bars here: lap length not given (≈ 40 × bar diameter = ${40*d}mm, confirm with engineer)`)});
   if(i>=6&&i<=7)gridBeams(false).forEach(s=>HB(98,seg(...trimSeg(s,160),260),-400,-100,beamCageInfo('Footing tie beam',s,200,300,'2-#16','2-#12 (2-#16 at some ends)',[9,75,90])));
-  if(i===9)HB(1,LOWF,-60,-40,meshInfo('Garage slab-on-fill mesh',LOWF,600,600,'Bar grade not specified in the plans: ask the engineer'));
-  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,meshInfo('2nd floor slab bars',LOWF,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21|With 12mm Grade 33 instead: @ 180 both ways (engineer to approve; see Part 4)'))}
+  if(i===9)HB(1,LOWF,-60,-40,sofMeshInfo());
+  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,slabMeshInfo('2nd floor slab bars',LOWF))}
   if(i>=16&&i<=17)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+60,c[3]/2+60),2650,6650,colCageInfo(c,'2nd storey',2650,5650,450,150,BAR2[c[0]],'full')));
-  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,meshInfo('3rd floor slab bars',OUT,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21|With 12mm Grade 33 instead: @ 180 both ways (engineer to approve; see Part 4)'))}
+  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,slabMeshInfo('3rd floor slab bars',OUT))}
   if(i===18)UPC.forEach((c,k)=>HB(98,sq(c[1],c[2],c.hx+60,c.hz+60),6050,9250,colCageInfo(c,'3rd storey',6050,9000,300,100,BARU[k],'full')));
   if(i===19){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),9000,9300,beamCageInfo('Roof beam',s,200,300,'2-#12','2-#12',[9,75,90])));
     const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));[[[AO(ZF),ZF],[CO(ZF),ZF]],[[AO(ZB),ZB],[CO(ZB),ZB]],[[AO(ZF),ZF],[AO(ZB),ZB]],[[CO(ZF),ZF],[CO(ZB),ZB]]].forEach(sg=>HB(98,seg(...sg,300),9300,9750,`Parapet bars|Vertical #12 @ 400 → ≈ ${Math.round(per/0.4)} pcs × 0.65m, anchored in the roof beam|1 horizontal #12 near the top · perimeter ≈ ${r1(per)}m|Bar grade not specified in the plans`))}
@@ -1358,7 +1417,7 @@ function render(keepAnim){const st=STEPS[cur];$('rDim').setAttribute('aria-press
   $('viewLbl').textContent=v==='full'?'Whole house':v==='site'?'Foundation':'Close-up';
   $('stN').textContent=String(cur+1).padStart(2,'0');$('stOf').textContent=`of ${STEPS.length} · ${st.p}`;
   $('stTitle').textContent=st.t;$('stList').innerHTML=st.b.map(x=>`<li>${x}</li>`).join('');
-  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;
+  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;{const on=optNote(cur);$('stOpt').hidden=!on;$('stOpt').innerHTML=on}
   $('prog').style.width=((cur+1)/STEPS.length*100)+'%';
   $('bBack').disabled=cur===0;$('fB').disabled=cur===0;$('fX').textContent=cur===STEPS.length-1?'Start over ↺':'Next ›';$('fN').textContent=String(cur+1).padStart(2,'0')+' / '+STEPS.length;$('bNext').textContent=cur===STEPS.length-1?'Start over':'Next step';
   document.querySelectorAll('#phases button').forEach(b=>b.classList.toggle('on',b.dataset.p===st.p));
@@ -1373,6 +1432,13 @@ $('zIn').onclick=()=>setZoom(zoom+1);$('zOut').onclick=()=>setZoom(zoom-1);
 const SHALT={p1:'Sheet P1-07: sewer, water line and storm drainage layouts',p2:'Sheet P2-08: isometric sewer and water lines, septic tank, catch basin and fixture details',e1:'Sheet E1-09: power and lighting layouts for all floors',e2:'Sheet E2-10: load schedule, voltage drop, short circuit analysis, single line diagram'};
 $('shTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#shTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$('shImg').src='sheets/'+b.dataset.s+'.jpg';$('shImg').alt=SHALT[b.dataset.s]});
 try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.length)cur=s}catch(e){}
+/* rebar option controls */
+function optUI(){document.querySelectorAll('#opts select').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value==='g33')});const any=Object.values(OPT).includes('g33');$('optWarn').hidden=!any;$('optBadge').hidden=!any}
+function setOpt(){try{localStorage.setItem('drb-opt',JSON.stringify(OPT))}catch(e){}optUI();$('qty').dataset.step='';render(true)}
+document.querySelectorAll('#opts select').forEach(s=>s.onchange=()=>{OPT[s.dataset.k]=s.value==='g33'?'g33':'plan';setOpt()});
+$('optReset').onclick=()=>{for(const k in OPT)OPT[k]='plan';setOpt()};
+$('optAll').onclick=()=>{for(const k in OPT)OPT[k]='g33';setOpt()};
+optUI();
 /* Grade 33 substitution card: equal As × fy per meter */
 (function(){const AR=d=>Math.PI/4*d*d,FY={'60':415,'40':276,'33':230};
   const sub=(d,sp,g)=>Math.floor(sp*AR(12)*FY['33']/(AR(d)*FY[g])/5+1e-6)*5;
@@ -1382,7 +1448,14 @@ try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.leng
   $('g33Floor').innerHTML=h;h='';
   MAIN.forEach(([n,x,z,cs,L])=>{const sp=FSP[n],s=sub(12,sp,'60'),t=sub(12,300,'60'),k=v=>Math.floor((L-150)/v)+1;
     h+=`<tr><td>FC${n.slice(1)} · ${L}×${L}</td><td>Bottom @ ${sp}: ${k(sp)} each way · top @ 300: ${k(300)} each way</td><td>Bottom @ ${s}: ${k(s)} each way · top @ ${t}: ${k(t)} each way</td></tr>`});
-  $('g33Foot').innerHTML=h})();
+  $('g33Foot').innerHTML=h;
+  const T=(nm,pl,g)=>`<tr><td>${nm}</td><td>${pl}</td><td>${g}</td></tr>`,w=s=>s-12<25?` <b>⚠ too tight to build</b>`:s<50?` <b>⚠ very tight</b>`:'',SA=stirOpt,ST=st=>{const b=OPT.stir;OPT.stir='g33';const r=stirOpt(st).st;OPT.stir=b;return r};
+  const t1=ST([9,75,90]),t2=ST([11,80,115]);
+  $('g33Ties').innerHTML=T('Column ties, garage and 2nd storey; 3rd storey C5, C8, C12','#12 @ 75 ends · #10 @ 150 middle',`@ ${eqSp(12,75,'60')} ends${w(eqSp(12,75,'60'))} · @ ${eqSp(10,150,'60')} middle`)+
+    T('Column ties, 3rd storey C13–C18, C21','#12 @ 50 ends · #10 @ 100 middle',`@ ${eqSp(12,50,'60')} ends${w(eqSp(12,50,'60'))} · @ ${eqSp(10,100,'60')} middle`)+
+    T('Column ties, 3rd storey C19, C20','#10 @ 50 ends · #10 @ 100 middle',`@ ${eqSp(10,50,'60')} ends${w(eqSp(10,50,'60'))} · @ ${eqSp(10,100,'60')} middle`)+
+    T('Tie beam and roof beam stirrups','#10: 9 @ 75 each end · @ 90 middle',`${t1[0]} @ ${t1[1]} each end · @ ${t1[2]} middle`)+
+    T('2nd and 3rd floor beam stirrups','#10: 11 @ 80 each end · @ 115 middle',`${t2[0]} @ ${t2[1]} each end · @ ${t2[2]} middle`)})();
 render(true);
 })();
 
