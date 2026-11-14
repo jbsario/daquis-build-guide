@@ -6,6 +6,11 @@
 <meta name="description" content="Step-by-step 3D build guide for the Daquis Residence, Sandari Batulao: structure, plumbing, electrical, dimensions and material quantities.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Daquis Residence Build Guide</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#C24E22">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Daquis Build">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -289,6 +294,10 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 .sch .today{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
 @media (max-width:600px){.sch thead{display:none}.sch tr{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:6px 8px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}.sch td{border:0;padding:0;white-space:nowrap}.sch td:first-child{grid-column:1/-1;white-space:normal;font-family:var(--f-body)}}
 
+.install{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.install button{min-height:40px;font:600 13px var(--f-body);padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+@media print{.install{display:none!important}}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -337,6 +346,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
   <div class="eyebrow">Proposed 3-storey residence · Blk 1 Lot 49 Sandari Batulao, Nasugbu, Batangas</div>
   <h1>Daquis Residence build guide</h1>
   <p class="lede">The whole structure, from string lines to paint, built up one stage at a time in 24 steps. Every bar size, spacing and level comes from the D.V. Fallarme construction plans (sheets S1-05 and S2-06). Tap Next to add the next stage.</p>
+  <div class="install" id="install"><span id="offMsg">Works offline after this first visit.</span> <button id="bInstall" hidden>Install on this phone</button><span id="iosTip" hidden>To install: tap Share, then Add to Home Screen.</span></div>
   <div class="levels" aria-label="Floor levels from the plans">
     <div><b>−0.20</b><span>Sidewalk</span></div>
     <div><b>±0.00</b><span>Ground FFL</span></div>
@@ -1636,6 +1646,14 @@ $('recImp').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f
   if(!confirm('Replace the site record on this device with the imported one?'))return;REC={steps:r.steps||{},qa:r.qa||{},sched:Object.assign({start:'',dur:{},status:{}},r.sched||{})};saveRec();recStep();qaRender();schRender()}catch(err){alert('That file is not a site record export.')}};
 $('recClr').onclick=()=>{if(!confirm('Delete all sign-offs, photos, answers and schedule changes on this device?'))return;REC={steps:{},qa:{},sched:{start:'',dur:{},status:{}}};saveRec();recStep();qaRender();schRender()};
 qaRender();schRender();
+/* offline + install */
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('/sw.js').catch(()=>{$('offMsg').textContent=''});
+else $('offMsg').textContent='';
+let deferredInstall=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('bInstall').hidden=false});
+$('bInstall').onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice.catch(()=>{});deferredInstall=null;$('bInstall').hidden=true};
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone)$('iosTip').hidden=false;
+window.addEventListener('offline',()=>{$('offMsg').textContent='Offline: showing the saved copy. Your site record still saves on this phone.'});
+window.addEventListener('online',()=>{$('offMsg').textContent='Back online.'});
 /* rebar option controls */
 document.querySelectorAll('#opts select[data-k]').forEach(s=>{const k=s.dataset.k;s.innerHTML=OPTS[k].map(v=>`<option value="${v}">${v==='plan'?OPTPLAN[k]:optLbl(v)}</option>`).join('')});
 function optUI(){document.querySelectorAll('#opts select[data-k]').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value!=='plan')});document.querySelectorAll('#opts select[data-e]').forEach(s=>s.value=String(EST[s.dataset.e]));const any=Object.values(OPT).some(v=>v!=='plan');$('optWarn').hidden=!any;$('optBadge').hidden=!any}

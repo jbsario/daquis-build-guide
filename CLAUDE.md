@@ -5,7 +5,8 @@ One-page static site: a rotatable 3D, 24-step build of the proposed 3-storey res
 ## Files
 - `index.html`: everything (CSS, HTML, one inline script, no libraries).
 - `sheets/p1.jpg p2.jpg e1.jpg e2.jpg`: plumbing (P1-07, P2-08) and electrical (E1-09, E2-10) sheets shown in Part 5.
-- `vercel.json`: clean URLs, long cache for sheets.
+- `vercel.json`: clean URLs, long cache for sheets, no-cache for `sw.js`.
+- `sw.js` + `manifest.webmanifest` + `icons/`: offline and install. Page is network-first (cached copy offline); sheets, icons and fonts cache-first. Bump `VERSION` in `sw.js` when adding precached files.
 
 ## Page layout
 Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedule codes · Part 3 member details (2D SVG) · Part 4 schedules · Part 5 plumbing and electrical · Part 6 pour checklist.
