@@ -169,6 +169,7 @@ polyline.hit{stroke:transparent;stroke-width:14;stroke-dasharray:none}
 .sheets{gap:10px}
 table.wrap td{white-space:normal;vertical-align:top}
 table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
+#grades td,#grades td:first-child{white-space:normal;color:var(--ink);padding:7px 8px}#grades td:first-child{padding-left:14px;font-family:var(--f-body)}#grades th{padding:7px 8px}#grades th:first-child{padding-left:14px}
 .tabs{display:flex;flex-wrap:wrap;gap:6px}
 .tabs button{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:6px 10px;border-radius:6px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -333,7 +334,8 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
     <div><code>4-#20</code><span>Quantity and size: four 20mm bars.</span></div>
     <div><code>9-2L-#10@75</code><span>9 closed 2-leg stirrups of 10mm bar, 75mm apart.</span></div>
     <div><code>C21 / C28</code><span>Concrete strength in MPa. C21 ≈ 1:2:4 for footings, beams and slabs. C28 ≈ 1:1.5:3 for columns.</span></div>
-    <div><code>Fy415</code><span>Grade 60 rebar. Don't substitute Grade 40 (Fy275).</span></div>
+    <div><code>Fy415</code><span>Grade 60 rebar: 415 MPa minimum yield. Used for footings, tie beams, columns and beams. Don't substitute Grade 40.</span></div>
+    <div><code>FY276</code><span>Grade 40 rebar: 276 MPa minimum yield. The plans allow it only for the 2nd and 3rd floor slab bars.</span></div>
     <div><code>L × B × D1</code><span>Footing length, breadth and thickness. D2 is only for stepped footings (blank here).</span></div>
     <div><code>B × D</code><span>Beam width × depth. B1 at 200 × 400 is 200 wide, 400 deep.</span></div>
     <div><code>SCR zone 450</code><span>Confinement zone at each column end, where ties go closer (75mm).</span></div>
@@ -490,7 +492,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
       <p>Several 3rd-floor and roof beams are cantilevered. Check each mark on S2-06.</p>
     </div>
     <div class="tbl">
-      <h3>Slabs</h3>
+      <h3>Slabs (C21, FY276)</h3>
       <table>
         <thead><tr><th>Slab</th><th>Thick</th><th>Bars</th></tr></thead>
         <tbody>
@@ -500,6 +502,23 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         </tbody>
       </table>
       <p>Top bars at supports (bent-up or continuous) per the slab schedule. Use L/4 for top-bar extension per detail 7.</p>
+    </div>
+    <div class="tbl" id="grades">
+      <h3>Rebar grades and concrete</h3>
+      <p>From the material line of each schedule on S2-06. The general notes on S1-05 add no other grade.</p>
+      <table class="wrap">
+        <thead><tr><th>Member</th><th>Concrete</th><th>Rebar</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Footings FC1–FC11</td><td>C21</td><td>Fy415 · Grade 60</td><td>Footing schedule</td></tr>
+          <tr><td>Footing tie beams</td><td>C21</td><td>Fy415 · Grade 60</td><td>Beam schedule, footing tie beam</td></tr>
+          <tr><td>Columns C1–C21, all four bands</td><td>C28</td><td>Fy415 · Grade 60</td><td>Column schedule, every column</td></tr>
+          <tr><td>2nd floor, 3rd floor and roof beams</td><td>C21</td><td>Fy415 · Grade 60</td><td>Beam schedules, 3 levels</td></tr>
+          <tr><td>2nd and 3rd floor slabs</td><td>C21</td><td>FY276 · Grade 40</td><td>Slab schedules, 2 levels</td></tr>
+          <tr><td>Column ties, beam stirrups (#10, #12)</td><td>As member</td><td>Not stated separately; the member grade is assumed</td><td>Ask the engineer</td></tr>
+          <tr><td>Slab on fill, stairs, CHB walls, parapet, planters, septic tank, catch basin</td><td>Not given</td><td>Not specified</td><td>Ask the engineer</td></tr>
+        </tbody>
+      </table>
+      <p>Fy is the minimum yield strength in MPa: Fy415 = 415 MPa (Grade 60), FY276 = 276 MPa (Grade 40). C21 and C28 are 21 and 28 MPa concrete. When the bars arrive, match the grade on the mill certificate and the mark rolled on the bar. Never use Grade 40 where Grade 60 is called for.</p>
     </div>
   </div>
 </section>
@@ -572,6 +591,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <li>Forms plumb, braced, tight at joints so grout doesn't leak</li>
         <li>Pipes and conduits placed before slab pours</li>
         <li>Correct concrete class: C21 footings/beams/slabs, C28 columns</li>
+        <li>Correct bar grade: Grade 60 (Fy415) in footings, tie beams, columns and beams; Grade 40 (FY276) only in floor slabs. Check the mill certificate and the grade mark rolled on each bar</li>
         <li>Water ready for curing, at least 7 days</li>
       </ul>
     </div>
@@ -589,6 +609,8 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <li>Rebar for the hanging and ground planters (10mm @ 200 assumed)</li>
         <li>Roof sheet material, gauge and slope</li>
         <li>Solar panel size and count</li>
+        <li>Rebar grade for items the schedules don't cover: slab on fill, stairs, CHB walls, parapet, planters, septic tank, catch basin</li>
+        <li>Whether the #10 and #12 ties and stirrups must also be Grade 60, like the main bars of the same member</li>
       </ol>
     </div>
   </div>
@@ -859,24 +881,24 @@ function colName(c){return c[0][0]==='U'?UPN[+c[0].slice(1)]:c[0]}
 function colSize(c){return c[0][0]==='U'?[c.hx*2,c.hz*2]:[c[3],c[3]]}
 /* info strings for hover / tap */
 const infoFooting=([n,x,z,c,L])=>{const sp=FSP[n],k=Math.floor((L-150)/sp)+1,k2=Math.floor((L-150)/300)+1;
-  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom #12 @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top #12 @ 300: ${k2} bars each way`};
+  return `Footing FC${n.slice(1)} (under ${n})|${L} × ${L} × 300mm · C21|Concrete ${r2(m(L)*m(L)*0.3)} m³|Bottom #12 @ ${sp}: ${k} bars each way, ${m(L-150).toFixed(2)}m long|Top #12 @ 300: ${k2} bars each way|Rebar Grade 60 (Fy415)`};
 function infoCol(c,storey,y0,y1){const n=colName(c),[a,b]=colSize(c),h=m(y1-y0);
   const bars=storey==='3rd storey'?BARU[+c[0].slice(1)]:storey==='2nd storey'?BAR2[n]:BAR1(n);
-  return `Column ${n} · ${storey}|${a} × ${b}mm · height ${h.toFixed(2)}m · C28|Concrete ${r2(m(a)*m(b)*h)} m³|Main bars ${bars[0]}-#${bars[1]}|Formwork ${r2(2*(m(a)+m(b))*h)} m²`}
+  return `Column ${n} · ${storey}|${a} × ${b}mm · height ${h.toFixed(2)}m · C28|Concrete ${r2(m(a)*m(b)*h)} m³|Main bars ${bars[0]}-#${bars[1]} · Grade 60 (Fy415)|Formwork ${r2(2*(m(a)+m(b))*h)} m²`}
 function infoBeam(lbl,s,w,d,bars,st,slabT){const L=segL(s),cl=Math.max(0,L-300);
-  return `${lbl}|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)|Concrete ≈ ${r2(m(cl)*m(w)*m(d-slabT))} m³ (below slab)|Bars ${bars}|Stirrups #10: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
+  return `${lbl}|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)|Concrete ≈ ${r2(m(cl)*m(w)*m(d-slabT))} m³ (below slab)|Bars ${bars} · Grade 60 (Fy415)|Stirrups #10: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
 function infoSlab(lbl,F,t,bars){const a=areaF(F);return `${lbl}|Area ${r1(a)} m² × ${t}mm thick|Concrete ${r2(a*m(t))} m³|Bars ${bars}`}
-function infoWall(s,h){const L=m(segL(s)),a=L*m(h);return `CHB wall 150mm|${L.toFixed(2)}m long × ${m(h).toFixed(2)}m high = ${r1(a)} m²|≈ ${Math.ceil(a*12.5)} blocks (12.5 per m², before openings)|#12 @ 400 vertical and every 3 courses`}
+function infoWall(s,h){const L=m(segL(s)),a=L*m(h);return `CHB wall 150mm|${L.toFixed(2)}m long × ${m(h).toFixed(2)}m high = ${r1(a)} m²|≈ ${Math.ceil(a*12.5)} blocks (12.5 per m², before openings)|#12 @ 400 vertical and every 3 courses · bar grade not specified`}
 
 /* quantities per step */
-function Q(){const it=[];return{it,c:(cls,v,lbl)=>it.push({k:'c',cls,v,lbl}),b:(d,len,n,lbl)=>it.push({k:'b',d,len,n,lbl}),bt:(d,tot,lbl)=>it.push({k:'b',d,len:tot,n:1,tot:true,lbl}),x:(lbl,v,u)=>it.push({k:'x',lbl,v,u})}}
+function Q(){const it=[];let g='60';return{it,set G(v){g=v},c:(cls,v,lbl)=>it.push({k:'c',cls,v,lbl}),b:(d,len,n,lbl)=>it.push({k:'b',d,len,n,lbl,g}),bt:(d,tot,lbl)=>it.push({k:'b',d,len:tot,n:1,tot:true,lbl,g}),x:(lbl,v,u)=>it.push({k:'x',lbl,v,u})}}
 function beamQ(q,lines,w,d,top,bot,st,slabT,stage){lines.forEach(s=>{const L=m(segL(s));
   if(stage==='bars'){q.b(top[1],L+0.6,top[0],'beam top bars');q.b(bot[1],L+0.6,bot[0],'beam bottom bars');q.b(10,stirLen(w,d),stirN(segL(s),...st),'stirrups')}
   else q.c('C21',Math.max(0,L-0.3)*m(w)*m(d-slabT))})}
-function slabBarsQ(q,F,sp){q.bt(10,2*areaF(F)/m(sp),'slab bars both ways')}
+function slabBarsQ(q,F,sp){q.G='40';q.bt(10,2*areaF(F)/m(sp),'slab bars both ways');q.G='60'}
 function postsCount(F){const z0=F[0][1],z1=F[2][1];let n=0;for(let z=z0+500;z<z1;z+=1400)for(let t=0.12;t<0.95;t+=0.19)n++;return n}
 function troughQ(q,x0,x1,z0,z1,yb,yt,stage){const W=m(x1-x0),D=m(z1-z0),H=m(yt-yb),per=2*(W+D);
-  if(stage==='bars'){q.bt(10,(W/0.2)*D+(D/0.2)*W+Math.round(per/0.25)*H+2*per,'planter bars (assumed 10mm @ 200)')}
+  if(stage==='bars'){q.G='ns';q.bt(10,(W/0.2)*D+(D/0.2)*W+Math.round(per/0.25)*H+2*per,'planter bars (assumed 10mm @ 200)');q.G='60'}
   else q.c('C21',W*D*0.1+per*0.1*H)}
 const SLOPE=Math.hypot(m(SN*SRUN),2.85);
 function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cantBeams();
@@ -895,9 +917,9 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
     q.x('Column formwork',r1(formH(MAIN,-1500,2250)),'m²');break;
   case 8:q.c('C28',colH(MAIN,-1500,2250),'ground columns');beamQ(q,TB,200,300,0,0,0,0,'conc');
     q.x('Backfill (approx.)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9-m(c[4])**2*0.3-m(c[3])**2*1.5,0)),'m³');break;
-  case 9:{const a=areaF(LOWF);q.x('Gravel base 100mm',r1(a*0.1),'m³');q.bt(10,2*a/0.6,'slab-on-fill mesh @ 600');q.x('Slab area',r1(a),'m²');break}
+  case 9:{const a=areaF(LOWF);q.x('Gravel base 100mm',r1(a*0.1),'m³');q.G='ns';q.bt(10,2*a/0.6,'slab-on-fill mesh @ 600');q.G='60';q.x('Slab area',r1(a),'m²');break}
   case 10:q.c('C21',areaF(LOWF)*0.1,'garage slab 100mm');break;
-  case 11:q.b(12,SLOPE+0.5,7,'stair main bars @ 200');q.b(10,1.1,Math.ceil(SLOPE/0.3)+1,'stair distribution bars');q.b(12,0.58,SN*3,'step bars');q.b(12,1.1,SN,'nosing bars');q.b(12,1.1,4,'stair footing bars');
+  case 11:q.G='ns';q.b(12,SLOPE+0.5,7,'stair main bars @ 200');q.b(10,1.1,Math.ceil(SLOPE/0.3)+1,'stair distribution bars');q.b(12,0.58,SN*3,'step bars');q.b(12,1.1,SN,'nosing bars');q.b(12,1.1,4,'stair footing bars');
     q.bt(10,2*1.2*m(5200-SZT)/0.2,'landing mesh');troughQ(q,...GP,'bars');break;
   case 12:q.c('C21',1.2*(SLOPE*0.15+SN*0.28*0.204/2)+1.2*0.5*0.55+1.2*m(5200-SZT)*0.1,'stair + landing slab');troughQ(q,...GP,'conc');break;
   case 13:q.x('Shoring posts',postsCount(LOWF),'pcs');q.x('Slab deck forms',r1(areaF(LOWF)),'m²');q.x('Beam forms (sides + bottom)',r1(B2.reduce((s,x)=>s+m(segL(x)-300)*(2*0.3+0.2),0)),'m²');break;
@@ -911,14 +933,14 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
     UPC.forEach((c,k)=>{const[n,d]=BARU[k];q.b(d,3.4,n,'column bars, 3rd storey');const[z,mm]=tieSplit(6050,9000,300,300);q.b(12,tieLen(c.hx*2,c.hz*2),z,'ties, end zones');q.b(10,tieLen(c.hx*2,c.hz*2),mm,'ties, middle')});
     q.x('Column formwork',r1(formH(UPC,6050,9000)),'m²');break;
   case 19:{q.c('C28',colH(UPC,6050,9000),'3rd storey columns');beamQ(q,B3,200,300,[2,12],[2,12],[9,75,90],0,'bars');
-    const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.b(12,0.65,Math.round(per/0.4),'parapet vertical bars');q.bt(12,per,'parapet horizontal bar');break}
+    const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.G='ns';q.b(12,0.65,Math.round(per/0.4),'parapet vertical bars');q.bt(12,per,'parapet horizontal bar');q.G='60';break}
   case 20:{beamQ(q,B3,200,300,0,0,0,0,'conc');const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));q.x('Parapet CHB (450 high)',Math.ceil(per*0.45*12.5),'pcs');break}
   case 21:{const len=m(ZB-ZF);let pl=0;for(let z=ZF+300;z<ZB-150;z+=800)pl+=m(CO(z)-AO(z)-400);
     q.x('Rafters 2"×6"×2.0mm C-purlin (2 per rafter, 5 rafters)',Math.ceil(10*len*1.05/6),'pcs × 6m');q.x('Purlins 2"×2"×1.5mm tubular @ 0.80',Math.ceil(pl*1.05/6),'pcs × 6m');
     q.x('Long-span rib-type roof sheets (material not specified)',r1(areaF(OUT)*1.03),'m²');q.x('Box gutter (rear)',r1(m(CO(ZB)-AO(ZB)-300)),'m');
     q.x('Downspouts',2+' pcs × '+m(9400-2650).toFixed(1)+'m','');q.x('Flashing along parapets',r1(m(CO(ZF)-AO(ZF))+2*m(ZB-ZF)),'m');q.x('Roof screws / tek screws (≈6 per m²)',Math.ceil(areaF(OUT)*6),'pcs');break}
   case 22:{let a=0,v=0,hz=0;[[GW,2250],[W2,3000],[W3,2950]].forEach(([L,h])=>L.forEach(s=>{const l=m(segL(s));a+=l*m(h);v+=(Math.round(l/0.4)+1)*m(h);hz+=Math.floor(h/600)*l}));
-    const open=OPEN_AREA();q.x('CHB wall area (net of openings)',r1(a-open),'m²');q.x('CHB 150mm blocks',Math.ceil((a-open)*12.5*1.05),'pcs');q.bt(12,v+hz,'CHB wall bars');break}
+    const open=OPEN_AREA();q.x('CHB wall area (net of openings)',r1(a-open),'m²');q.x('CHB 150mm blocks',Math.ceil((a-open)*12.5*1.05),'pcs');q.G='ns';q.bt(12,v+hz,'CHB wall bars');break}
   case 23:{let a=0;[[GW,2250],[W2,3000],[W3,2950]].forEach(([L,h])=>L.forEach(s=>a+=m(segL(s))*m(h)));const open=OPEN_AREA();
     q.x('Plaster, both faces',r1(2*(a-open)),'m²');q.x('Paint, both faces',r1(2*(a-open)),'m²');const fw=m(C(0)-A(0)-1400),f3=m(CO(ZF)-AO(ZF)-1800);q.x('Glass: front walls + side windows (as modeled)',r1(open+fw*3.0+f3*2.35),'m²');q.x('Garage door',r1(fw*2.25)+' m² ('+fw.toFixed(2)+' × 2.25m)','');break}
   }
@@ -926,18 +948,21 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   return q.it}
 function OPEN_AREA(){return 1.4*1.8+1.6*1.8+1.0*2.25+2.0*2.0+1.8*2.0+1.6*2.0}
 function summarize(items){const conc={},bars={},xs=[];
-  items.forEach(t=>{if(t.k==='c'){conc[t.cls]=(conc[t.cls]||0)+t.v}else if(t.k==='b'){const b=bars[t.d]||(bars[t.d]={L:0,pcs:0});
+  items.forEach(t=>{if(t.k==='c'){conc[t.cls]=(conc[t.cls]||0)+t.v}else if(t.k==='b'){const kk=t.d+'|'+(t.g||'60'),b=bars[kk]||(bars[kk]={d:t.d,g:t.g||'60',L:0,pcs:0});
     if(t.tot){b.L+=t.len;b.pcs+=Math.ceil(t.len*1.1/6)}else{b.L+=t.len*t.n;b.pcs+=t.len<=6?Math.ceil(t.n/Math.max(1,Math.floor(6/t.len))):t.n*Math.ceil(t.len/5.4)}}else xs.push(t)});
   return{conc,bars,xs}}
 const MIX={C21:[9,0.5,1.0],C28:[12,0.5,1.0]};
+const GRL={'60':'Grade 60 (Fy415)','40':'Grade 40 (FY276)',ns:'grade not specified'};
+const GRO={'60':0,'40':1,ns:2};
 function qtyHTML(i){const s=summarize(qty(i));let rows='';
   Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k];rows+=`<tr><td>Concrete ${k}</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c)} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
-  Object.keys(s.bars).sort((a,b)=>a-b).forEach(d=>{const b=s.bars[d];rows+=`<tr><td>Rebar ${d}mm</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[d])} kg</td></tr>`});
+  Object.values(s.bars).sort((a,b)=>GRO[a.g]-GRO[b.g]||a.d-b.d).forEach(b=>{rows+=`<tr><td>Rebar ${b.d}mm · ${GRL[b.g]}</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[b.d])} kg</td></tr>`});
   s.xs.forEach(t=>rows+=`<tr><td>${t.lbl}</td><td>${t.v} ${t.u}</td><td></td></tr>`);
-  let tc=0,tk=0,tb=0;for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.keys(z.bars).forEach(d=>tk+=z.bars[d].L*KG[d])}
+  let tc=0,tk=0,tb=0;const tg={'60':0,'40':0,ns:0};for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.values(z.bars).forEach(b=>{const w=b.L*KG[b.d];tk+=w;tg[b.g]+=w})}
+  const gs=['60','40','ns'].filter(g=>tg[g]>0).map(g=>`${Math.round(tg[g]).toLocaleString()} kg ${GRL[g]}`).join(' · ');
   return `<div class="qh"><span>Materials for this step</span><span class="qn">model estimate</span></div>`+
     (rows?`<div class="qwrap"><table class="qt"><tbody>${rows}</tbody></table></div>`:`<p class="qnone">No materials in this step.</p>`)+
-    `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete · <b>${Math.ceil(tb)}</b> bags cement · <b>${Math.round(tk).toLocaleString()} kg</b> rebar</div>`}
+    `<div class="qsum">Total so far: <b>${r1(tc)} m³</b> concrete · <b>${Math.ceil(tb)}</b> bags cement · <b>${Math.round(tk).toLocaleString()} kg</b> rebar${gs?`<br>${gs}`:''}</div>`}
 
 /* dimension overlay */
 let dimsOn=true;
@@ -1131,7 +1156,7 @@ function ROOMS(){}
 function HB(lv,F,y0,y1,info){INF=info;prism(lv,0,F,y0,y1,'hitbox',0);INF=''}
 const kgOf=(d,L)=>Math.round(L*KG[d]);
 function matInfo(c,top){const[n,x,z,cs,L]=c,sp=FSP[n],k=Math.floor((L-150)/sp)+1,bl=m(L-150);
-  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: #12 @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
+  let t=`Footing FC${n.slice(1)} rebar (under ${n})|Bottom mat: #12 @ ${sp} both ways → ${k} bars each way, ${2*k} pcs|Bar length ${bl.toFixed(2)}m · 75mm cover · raised 75mm on concrete spacers|Grade 60 (Fy415) per the footing schedule · footing concrete C21|Bottom mat ≈ ${r1(2*k*bl)}m · ${kgOf(12,2*k*bl)} kg`;
   if(top){const k2=Math.floor((L-150)/300)+1;t+=`|Top mat: #12 @ 300 both ways → ${k2} bars each way, ${2*k2} pcs · ${kgOf(12,2*k2*bl)} kg|Tie the top mat to the column bars`}
   return t}
 function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]=colSize(c),[zn,mn]=tieSplit(y0,y1,zone,ties==='full'?(storey==='3rd storey'?300:400):0);
@@ -1139,29 +1164,29 @@ function colCageInfo(c,storey,y0,y1,zone,mid,bars,ties){const n=colName(c),[a,b]
   if(storey==='garage storey')t+=` (≈5.44m each, 90° hook on the footing mat)`;
   if(ties==='starter')t+=`|Starter ties #12 @ 150 inside the footing to keep the cage square`;
   else t+=`|End zones (${zone}mm at top and bottom): #12 ties @ ${storey==='3rd storey'?'50':'75'} → ${zn} pcs|Middle: #10 ties @ ${storey==='3rd storey'?'100':'150'} → ${mn} pcs|Tie size ${a-80} × ${b-80}mm, 135° hooks, ≈ ${tl.toFixed(2)}m per tie|Keep ties going through the beam joint`;
-  return t+`|Cover ≈ 40mm`}
+  return t+`|Grade 60 (Fy415) main bars and ties · concrete C28 (column schedule)|Cover ≈ 40mm`}
 function beamCageInfo(lbl,s,w,d,top,bot,st){const L=segL(s),n=stirN(L,...st);
-  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot}|Bars run continuous through the columns|Stirrups #10 closed 2-leg: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${stirLen(w,d).toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*stirLen(w,d))}m · ${kgOf(10,n*stirLen(w,d))} kg`}
-function meshInfo(lbl,F,sp,shownAt){const a=areaF(F),tot=2*a/m(sp);
-  return `${lbl}|#10 @ ${sp} both ways${shownAt&&shownAt!==sp?` (drawn at ${shownAt} for clarity)`:''}|Area ${r1(a)} m² → ≈ ${Math.ceil(tot)}m of 10mm bar · ${kgOf(10,tot)} kg · ${Math.ceil(tot*1.1/6)} pcs × 6m|Set on 25–50mm chairs; lap ≈ 400mm (confirm)`}
+  return `${lbl} cage|${w} × ${d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(Math.max(0,L-300)).toFixed(2)}m)|Top bars ${top} · bottom bars ${bot}|Grade 60 (Fy415) bars and stirrups · concrete C21 (beam schedule)|Bars run continuous through the columns|Stirrups #10 closed 2-leg: ${st[0]} @ ${st[1]} at each end, @ ${st[2]} in the middle → ${n} pcs|Stirrup ${w-80} × ${d-80}mm, 135° hooks, ≈ ${stirLen(w,d).toFixed(2)}m each · first stirrup 50mm from the column face|Stirrups total ≈ ${r1(n*stirLen(w,d))}m · ${kgOf(10,n*stirLen(w,d))} kg`}
+function meshInfo(lbl,F,sp,shownAt,gr){const a=areaF(F),tot=2*a/m(sp);
+  return `${lbl}|#10 @ ${sp} both ways${shownAt&&shownAt!==sp?` (drawn at ${shownAt} for clarity)`:''}|Area ${r1(a)} m² → ≈ ${Math.ceil(tot)}m of 10mm bar · ${kgOf(10,tot)} kg · ${Math.ceil(tot*1.1/6)} pcs × 6m|${gr}|Set on 25–50mm chairs; lap ≈ 400mm (confirm)`}
 function hits(i){
   if(i>=2&&i<=4)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[4]/2,c[4]/2),-1800,-1500,matInfo(c,i===4)));
   if(i>=3&&i<=6)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),-1500,3450,colCageInfo(c,'garage storey',-1500,2250,450,150,BAR1(c[0]),'starter')));
   if(i===7)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+60,c[3]/2+60),-1500,3450,colCageInfo(c,'garage storey',-1500,2250,450,150,BAR1(c[0]),'full')));
-  if(i>=8&&i<=15)MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),2650,3450,`Column ${c[0]} starter bars|${n}-#${d} sticking up past the 2nd floor|Lap the 2nd-storey bars here: lap length not given (≈ 40 × bar diameter = ${40*d}mm, confirm with engineer)`)});
+  if(i>=8&&i<=15)MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);HB(98,sq(c[1],c[2],c[3]/2+30,c[3]/2+30),2650,3450,`Column ${c[0]} starter bars|${n}-#${d} sticking up past the 2nd floor|Grade 60 (Fy415)|Lap the 2nd-storey bars here: lap length not given (≈ 40 × bar diameter = ${40*d}mm, confirm with engineer)`)});
   if(i>=6&&i<=7)gridBeams(false).forEach(s=>HB(98,seg(...trimSeg(s,160),260),-400,-100,beamCageInfo('Footing tie beam',s,200,300,'2-#16','2-#12 (2-#16 at some ends)',[9,75,90])));
-  if(i===9)HB(1,LOWF,-60,-40,meshInfo('Garage slab-on-fill mesh',LOWF,600,600));
-  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,meshInfo('2nd floor slab bars',LOWF,150,300))}
+  if(i===9)HB(1,LOWF,-60,-40,meshInfo('Garage slab-on-fill mesh',LOWF,600,600,'Bar grade not specified in the plans: ask the engineer'));
+  if(i===14){gridBeams(true).forEach(s=>HB(98,seg(...trimSeg(s,160),260),2250,2650,beamCageInfo('2nd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (2-#12 to 2-#25 per mark, S2-06)',[11,80,115])));HB(3,LOWF,2570,2600,meshInfo('2nd floor slab bars',LOWF,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21'))}
   if(i>=16&&i<=17)MAIN.forEach(c=>HB(98,sq(c[1],c[2],c[3]/2+60,c[3]/2+60),2650,6650,colCageInfo(c,'2nd storey',2650,5650,450,150,BAR2[c[0]],'full')));
-  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,meshInfo('3rd floor slab bars',OUT,150,300))}
+  if(i===17){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),5650,6050,beamCageInfo('3rd floor beam',s,200,400,'typ. 2-#16','typ. 2-#16 (several CANTILEVERED marks)',[11,80,115])));HB(5,OUT,5970,6000,meshInfo('3rd floor slab bars',OUT,150,300,'Grade 40 (FY276) per the slab schedule · concrete C21'))}
   if(i===18)UPC.forEach((c,k)=>HB(98,sq(c[1],c[2],c.hx+60,c.hz+60),6050,9250,colCageInfo(c,'3rd storey',6050,9000,300,100,BARU[k],'full')));
   if(i===19){cantBeams().forEach(s=>HB(98,seg(...trimSeg(s,160),260),9000,9300,beamCageInfo('Roof beam',s,200,300,'2-#12','2-#12',[9,75,90])));
-    const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));[[[AO(ZF),ZF],[CO(ZF),ZF]],[[AO(ZB),ZB],[CO(ZB),ZB]],[[AO(ZF),ZF],[AO(ZB),ZB]],[[CO(ZF),ZF],[CO(ZB),ZB]]].forEach(sg=>HB(98,seg(...sg,300),9300,9750,`Parapet bars|Vertical #12 @ 400 → ≈ ${Math.round(per/0.4)} pcs × 0.65m, anchored in the roof beam|1 horizontal #12 near the top · perimeter ≈ ${r1(per)}m`))}
-  if(i===11){HB(98,[[A(SZ0)-1500,SZ0-250],[A(SZ0)-300,SZ0-250],[A(5200)-300,5200],[A(5200)-1500,5200]],-750,2700,`Exterior stair rebar (detail 9)|Main: 7 × #12 @ 200 along the slope, ≈ ${(SLOPE+0.5).toFixed(2)}m each|Distribution: #10 @ 300 across, 1.10m each|Step bars: 1 bent #12 per step (riser + tread) at 3 places, 14 steps|Nosing: #12 at every step edge · footing: 4-#12|Landing mesh #10 @ 200 both ways`);
-    HB(98,[[GP[0],GP[2]],[GP[1],GP[2]],[GP[1],GP[3]],[GP[0],GP[3]]],GP[4],GP[5],'Ground planter rebar (assumed)|Floor #10 @ 200 both ways · walls #10 @ 250 vertical, 2 horizontal rows|Not detailed in the plans: confirm')}
-  if(i===14)HB(98,[[HP[0],HP[2]],[HP[1],HP[2]],[HP[1],HP[3]],[HP[0],HP[3]]],HP[4],HP[5],'Hanging planter rebar (assumed)|Floor #10 @ 200 both ways, run back into the front beam|Walls #10 @ 250 vertical, 2 horizontal rows|Not detailed in the plans: get the cantilever detail');
+    const per=m(2*(CO(ZF)-AO(ZF))+2*(ZB-ZF));[[[AO(ZF),ZF],[CO(ZF),ZF]],[[AO(ZB),ZB],[CO(ZB),ZB]],[[AO(ZF),ZF],[AO(ZB),ZB]],[[CO(ZF),ZF],[CO(ZB),ZB]]].forEach(sg=>HB(98,seg(...sg,300),9300,9750,`Parapet bars|Vertical #12 @ 400 → ≈ ${Math.round(per/0.4)} pcs × 0.65m, anchored in the roof beam|1 horizontal #12 near the top · perimeter ≈ ${r1(per)}m|Bar grade not specified in the plans`))}
+  if(i===11){HB(98,[[A(SZ0)-1500,SZ0-250],[A(SZ0)-300,SZ0-250],[A(5200)-300,5200],[A(5200)-1500,5200]],-750,2700,`Exterior stair rebar (detail 9)|Main: 7 × #12 @ 200 along the slope, ≈ ${(SLOPE+0.5).toFixed(2)}m each|Distribution: #10 @ 300 across, 1.10m each|Step bars: 1 bent #12 per step (riser + tread) at 3 places, 14 steps|Nosing: #12 at every step edge · footing: 4-#12|Landing mesh #10 @ 200 both ways|Bar grade not specified in the plans`);
+    HB(98,[[GP[0],GP[2]],[GP[1],GP[2]],[GP[1],GP[3]],[GP[0],GP[3]]],GP[4],GP[5],'Ground planter rebar (assumed)|Floor #10 @ 200 both ways · walls #10 @ 250 vertical, 2 horizontal rows|Not detailed in the plans, grade not specified: confirm')}
+  if(i===14)HB(98,[[HP[0],HP[2]],[HP[1],HP[2]],[HP[1],HP[3]],[HP[0],HP[3]]],HP[4],HP[5],'Hanging planter rebar (assumed)|Floor #10 @ 200 both ways, run back into the front beam|Walls #10 @ 250 vertical, 2 horizontal rows|Not detailed in the plans, grade not specified: get the cantilever detail');
   if(i===22)[[GW,0,2250],[W2,2650,5650],[W3,6050,9000]].forEach(([L,y0,y1])=>L.forEach(s=>{const l=m(segL(s)),h=m(y1-y0),nv=Math.round(l/0.4)+1,nh=Math.floor((y1-y0)/600);
-    HB(98,seg(...s,220),y0,y1,`CHB wall rebar|Vertical #12 @ 400 → ${nv} bars × ${h.toFixed(2)}m, tied to dowels|Horizontal #12 every 3 courses (600) → ${nh} rows × ${l.toFixed(2)}m|Fill the bar cells with mortar · wall ${l.toFixed(2)} × ${h.toFixed(2)}m`)}));
+    HB(98,seg(...s,220),y0,y1,`CHB wall rebar|Vertical #12 @ 400 → ${nv} bars × ${h.toFixed(2)}m, tied to dowels|Horizontal #12 every 3 courses (600) → ${nh} rows × ${l.toFixed(2)}m|Bar grade not specified in the plans|Fill the bar cells with mortar · wall ${l.toFixed(2)} × ${h.toFixed(2)}m`)}));
 }
 
 /* ---------- views ---------- */
@@ -1182,34 +1207,34 @@ const STEPS=[
   s:"Column schedule band 0–1.8m suggests about 1.8m from footing base to ground slab",w:"Confirm the excavation depth with the engineer. Cut faces near the rear need shoring or a retaining wall plan."},
  {p:"Foundation",t:"Gravel bed and bottom mat",v:"close",c:close(-2000,0),
   b:["Spread and compact 50–100mm of gravel in each pit.","Lay the bottom mat of 12mm bars both ways.","Raise it 75mm on concrete spacers."],
-  s:"#12 @ 190–215 per footing mark (FC1 = #12 @ 200, 7 bars each way)",w:"Each footing has its own size and spacing. Check the table in Part 4."},
+  s:"#12 @ 190–215 per footing mark (FC1 = #12 @ 200, 7 bars each way) · Grade 60 (Fy415)",w:"Each footing has its own size and spacing. Check the table in Part 4."},
  {p:"Foundation",t:"Column bars on the mat",v:"close",c:close(-2000,1700),
   b:["C1–C9: four 20mm bars each (36 bars total).","C10 and C11 at the front (row 1) are bigger: 400×400 with eight 16mm bars.","Hook the bars onto the mat, add a few ties, and plumb each cage."],
-  s:"C1–C9: 300×300, 4-#20 · C10–C11: 400×400, 8-#16",w:"The front columns are bigger because they carry the 1.1m cantilevered 3rd floor above."},
+  s:"C1–C9: 300×300, 4-#20 · C10–C11: 400×400, 8-#16 · Grade 60 (Fy415)",w:"The front columns are bigger because they carry the 1.1m cantilevered 3rd floor above."},
  {p:"Foundation",t:"Footing top mat",v:"close",c:close(-2000,0),
   b:["Lay the top mat of 12mm bars at 300mm both ways.","Tie it to the column bars.","Inspect sizes, spacing and cover before pouring."],
-  s:"Top mat #12 @ 300 both ways on every footing",w:"This is the last chance to fix the footing steel."},
+  s:"Top mat #12 @ 300 both ways on every footing · Grade 60 (Fy415)",w:"This is the last chance to fix the footing steel."},
  {p:"Foundation",t:"Pour the footings",v:"site",c:close(-2000,600),
   b:["Pour C21 concrete, 300mm thick.","Rod or vibrate so there are no voids.","Keep the concrete wet 3–7 days."],
-  s:"FC1–FC11 · D1 = 300 · C21 : Fy415",w:"The foundation plan labels the row-1 C footing \"C12-FC12\". The schedule only goes to C11/FC11, so it is most likely a typo for FC11 (1650 × 1650). Confirm."},
+  s:"FC1–FC11 · D1 = 300 · C21 : Fy415 (21 MPa concrete, Grade 60 bars)",w:"The foundation plan labels the row-1 C footing \"C12-FC12\". The schedule only goes to C11/FC11, so it is most likely a typo for FC11 (1650 × 1650). Confirm."},
  {p:"Foundation",t:"Footing tie beams",v:"site",c:close(-2000,600),
   b:["200×300 beams along all four rows and along lines A and C.","Line B has tie beams only from row 2 to row 4.","Stirrups: 9 at 75 near each column, 90 in the middle."],
-  s:"B1: top 2-#16 · bottom 2-#12 · 9-2L-#10@75 | @90 | 9@75",w:"The A and C beams run on a slant because of the taper. Cut bars to the real slanted length."},
+  s:"B1: top 2-#16 · bottom 2-#12 · 9-2L-#10@75 | @90 | 9@75 · C21 : Fy415 (Grade 60)",w:"The A and C beams run on a slant because of the taper. Cut bars to the real slanted length."},
  {p:"Garage level",t:"Ground column ties and forms",v:"close",c:close(-1600,3200),
   b:["Finish the column ties: tight in the 450mm end zones, 150mm in the middle.","Keep ties going through the beam joints.","Form, brace and plumb each column."],
-  s:"#12 @ 75 within 450mm of each end · #10 @ 150 middle · C28",w:"The garage storey is 2.65m tall, the shortest in the house."},
+  s:"#12 @ 75 within 450mm of each end · #10 @ 150 middle · C28 : Fy415 (Grade 60)",w:"The garage storey is 2.65m tall, the shortest in the house."},
  {p:"Garage level",t:"Pour columns, backfill",v:"site",c:close(-2000,3300),
   b:["Pour the columns in C28 and the tie beams in C21.","Strip the forms after 1–2 days and keep curing.","Backfill around the footings in compacted layers."],
   s:"Columns C28 (≈1:1.5:3) · tie beams C21 (≈1:2:4)",w:"The rear and A-side walls of the garage hold back the hill. Waterproof them before backfilling."},
  {p:"Garage level",t:"Underground pipes, septic tank, slab rebar",v:"site",c:close(-1400,900),
   b:["Build the septic tank (2.50 × 1.30 × 1.80m, 2 chambers) between lines B and C, rows 1–2. Run the 100mm PVC sewer from the rear cleanout to the tank, and from the tank to the street.","Lay the perforated 100mm storm drain around the buried garage walls, the 20mm water main up the C side, and the 25mm RSC service conduit to the panel (P1-07, E2-10).","Test the pipes, backfill, compact, add 100mm gravel, then lay 10mm bars at 600mm both ways on 50mm chairs."],
-  s:"Slab on fill: 100mm · #10 @ 600 both ways (foundation plan note)",w:"Tie the mesh to the tie beam bars at the edges."},
+  s:"Slab on fill: 100mm · #10 @ 600 both ways (foundation plan note) · bar grade not specified",w:"Tie the mesh to the tie beam bars at the edges."},
  {p:"Garage level",t:"Pour the garage slab",v:"site",c:close(-1400,900),
   b:["Pour 100mm of C21 at ±0.00.","Slope the floor slightly toward the front drain.","The driveway and sidewalk outside are at −0.20."],
   s:"Garage FFL ±0.00 · sidewalk −0.20",w:"Keep the slab wet for 7 days."},
  {p:"Garage level",t:"Stair and planter rebar",v:"close",c:{x:[-5600,-1900],y:[-900,2900],z:[-2900,5300]},
   b:["Exterior stair on the A side: 12mm main bars @ 200 along the slope (blue), 10mm distribution bars across (green).","One bent bar per step follows the riser and tread, with a nosing bar at each step edge (orange), per stair detail 9.","A thickened footing at the bottom with 4-12mm bars. The landing gets its own mesh. The C-side ground planter gets bars in its floor and walls."],
-  s:"Stair detail 9: 12mm top and bottom bars @ 200 · 12mm @ 250 at the step footing · 10mm nosing bar",w:"The plans give no riser count or landing size. About 14 risers of 200mm with 280mm treads are assumed. Confirm before forming."},
+  s:"Stair detail 9: 12mm top and bottom bars @ 200 · 12mm @ 250 at the step footing · 10mm nosing bar · bar grade not specified",w:"The plans give no riser count or landing size. About 14 risers of 200mm with 280mm treads are assumed. Confirm before forming."},
  {p:"Garage level",t:"Pour stairs and ground planter",v:"full",c:close(-500,3000,-5200,5400),
   b:["Pour the stair and landing in C21, from the bottom up.","Pour the planter floor first, then its walls.","Cure 7 days before anyone walks on the stairs."],
   s:"Stairs run from −0.20 at the sidewalk to +2.65 at the 2nd floor",w:"Leave a weep hole in the planter floor for drainage."},
@@ -1218,22 +1243,22 @@ const STEPS=[
   s:"Beam soffit +2.25 · slab soffit +2.55 · 2nd FFL +2.65",w:"Keep the shoring until the engineer releases it (usually 14–28 days)."},
  {p:"2nd floor",t:"Beams and slab rebar",v:"close",c:close(1900,3500),
   b:["Place 200×400 beam cages along all rows and lines A, B, C.","Lay slab bars, 10mm at 150mm both ways (drawn here at half density). Leave the stair opening in the A–B bay near row 3.","Hanging planter at the front: floor and wall bars, with the floor bars run back into the front beam (formwork dashed)."],
-  s:"2nd floor beams B1–B18 · 2-#16 top · stirrups 11–12 @ 75–80 ends, @115 mid",w:"The planter's size and bars aren't detailed in the plans. 10mm @ 200 is shown as an assumption, so get the engineer's detail."},
+  s:"2nd floor beams B1–B18 · 2-#16 top · stirrups 11–12 @ 75–80 ends, @115 mid · beams C21 : Fy415 (Grade 60) · slab bars FY276 (Grade 40)",w:"The planter's size and bars aren't detailed in the plans. 10mm @ 200 is shown as an assumption, so get the engineer's detail."},
  {p:"2nd floor",t:"Pour 2nd floor",v:"full",c:close(1900,3500),
   b:["Pour beams and slab together in C21.","Cast the hanging planter at the same time: a hollow concrete trough cantilevered off the front beam, with its bottom slab bars anchored into the beam.","Screed to +2.65 and cure for 7 days."],
-  s:"Slab 100mm · C21 : FY276",w:"The column bars stick up to lap with the 2nd-storey columns."},
+  s:"Slab 100mm · C21 : FY276 (Grade 40 slab bars) · beams C21 : Fy415 (Grade 60)",w:"The column bars stick up to lap with the 2nd-storey columns."},
  {p:"2nd floor",t:"2nd storey columns",v:"close",c:close(2400,6300),
   b:["Lap the new bars onto the stubs.","This storey is heavier: 4-#25 or 4-#32 in most 300×300 columns, 8-#20 in C10–C11.","Tie, form and plumb."],
-  s:"Band 4.65–8.05: 4-#32 (C1, C3, C4, C6, C7, C9), 4-#25 (C2, C8), 4-#20 (C5)",w:"4-#32 in a 300 column is very congested. Use small aggregate and vibrate well."},
+  s:"Band 4.65–8.05: 4-#32 (C1, C3, C4, C6, C7, C9), 4-#25 (C2, C8), 4-#20 (C5) · C28 : Fy415 (Grade 60)",w:"4-#32 in a 300 column is very congested. Use small aggregate and vibrate well."},
  {p:"3rd floor",t:"Cantilevered 3rd floor",v:"full",c:close(5200,6800,-4800,1900),
   b:["The 3rd floor slab sticks out 1.1m past row 1 at the front, about 1.1m past line A and 0.5m past line C.","Cantilever beams extend from every column out to the slab edge.","Shore the overhang from the 2nd floor and the ground below."],
-  s:"3rd floor framing: 200×400 and 150×500 beams, many marked CANTILEVERED · slab #10 @ 150",w:"Cantilevers need their top bars anchored well back into the span. Never cut top bars short here."},
+  s:"3rd floor framing: 200×400 and 150×500 beams, many marked CANTILEVERED · beams C21 : Fy415 (Grade 60) · slab #10 @ 150 FY276 (Grade 40)",w:"Cantilevers need their top bars anchored well back into the span. Never cut top bars short here."},
  {p:"3rd floor",t:"Pour 3rd floor, start upper columns",v:"close",c:close(5600,9400,-4800,1900),
   b:["Pour the 3rd floor beams and slab.","Most main columns stop here. Only C5 and C8 on line B continue up.","New columns C12–C21 start on the 3rd floor slab, along the cantilevered edges."],
-  s:"C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100",w:"These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour."},
+  s:"C13–C21: 200×300 or 200×400, 4-#16 to 6-#16, ties #12 @ 50 + #10 @ 100 · C28 : Fy415 (Grade 60)",w:"These columns sit on the cantilever beams. Their bars must be cast into the 3rd floor beams. Set them before the pour."},
  {p:"Roof",t:"Roof beam cages",v:"full",c:close(8600,9900,-4800,1900),
   b:["Pour the 3rd-storey columns.","The roof beam frame follows the same cantilevered outline as the 3rd floor.","Stand the parapet bars on the edge beams (#12 @ 400), and set anchor plates for the rafters."],
-  s:"Roof beams 200×300 and 150×500 · top of roof beam +9.30",w:"Many roof beams are also marked CANTILEVERED. Treat their top bars the same way."},
+  s:"Roof beams 200×300 and 150×500 · C21 : Fy415 (Grade 60) · top of roof beam +9.30 · parapet bar grade not specified",w:"Many roof beams are also marked CANTILEVERED. Treat their top bars the same way."},
  {p:"Roof",t:"Pour roof beams and parapet",v:"full",c:close(8600,10000,-4800,1900),
   b:["Pour the roof beams.","Build the parapet around the whole edge to +9.75 (450mm high)."],
   s:"Top of roof beam +9.30 · top of parapet +9.75",w:"Leave 2 scupper openings in the rear parapet for the gutter outlets."},
@@ -1242,7 +1267,7 @@ const STEPS=[
   s:"Rafter 2-2\"×6\"×2.0mm C · purlins 2\"×2\"×1.5mm @ 0.80 · ribbed long-span sheets (material, gauge and color not specified)",w:"The plans don't specify the sheet material, thickness or slope. Agree on them with the owner and engineer before ordering."},
  {p:"Walls & finish",t:"Walls and openings",v:"full",c:close(-200,9900,-5200,1900),
   b:["Stand the vertical bars first: 12mm @ 400, tied to dowels in the beams and slabs.","Lay the blocks up around the bars. Horizontal 12mm bars go every 3 courses (orange lines), and the bar cells are filled with mortar.","The walls are shown half built here. The garage walls on the rear and sides face the hill."],
-  s:"CHB: #12 @ 400 vertical and horizontal",w:"Embed conduits and boxes while laying blocks."},
+  s:"CHB: #12 @ 400 vertical and horizontal · bar grade not specified",w:"Embed conduits and boxes while laying blocks."},
  {p:"Walls & finish",t:"Finished house",v:"full",c:close(-200,9900,-5200,1900),
   b:["Plaster and paint: a white frame around the 3rd-floor box with a dark wall inside it, as in the perspective. Shown with the street, trees, landscaping and cars, like the render. Tap Night to turn the lights on.","Install aluminum windows (6mm glass), doors and the garage door. Pull the wires, mount panel LPP and fit the fixtures, outlets and switches.","Landscape the slope and the planters. Tap \"Pipes & wiring\" to see the hidden lines through the finished walls."],
   s:"300 column → about 330–340mm finished",w:"Compare this view with the perspective on sheet A1-01."}

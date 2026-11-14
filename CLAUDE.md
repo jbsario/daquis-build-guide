@@ -28,7 +28,7 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 
 ## Plan facts used (verify on the sheets before changing)
 - Levels: sidewalk −0.20, garage ±0.00, 2nd FFL +2.65, 3rd FFL +6.05, roof beam +9.30, parapet +9.75.
-- Concrete: columns C28, everything else C21. Rebar Fy415 (Grade 60); slabs FY276.
+- Concrete: columns C28, everything else C21. Rebar Fy415 (Grade 60) for footings, tie beams, columns, beams; FY276 (Grade 40) for 2nd/3rd floor slabs. Not specified: slab on fill, stairs, CHB, parapet, planters, septic tank, catch basin. Materials card and tap details tag every bar with its grade (`q.G` in `qty`, `GRL`).
 - Footings FC1–FC11, all 300 thick; the plan's "C12-FC12" at row 1 C is treated as FC11.
 - Columns 0–4.65m: C1–C9 4-#20, C10–C11 400×400 8-#16. 2nd storey: 4-#32/#25/#20, C10–C11 8-#20.
 - Roof slopes down toward row 4 (roof plan arrow); box gutter at the rear, 2 downspouts.
