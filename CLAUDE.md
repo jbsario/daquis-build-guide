@@ -17,7 +17,7 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
    - 3rd floor/roof cantilever outline: `ZF=-1100`, `ZB=10480`, `AO(z)`, `CO(z)`.
    - `MAIN` = 11 foundation columns C1–C11 `[name,x,z,size,footingL]`. `UP`/`UPC` = 3rd-storey columns (C5, C8, C12–C21).
 2. Projection and painter: `P(x,y,z)` (yaw/pitch camera), `add()`, `ln()`, `pg()`, `prism()`. Sort order is `lv` (level) → `sb` (sub-bucket) → depth.
-3. Members: footings, mats, column bars/ties/forms, beams (`gridBeams`, `cantBeams`, `beamCages`), slabs, shoring, walls, openings, parapet, roof framing/roofing, stairs, planters, terrain.
+3. Members: footings, mats, column bars/ties/forms, beams (`LB(level)` + `BSCH`, `beamCages`), slabs, shoring, walls, openings, parapet, roof framing/roofing, stairs, planters, terrain.
 4. `build(i)`: what exists at step `i` (0–23). `STEPS` array holds the text for each step (title, bullets, spec, warning, camera).
 5. Quantities: `qty(i)` → `qtyHTML(i)` (concrete C21 9 bags/m³, C28 12 bags/m³; rebar m / 6m pcs / kg). Hover/tap info strings via the global `INF` set before `prism()`.
 6. MEP: `mep(i)`, `mepLabels`, `mepQty` (sewer, water, storm, septic tank, panel LPP, service post, solar conduit).
@@ -38,6 +38,7 @@ Part 1 build sequence (3D viewer + step card + materials card) · Part 2 schedul
 - Estimate settings `EST` (`localStorage['drb-est']`): lap splices 0/40/50 × d, waste 0/5/10%, concrete site-mixed or ready-mix (+5%, 6 m³ trucks assumed). Applied in `summarize()`; all defaults leave plan totals unchanged (≈ 59.8 m³, 9,794 kg).
 - Cutting list (`cutData`/`cutHTML`, card `#cutCard`): merges identical cuts from `qty(i)`, packs pieces into 6m bars (first fit, longest first), lists cutting patterns. `cutTot` feeds the 6m piece counts in the materials card so both agree. Print: `#bPrint` adds `body.printstep`, forces the light theme and prints the step (3D, card, materials, cutting list, checklist).
 - Site record (`REC`, `localStorage['drb-rec']`, Part 7 `#record`): per-step sign-off in `#signCard` (checklist from `.check li`, name, date, notes, photos shrunk to 900px JPEG), engineer answers on each `.ask li` (keyed by `qaKey(text)`), schedule (`DUR` default days per step, start date, status). Export/import as JSON; no server, so records live on each device until exported.
+- Beams by mark: `BSCH` holds all four S2-06 beam schedules (tie, f2, f3, roof: B × D, bottom and top bars left/mid/right, stirrups n@sp left/mid/right, side face bars, CANTILEVERED). `LB(level)` places every mark from the S1-05 framing plans (tie 15, 2nd 18 incl. stair-opening B3/B9, 3rd 48 incl. B9 at 1.6m from row 4, roof 30 with no beams on lines A/C). `brec(s)` reads a mark; `beamTxt` (tap), `beamQ` (quantities: mid bars continuous, different end bars L/3 assumed), `beamCages` (stirrup zones via `stirPos`/`stirOptZ`). Marks show in the dimension overlay at steps 7, 15, 18, 20.
 - Part 4 "Using ordinary 12mm Grade 33 bars?" card: equal As × fy substitution (fy 230 MPa), built in script from `areaF`, `FSP`. Engineer must approve.
 - Roof slopes down toward row 4 (roof plan arrow); box gutter at the rear, 2 downspouts.
 
