@@ -225,6 +225,34 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 .optbadge{font:600 11px var(--f-mono);color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:2px 8px}
 @media (max-width:480px){.opts label{grid-template-columns:minmax(0,1fr);gap:4px}}
 
+.cut summary{list-style:none;cursor:pointer;min-height:40px;display:flex;align-items:center}
+.cut summary::-webkit-details-marker{display:none}
+.cut summary .qh{width:100%}
+.cut[open] summary{margin-bottom:6px}
+.cutt{font:12px/1.45 var(--f-mono);width:100%}
+.cutt th{font:600 10.5px var(--f-body);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:5px 6px 5px 0;white-space:normal}
+.cutt td{padding:6px 6px 6px 0;border-top:1px solid var(--line);vertical-align:top;white-space:normal}
+.cutt td:first-child{font-family:var(--f-body);font-size:12.5px}
+.cutsum{display:grid;gap:8px;margin-top:10px}
+.cutsum div{border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px}
+.cutsum b{font-family:var(--f-mono)}
+.cutsum ul{margin:4px 0 0;padding-left:16px;font:12px/1.5 var(--f-mono);color:var(--muted)}
+.printbtn{min-height:44px;font:600 14px var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;cursor:pointer}
+.printonly{display:none}
+@media print{
+  body.printstep{background:#fff;padding:0 8mm}
+  body.printstep header,body.printstep section:not(#build),body.printstep footer,body.printstep #build>.sechead,body.printstep .rot,body.printstep .legend,body.printstep .fnav,body.printstep .phases,body.printstep .track,body.printstep .nav,body.printstep #opts,body.printstep .stagebar,body.printstep .printbtn,body.printstep .tip,body.printstep .panel>.eyebrow{display:none!important}
+  body.printstep .printonly{display:block}
+  body.printstep section{border:0;padding:0}
+  body.printstep .viewer{display:block}
+  body.printstep .stage{position:static;break-inside:avoid;border:1px solid #bbb}
+  body.printstep #scene{height:105mm;max-height:none;aspect-ratio:auto}
+  body.printstep .card{break-inside:avoid;border:1px solid #bbb;margin-top:6px;padding:8px 10px}
+  body.printstep .cut summary .qn{display:none}
+  body.printstep #printHead{font:600 13px var(--f-body);border-bottom:2px solid #000;padding-bottom:4px;margin-bottom:6px}
+  body.printstep #printChk h3{font-size:16px;margin:8px 0 4px}
+}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -289,6 +317,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
     <h2 id="h-build">Build sequence</h2>
     <p>Your actual frame, modeled from the framing plans (S1-05), elevations and sections (A3-03): a tapered plan 5.30m wide at the road and 6.59m at the rear, a garage cut into the slope, side stairs up the A side, and a 3rd floor that cantilevers 1.1m out over the front. Viewed from the front-left, like the perspective on A1-01. New parts flash in when they're added.</p>
   </div>
+  <div class="printonly" id="printHead"></div>
   <div class="viewer">
     <div class="stage" id="stage">
       <div class="stagebar">
@@ -342,10 +371,13 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <p class="qn" style="margin:0">Lap length is not given in the plans (assumed). Ask the engineer. 40 × diameter is a common starting point.</p>
       </div>
       <div class="card qty" id="qty"></div>
+      <details class="card cut" id="cutCard"><summary><span class="qh"><span>Cutting list</span><span class="qn">for the bar bender · tap to open</span></span></summary><div id="cut"></div></details>
+      <button class="printbtn" id="bPrint">Print or save this step as PDF</button>
       <div class="nav">
         <button id="bBack" aria-label="Previous step">Back</button>
         <button id="bNext" class="primary">Next step</button>
       </div>
+      <div class="printonly" id="printChk"></div>
       <div class="eyebrow">Quantities are estimates from the model, not a bill of quantities. Set laps, waste and concrete supply under Bars and estimate.</div>
     </div>
   </div>
@@ -945,7 +977,7 @@ function optNote(i){const L=[],on=k=>g33(k)&&OPTSTEPS[k].includes(i);
   if(on('sof')){const o=sofOpt();L.push(`Slab on fill: ${o.d}mm ${GRL[o.g]} @ ${o.sp} both ways (plan: #10 @ 600, grade not given)`)}
   return L.length?'<b>Your bar choices, not the plan. Get the engineer\'s written approval.</b><ul><li>'+L.join('</li><li>')+'</li></ul>':''}
 function colTieQ(q,c,y0,y1,joint){const[a,b]=colSize(c),[eb0,es0,ms0,zn]=tieSpec(c),[eb,es,mb,ms,g]=tieOpt(eb0,es0,ms0),[z,mm]=tieSplit(y0,y1,zn,joint,es,ms),tl=tieLen(a,b);
-  q.G=g;q.b(eb,tl,z,'column ties, end zones');q.b(mb,tl,mm,'column ties, middle');q.G='60'}
+  q.G=g;q.b(eb,tl,z,`column ties ${a}×${b}, end zones`);q.b(mb,tl,mm,`column ties ${a}×${b}, middle`);q.G='60'}
 function stirTxt(L,st0){const so=stirOpt(st0),st=so.st;return `${so.d}mm ${GRL[so.g]}: ${stirN(L,...st)} pcs (${st[0]} @ ${st[1]} each end, @ ${st[2]} mid)`}
 const slabTxt=()=>{const o=slabOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
 const sofTxt=()=>{const o=sofOpt();return `${o.d}mm @ ${o.sp} both ways · ${GRL[o.g]}`};
@@ -998,7 +1030,7 @@ function qty(i){const q=Q();const TB=gridBeams(false),B2=gridBeams(true),B3=cant
   case 1:q.x('Excavation (11 pits, ≈1.9m deep)',r1(MAIN.reduce((s,c)=>s+m(c[4]+600)**2*1.9,0)),'m³');break;
   case 2:q.x('Gravel bed 80mm',r2(MAIN.reduce((s,c)=>s+m(c[4])**2*0.08,0)),'m³');
     MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],false),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(o.d,m(L-150),2*k,'footing bottom mat')});q.G='60';break;
-  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});{const o=od('ctie');q.G=o?o.g:'60';MAIN.forEach(c=>q.b(o?o.d:12,tieLen(c[3],c[3]),4,'starter ties'))}q.G='60';break;
+  case 3:MAIN.forEach(c=>{const[n,d]=BAR1(c[0]);q.b(d,5.44,n,'column bars, footing to 2nd floor')});{const o=od('ctie');q.G=o?o.g:'60';MAIN.forEach(c=>q.b(o?o.d:12,tieLen(c[3],c[3]),4,`starter ties ${c[3]}×${c[3]}`))}q.G='60';break;
   case 4:MAIN.forEach(c=>{const L=c[4],o=fmatSp(c[0],true),k=Math.floor((L-150)/o.sp)+1;q.G=o.g;q.b(o.d,m(L-150),2*k,'footing top mat')});q.G='60';break;
   case 5:q.c('C21',MAIN.reduce((s,c)=>s+m(c[4])**2*0.3,0),'11 footings');q.x('Footing side forms',r1(MAIN.reduce((s,c)=>s+4*m(c[4])*0.3,0)),'m²');break;
   case 6:beamQ(q,TB,200,300,[2,16],[2,12],[9,75,90],0,'bars');q.x('Tie beams',TB.length+' spans, '+r1(TB.reduce((s,x)=>s+m(segL(x)),0))+'m total','');break;
@@ -1049,7 +1081,7 @@ const GRL={'60':'Grade 60 (Fy415)','40':'Grade 40 (FY276)','33':'Grade 33 (fy 23
 const GRO={'60':0,'40':1,'33':2,ns:3};
 function qtyHTML(i){const s=summarize(qty(i));let rows='';
   Object.keys(s.conc).forEach(k=>{const v=s.conc[k],[c,sa,g]=MIX[k],o=Math.ceil(v*1.05*2)/2;rows+=EST.mix==='ready'?`<tr><td>Concrete ${k}, ready-mix</td><td>${r2(v)} m³</td><td>order ${o} m³ (+5%) · ${Math.ceil(o/6)} truck${Math.ceil(o/6)>1?'s':''} of 6 m³ (assumed)</td></tr>`:`<tr><td>Concrete ${k}, site-mixed</td><td>${r2(v)} m³</td><td>${Math.ceil(v*c*(1+EST.waste/100))} bags cement · ${r1(v*sa)} m³ sand · ${r1(v*g)} m³ gravel</td></tr>`});
-  Object.values(s.bars).sort((a,b)=>GRO[a.g]-GRO[b.g]||a.d-b.d).forEach(b=>{rows+=`<tr><td>Rebar ${b.d}mm · ${GRL[b.g]}</td><td>${Math.ceil(b.L)} m</td><td>${b.pcs} pcs × 6m · ${Math.ceil(b.L*KG[b.d])} kg</td></tr>`});
+  const CT=cutTot(i);Object.values(s.bars).sort((a,b)=>GRO[a.g]-GRO[b.g]||a.d-b.d).forEach(b=>{const ct=CT[b.d+'|'+b.g],pc=ct?Math.ceil(ct*(1+EST.waste/100)):b.pcs;rows+=`<tr><td>Rebar ${b.d}mm · ${GRL[b.g]}</td><td>${Math.ceil(b.L)} m</td><td>${pc} pcs × 6m · ${Math.ceil(b.L*KG[b.d])} kg</td></tr>`});
   s.xs.forEach(t=>rows+=`<tr><td>${t.lbl}</td><td>${t.v} ${t.u}</td><td></td></tr>`);
   let tc=0,tk=0,tb=0;const tg={'60':0,'40':0,'33':0,ns:0};for(let k=0;k<=i;k++){const z=summarize(qty(k));Object.keys(z.conc).forEach(c=>{tc+=z.conc[c];tb+=z.conc[c]*MIX[c][0]});Object.values(z.bars).forEach(b=>{const w=b.L*KG[b.d];tk+=w;tg[b.g]+=w})}
   const gs=['60','40','33','ns'].filter(g=>tg[g]>0).map(g=>`${Math.round(tg[g]).toLocaleString()} kg ${GRL[g]}`).join(' · ');
@@ -1433,7 +1465,7 @@ function render(keepAnim){const st=STEPS[cur];$('rDim').setAttribute('aria-press
   const svg=$('scene');svg.setAttribute('viewBox',b.map(f).join(' '));
   const body=build(cur);let extra='';if(cur===23){const mc=movingCarSVG();extra='<g id="car">'+mc.s+'</g>';if(night)extra+=`<rect class="nightsky" x="${f(b[0]-b[2])}" y="${f(b[1]-b[3])}" width="${f(b[2]*3)}" height="${f(b[3]*3)}"/><g class="glows">${GLOW.join('')}</g><g id="carglow">${mc.gl}</g>`}
   svg.innerHTML='<title id="scT">'+st.t+'</title>'+body+extra+'<g class="dims">'+dimsSVG(cur,b[2])+'</g>';carPos();
-  if(!keepAnim||$('qty').dataset.step!=String(cur)){$('qty').innerHTML=qtyHTML(cur);$('qty').dataset.step=cur}
+  if(!keepAnim||$('qty').dataset.step!=String(cur)){$('qty').innerHTML=qtyHTML(cur);$('qty').dataset.step=cur;$('cut').innerHTML=cutHTML(cur)}
   if(keepAnim===true)svg.querySelectorAll('.nw').forEach(e=>e.classList.remove('nw'));
   $('viewLbl').textContent=v==='full'?'Whole house':v==='site'?'Foundation':'Close-up';
   $('stN').textContent=String(cur+1).padStart(2,'0');$('stOf').textContent=`of ${STEPS.length} · ${st.p}`;
@@ -1453,6 +1485,41 @@ $('zIn').onclick=()=>setZoom(zoom+1);$('zOut').onclick=()=>setZoom(zoom-1);
 const SHALT={p1:'Sheet P1-07: sewer, water line and storm drainage layouts',p2:'Sheet P2-08: isometric sewer and water lines, septic tank, catch basin and fixture details',e1:'Sheet E1-09: power and lighting layouts for all floors',e2:'Sheet E2-10: load schedule, voltage drop, short circuit analysis, single line diagram'};
 $('shTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#shTabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$('shImg').src='sheets/'+b.dataset.s+'.jpg';$('shImg').alt=SHALT[b.dataset.s]});
 try{const s=parseInt(localStorage.getItem('drb-step2'),10);if(s>=0&&s<STEPS.length)cur=s}catch(e){}
+/* ---------- cutting list: merge identical cuts, pack pieces into 6m bars (first fit, longest first) ---------- */
+const SHAPE=l=>/tie|stirrup/.test(l)?'closed loop, 135° hooks':/footing to 2nd/.test(l)?'90° hook on the footing mat':/step bars/.test(l)?'bent: riser + tread':/planter|CHB|parapet vertical/.test(l)?'straight, dowel end':'straight';
+const fm=v=>v.toFixed(2);
+function cutData(i){const items=qty(i).filter(t=>t.k==='b');if(!items.length)return null;
+  const lp=d=>EST.lap*d/1000,M={},G={};
+  items.forEach(t=>{const g=t.g||'60',key=[t.lbl,t.d,g,t.tot?'run':t.len.toFixed(3)].join('|');const o=M[key]||(M[key]={lbl:t.lbl,d:t.d,g,tot:!!t.tot,len:t.tot?0:t.len,n:0});if(t.tot)o.len+=t.len;else o.n+=t.n});
+  let rows='';
+  Object.values(M).sort((a,b)=>a.d-b.d||GRO[a.g]-GRO[b.g]||(b.len-a.len)).forEach(t=>{const gk=t.d+'|'+t.g,gr=G[gk]||(G[gk]={d:t.d,g:t.g,pcs:[],run:0,cuts:0});
+    if(t.tot){const L=t.len*(1+lp(t.d)/6);gr.run+=L;
+      rows+=`<tr><td>${t.lbl}</td><td>${t.d}mm<br>${GRL[t.g]}</td><td>full bars, cut to fit</td><td>${r1(L)}m run</td><td>${lp(t.d)?`lap ${Math.round(lp(t.d)*1000)}mm at joints`:'laps not counted'}</td></tr>`;return}
+    let len=t.len+(/column bars, (2nd|3rd) storey/.test(t.lbl)?lp(t.d):0),note=SHAPE(t.lbl);
+    if(len>6){const L=lp(t.d)||0.6,per=Math.ceil((len-L)/(6-L)),last=len-(per-1)*(6-L);
+      for(let k=0;k<t.n;k++){for(let j=0;j<per-1;j++)gr.pcs.push(6);gr.pcs.push(last)}gr.cuts+=t.n*per;
+      note=`${per} pieces per run (${per-1} × 6.00 + ${fm(last)}m), lap ${Math.round(L*1000)}mm${lp(t.d)?'':' assumed'}`}
+    else{for(let k=0;k<t.n;k++)gr.pcs.push(len);gr.cuts+=t.n}
+    rows+=`<tr><td>${t.lbl}</td><td>${t.d}mm<br>${GRL[t.g]}</td><td>${fm(Math.min(len,6))}m${len>6?` (run ${fm(len)}m)`:''}</td><td>${t.n} pcs</td><td>${note}</td></tr>`});
+  Object.values(G).forEach(gr=>{const bins=[];gr.pcs.sort((a,b)=>b-a).forEach(p=>{let b=bins.find(x=>x.left>=p-1e-9);if(!b){b={left:6,ps:[]};bins.push(b)}b.left-=p;b.ps.push(p)});gr.bins=bins;gr.runBars=Math.ceil(gr.run/6);gr.tot=bins.length+gr.runBars});
+  return{rows,G}}
+const CUTC={};function cutTot(i){const k=i+'|'+JSON.stringify(OPT)+JSON.stringify(EST);if(!(k in CUTC)){const d=cutData(i);CUTC[k]=d?Object.fromEntries(Object.entries(d.G).map(([a,g])=>[a,g.tot])):{}}return CUTC[k]}
+function cutHTML(i){const D=cutData(i);if(!D)return '<p class="qnone">No rebar in this step.</p>';const{rows,G}=D;let sum='';
+  Object.values(G).sort((a,b)=>a.d-b.d||GRO[a.g]-GRO[b.g]).forEach(gr=>{const bins=gr.bins,runBars=gr.runBars,tot=gr.tot;
+    const off=bins.reduce((s,b)=>s+b.left,0),used=gr.pcs.reduce((s,p)=>s+p,0)+gr.run;
+    const pat={};bins.forEach(b=>{const c={};b.ps.forEach(p=>{const k=fm(p);c[k]=(c[k]||0)+1});const key=Object.entries(c).map(([l,n])=>`${n} × ${l}`).join(' + ')+` · offcut ${fm(b.left)}`;pat[key]=(pat[key]||0)+1});
+    const pl=Object.entries(pat).sort((a,b)=>b[1]-a[1]),show=pl.slice(0,8);
+    sum+=`<div><b>${gr.d}mm ${GRL[gr.g]}</b>: buy <b>${tot}</b> × 6m bars · ${gr.cuts} cut pieces${runBars?` + ${runBars} full bars for runs`:''} · offcuts ${r1(off)}m (${tot?Math.round(off/(tot*6)*100):0}%) · ${Math.ceil(used*KG[gr.d])} kg used
+      ${show.length?`<ul>${show.map(([k,n])=>`<li>${n} bar${n>1?'s':''}: ${k}m</li>`).join('')}${pl.length>8?`<li>…and ${pl.length-8} more patterns</li>`:''}</ul>`:''}</div>`});
+  return `<div class="qwrap"><table class="cutt"><thead><tr><th>Item</th><th>Bar</th><th>Cut length</th><th>Count</th><th>Shape / note</th></tr></thead><tbody>${rows}</tbody></table></div><div class="cutsum">${sum}</div>
+    <p class="qn" style="margin:8px 0 0">Cut lengths come from the model and include hooks for ties and stirrups. Check each length on site before cutting. ${estNote()}.</p>`}
+/* print one step */
+$('bPrint').onclick=()=>{const de=document.documentElement,th=de.getAttribute('data-theme'),st=STEPS[cur];de.setAttribute('data-theme','light');$('cutCard').open=true;
+  $('printHead').innerHTML=`Daquis Residence build guide · Step ${String(cur+1).padStart(2,'0')} of ${STEPS.length}: ${st.t} · ${st.p} · printed ${new Date().toLocaleDateString()}`;
+  $('printChk').innerHTML='<div class="card"><h3>Before the pour</h3>'+document.querySelector('.check').outerHTML+'</div>';
+  document.body.classList.add('printstep');
+  const done=()=>{document.body.classList.remove('printstep');if(th)de.setAttribute('data-theme',th);else de.removeAttribute('data-theme');window.removeEventListener('afterprint',done)};
+  window.addEventListener('afterprint',done);setTimeout(()=>window.print(),60)};
 /* rebar option controls */
 document.querySelectorAll('#opts select[data-k]').forEach(s=>{const k=s.dataset.k;s.innerHTML=OPTS[k].map(v=>`<option value="${v}">${v==='plan'?OPTPLAN[k]:optLbl(v)}</option>`).join('')});
 function optUI(){document.querySelectorAll('#opts select[data-k]').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value!=='plan')});document.querySelectorAll('#opts select[data-e]').forEach(s=>s.value=String(EST[s.dataset.e]));const any=Object.values(OPT).some(v=>v!=='plan');$('optWarn').hidden=!any;$('optBadge').hidden=!any}
