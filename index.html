@@ -302,6 +302,9 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 .bmk h4{margin:10px 0 4px;font:600 15px var(--f-display);text-transform:uppercase;letter-spacing:.03em}
 .bmk table td{white-space:nowrap;padding:5px 8px;font-size:12px}.bmk .qwrap{overflow-x:auto}
 
+.walkbtn{min-height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--accent);background:var(--accent);color:#fff;font:600 13px var(--f-body);cursor:pointer;margin-left:auto}
+.stagebar .seg{margin-left:0}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -372,6 +375,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
     <div class="stage" id="stage">
       <div class="stagebar">
         <span class="eyebrow" id="viewLbl">Close-up</span><span class="optbadge" id="optBadge" hidden>Bar substitution on</span>
+        <button class="walkbtn" id="vWalk">Walk inside ▶</button>
         <div class="seg" role="group" aria-label="Camera">
           <button id="vAuto" aria-pressed="true">Auto</button>
           <button id="vFull" aria-pressed="false">Whole house</button>
@@ -1672,6 +1676,11 @@ $('recImp').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f
   if(!confirm('Replace the site record on this device with the imported one?'))return;REC={steps:r.steps||{},qa:r.qa||{},sched:Object.assign({start:'',dur:{},status:{}},r.sched||{})};saveRec();recStep();qaRender();schRender()}catch(err){alert('That file is not a site record export.')}};
 $('recClr').onclick=()=>{if(!confirm('Delete all sign-offs, photos, answers and schedule changes on this device?'))return;REC={steps:{},qa:{},sched:{start:'',dur:{},status:{}}};saveRec();recStep();qaRender();schRender()};
 qaRender();schRender();
+/* first-person walkthrough (walk.js loads on first use) */
+window.DRB={A,C,AO,CO,ZF,ZB,ZR,MAIN,UPC,UPN,LB,brec,LEVN,LOWF,OUT,SN,SZ0,SRUN,LPP,STACK1,STACK2};
+$('vWalk').onclick=()=>{if(window.DRBWalk){DRBWalk.open(DRB);return}const b=$('vWalk');b.disabled=true;b.textContent='Loading…';
+  const sc=document.createElement('script');sc.src='walk.js?v=1';sc.onload=()=>{b.disabled=false;b.textContent='Walk inside ▶';DRBWalk.open(DRB)};
+  sc.onerror=()=>{b.disabled=false;b.textContent='Walk inside ▶';alert('The walkthrough could not load. Check the connection and try again.')};document.head.appendChild(sc)};
 /* offline + install */
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('/sw.js').catch(()=>{$('offMsg').textContent=''});
 else $('offMsg').textContent='';

@@ -6,6 +6,7 @@ One-page static site: a rotatable 3D, 24-step build of the proposed 3-storey res
 - `index.html`: everything (CSS, HTML, one inline script, no libraries).
 - `sheets/p1.jpg p2.jpg e1.jpg e2.jpg`: plumbing (P1-07, P2-08) and electrical (E1-09, E2-10) sheets shown in Part 5.
 - `vercel.json`: clean URLs, long cache for sheets, no-cache for `sw.js`.
+- `walk.js`: first-person walkthrough (WebGL, no libraries), loaded on demand by the "Walk inside" button. Reads model data from `window.DRB` (set at the end of the main script). Room layout, furniture and plumbing fixtures (faucets, WC, lavatories, showers, bathtub, sinks, water heaters) follow A2-02; ceiling lights grouped by E2-10 circuits (CKT 1/2/3, positions approximate, see E1-09); pipe x-ray routes simplified with P1-07 sizes. Walking: `surfs` (floor surfaces incl. spiral and straight stairs), `walls` (2D collision minus door gaps), `solids`; tap or crosshair picks from `picks` (AABB + info). `?v=` on the script URL and `VERSION` in `sw.js` must change together when walk.js changes.
 - `sw.js` + `manifest.webmanifest` + `icons/`: offline and install. Page is network-first (cached copy offline); sheets, icons and fonts cache-first. Bump `VERSION` in `sw.js` when adding precached files.
 
 ## Page layout

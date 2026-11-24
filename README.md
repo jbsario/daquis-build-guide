@@ -6,6 +6,7 @@ Interactive one-page guide for the proposed 3-storey residence at Blk 1 Lot 49 S
 - Structure, plumbing and electrical from the D.V. Fallarme construction plans
 - Dimensions, tap-for-details on every member, materials per step
 - Plumbing and electrical sheets with zoom
+- First-person walkthrough (Walk inside): walk all floors, lights per circuit, faucets and fixtures, pipe x-ray
 
 Static site: no build step. `index.html` plus the `sheets/` images.
 
