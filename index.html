@@ -305,6 +305,10 @@ table.wrap td:first-child{white-space:nowrap;color:var(--muted)}
 .walkbtn{min-height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--accent);background:var(--accent);color:#fff;font:600 13px var(--f-body);cursor:pointer;margin-left:auto}
 .stagebar .seg{margin-left:0}
 
+.bmcard{gap:8px}.bmcard svg{width:100%;height:auto;max-width:460px;justify-self:center}.bmsel{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;font-size:14px}
+.bmsel select{min-height:40px;font:14px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.bmtxt{margin:0;padding-left:18px;display:grid;gap:5px;font-size:13.5px}
+
 /* reference */
 .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .glossary div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
@@ -425,6 +429,9 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <p class="qn" style="margin:0">Lap length is not given in the plans (assumed). Ask the engineer. 40 × diameter is a common starting point.</p>
       </div>
       <div class="card qty" id="qty"></div>
+      <div class="card bmcard" id="bmCard" hidden><div class="qh"><span>Beam bars, drawn</span><span class="qn">tap a beam in 3D, or pick one</span></div>
+        <label class="bmsel"><span>Beam</span><select id="bmSel" aria-label="Beam mark"></select></label><div id="bmFig"></div><ul class="bmtxt" id="bmTxt"></ul>
+        <p class="qn" style="margin:0">Blue: the main bars. Orange: bars that change size at that end. Read left and right as the beam is named on the framing plan (S1-05).</p></div>
       <details class="card cut" id="cutCard"><summary><span class="qh"><span>Cutting list</span><span class="qn">for the bar bender · tap to open</span></span></summary><div id="cut"></div></details>
       <details class="card sign" id="signCard"><summary><span class="qh"><span>Inspection sign-off</span><span class="qn" id="signSum">not started</span></span></summary><div id="sign"></div></details>
       <button class="printbtn" id="bPrint">Print or save this step as PDF</button>
@@ -849,10 +856,45 @@ function stirPos(L,st){const a=[],b=[];for(let i=0;i<st[0][0];i++)a.push(50+st[0
   const lo=a.length?a[a.length-1]:50,hi=b.length?b[b.length-1]:L-50;for(let v=lo+st[1][1];v<hi-st[1][1]*0.5;v+=st[1][1])a.push(v);return a.concat(b).filter(v=>v>0&&v<L)}
 function beamTxt(s,slabT){const R=brec(s),L=segL(s),cl=Math.max(0,L-300),so=stirOptZ(R.st),n=so.st.reduce((x,y)=>x+y[0],0),sl=stirLen(R.w,R.d);
   return `${LEVN[s.lev]} ${s.mk}${R.cant?' · CANTILEVERED':''}|${R.w} × ${R.d}mm · span ${m(L).toFixed(2)}m (clear ≈ ${m(cl).toFixed(2)}m)`+(slabT!=null?`|Concrete C21 ≈ ${r2(m(cl)*m(R.w)*m(R.d-slabT))} m³${slabT?' below the slab':''}`:'')+
-   `|Bottom bars, left / mid / right: ${R.bot.join(' / ')}|Top bars, left / mid / right: ${R.top.join(' / ')}${R.sfr!=='-'?`|Side face bars ${R.sfr.replace('EF',' each face')}`:''}`+
-   `|Stirrups ${so.d}mm closed 2-leg, ${GRL[so.g]}: ${so.st[0][0]} @ ${so.st[0][1]} left · ${so.st[1][0]} @ ${so.st[1][1]} mid · ${so.st[2][0]} @ ${so.st[2][1]} right → ${n} pcs`+
+   '|'+beamPlain(s).join('|')+`|Schedule (S2-06): bottom ${R.bot.join(' / ')} · top ${R.top.join(' / ')} (left / mid / right)`+
    (so.g!=='60'||so.d!==10?` (your option; plan: #10 ${R.st.map(x=>x[0]+' @ '+x[1]).join(' / ')}, Grade 60)`+tightWarn(Math.min(...so.st.filter(x=>x[0]).map(x=>x[1])),so.d):'')+
    `|Stirrup ${R.w-80} × ${R.d-80}mm, 135° hooks, ≈ ${sl.toFixed(2)}m each · ${kgOf(so.d,n*sl)} kg${R.cant?'|Cantilever: anchor the top bars well back into the next span':''}|Main bars Grade 60 (Fy415) · per S2-06`}
+/* plain-language bar description and drawn diagram for one beam */
+const bN=t=>+t.split('-#')[0],bD=t=>+t.split('-#')[1];
+function endName(p){let best='',bd=450;MAIN.forEach(c=>{const d=Math.hypot(c[1]-p[0],c[2]-p[1]);if(d<bd){bd=d;best='column '+c[0]}});UPC.forEach((c,k)=>{const d=Math.hypot(c[1]-p[0],c[2]-p[1]);if(d<bd){bd=d;best='column '+UPN[k]}});return best||'the beam end (no column)'}
+function barLine(B,nm,L,ends){const t3=m(L/3).toFixed(2),mid=B[1],lap=x=>40*bD(x);
+  if(B[0]===mid&&B[2]===mid)return `${nm}: ${bN(mid)} bars ${bD(mid)}mm, the whole length`;
+  let t=`${nm}: ${bN(mid)} bars ${bD(mid)}mm through the middle`;
+  [[B[0],ends[0],'left'],[B[2],ends[1],'right']].forEach(([e,en,side])=>{if(e!==mid)t+=`; ${bN(e)} bars ${bD(e)}mm over the ${side} end (${en}), reaching about ${t3}m (L/3) into the span and lapping the ${bD(mid)}mm bars by about ${lap(e)}mm (40 × bar size, assumed)`});
+  return t+`. Easy option: use ${Math.max(bD(B[0]),bD(mid),bD(B[2]))}mm for the whole length; it is never weaker`}
+function beamPlain(s){const R=brec(s),L=segL(s),ends=[endName(s[0]),endName(s[1])],so=stirOptZ(R.st),n=so.st.reduce((x,y)=>x+y[0],0);
+  return[`Left end = ${ends[0]} · right end = ${ends[1]}`,barLine(R.bot,'Bottom',L,ends),barLine(R.top,'Top',L,ends),
+    `Any cut through the beam has ${bN(R.top[1])+bN(R.bot[1])} main bars: ${bN(R.top[1])} on top, ${bN(R.bot[1])} at the bottom`+(R.sfr!=='-'?`, plus side bars ${R.sfr.replace('EF',' on each face')}`:''),
+    `Stirrups (${so.d}mm closed loops): ${so.st[0][0]} at ${so.st[0][1]}mm near the left end, ${so.st[1][0]} at ${so.st[1][1]}mm in the middle, ${so.st[2][0]} at ${so.st[2][1]}mm near the right end · ${n} in all`]}
+function beamSVG(s){const R=brec(s),L=segL(s),ends=[endName(s[0]),endName(s[1])],x0=46,x1=314,W=x1-x0,yt=82,yb=124,so=stirOptZ(R.st),o=[];
+  const t3=W/3,col=(x,lab)=>{o.push(`<rect x="${x-14}" y="40" width="28" height="140" class="cc"/>`);o.push(`<text class="ts" x="${x}" y="32" text-anchor="middle">${lab.replace('column ','')}</text>`)};
+  col(x0-14,ends[0]);col(x1+14,ends[1]);o.push(`<rect x="${x0}" y="68" width="${W}" height="70" class="cc" style="fill:var(--c-top)"/>`);
+  /* stirrups: drawn at their real spacing pattern, scaled */
+  const pos=stirPos(L,so.st);pos.forEach(v=>{const x=x0+v/L*W;o.push(`<line x1="${f(x)}" y1="74" x2="${f(x)}" y2="132" class="tie" stroke-width="1"/>`)});
+  /* bars */
+  const bars=(B,y,lab,up)=>{const mid=B[1],w=t=>1.2+bD(t)/6;let a=x0-22,b=x1+22;const lx=x=>x0+x;
+    if(B[0]!==mid)a=x0+t3-24;if(B[2]!==mid)b=x1-t3+24;
+    o.push(`<line x1="${f(a)}" y1="${y}" x2="${f(b)}" y2="${y}" stroke="var(--main)" stroke-width="${w(mid)}" stroke-linecap="round"/>`);
+    o.push(`<text class="t" x="180" y="${up?y-8:y+16}" text-anchor="middle">${lab} ${bN(mid)}-${bD(mid)}mm</text>`);
+    [[B[0],x0-22,x0+t3,'start',x0-10],[B[2],x1-t3,x1+22,'end',x1+10]].forEach(([e,p,q,anc,tx])=>{if(e===mid)return;const yy=y+(up?5:-5);
+      o.push(`<line x1="${f(p)}" y1="${yy}" x2="${f(q)}" y2="${yy}" stroke="var(--accent)" stroke-width="${w(e)}" stroke-linecap="round"/>`);
+      o.push(`<text class="t" x="${f(tx)}" y="${up?y-8:y+16}" text-anchor="${anc}" style="fill:var(--accent-ink)">${bN(e)}-${bD(e)}mm</text>`)})};
+  bars(R.top,yt,'Top',true);bars(R.bot,yb,'Bottom',false);
+  /* stirrup zones */
+  const z=[so.st[0][0]*so.st[0][1],0,so.st[2][0]*so.st[2][1]].map(v=>v/L*W);z[1]=W-z[0]-z[2];let xx=x0;
+  ['left','mid','right'].forEach((nm,k)=>{const w2=Math.max(0,z[k]);o.push(`<path class="dim" d="M${f(xx)} 152V158H${f(xx+w2)}V152"/>`);o.push(`<text class="ts" x="${f(xx+w2/2)}" y="172" text-anchor="middle">${so.st[k][0]} @ ${so.st[k][1]}</text>`);xx+=w2});
+  o.push(`<text class="ts" x="180" y="196" text-anchor="middle">span ${m(L).toFixed(2)}m · ${R.w} × ${R.d}mm · stirrups ${so.d}mm</text>`);
+  /* cross sections at left / middle / right */
+  [['Left end',0],['Middle',1],['Right end',2]].forEach(([nm,k],i)=>{const cx=70+i*110,y0=214;o.push(`<rect x="${cx-16}" y="${y0}" width="32" height="46" class="cc"/><rect x="${cx-11}" y="${y0+5}" width="22" height="36" rx="3" class="tie" stroke-width="1.2"/>`);
+    const dot=(t,y)=>{const r=1.6+bD(t)/8,ch=t!==(y<y0+20?R.top[1]:R.bot[1]);[-6,6].forEach(dx=>o.push(`<circle cx="${cx+dx}" cy="${y}" r="${f(r)}" style="fill:${ch?'var(--accent)':'var(--main)'}"/>`))};
+    dot(R.top[k],y0+11);dot(R.bot[k],y0+35);
+    o.push(`<text class="ts" x="${cx+22}" y="${y0+14}">${bD(R.top[k])}mm</text><text class="ts" x="${cx+22}" y="${y0+38}">${bD(R.bot[k])}mm</text><text class="ts" x="${cx}" y="${y0+60}" text-anchor="middle">${nm}</text>`)});
+  return `<svg viewBox="0 0 360 282" role="img" aria-label="Bar diagram for ${LEVN[s.lev]} ${s.mk}">${o.join('')}</svg>`}
 function trimSeg(s,c){const [a,b]=s,dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);const t=Math.min(c/L,0.45);
   return[[a[0]+dx*t,a[1]+dz*t],[b[0]-dx*t,b[1]-dz*t]]}
 function beamSolids(lv,lines,yb,yt,w,mat,born,inf){lines.forEach(s=>{const R=brec(s);INF=inf?inf(s):'';prism(lv,1,seg(...s,R?R.w:w),R?yt-R.d:yb,yt,mat,born)});INF=''}
@@ -1528,6 +1570,7 @@ const tip=$('tip');let pinned=false,downXY=null;
 const COARSE=matchMedia('(pointer: coarse), (max-width: 820px)');
 function showTip(el,cx,cy){const g=el&&el.closest?el.closest('[data-i]'):null;document.querySelectorAll('#scene .hl').forEach(e=>e.classList.remove('hl'));
   if(!g){tip.hidden=true;return}g.classList.add('hl');const p=g.dataset.i.split('|');
+  {const mm=/^(?:Footing tie beam|2nd floor beam|3rd floor beam|Roof beam) (B\d+)/.exec(p[0]);if(mm&&BMLEV[cur]&&LB(BMLEV[cur]).some(s=>s.mk===mm[1])){bmMark=mm[1];bmCardUpdate()}}
   tip.classList.toggle('sheet',COARSE.matches);tip.innerHTML=(COARSE.matches?'<button class="tipx" aria-label="Close details">×</button>':'')+'<b>'+p[0]+'</b>'+(COARSE.matches?'<ul>'+p.slice(1).map(x=>'<li>'+x+'</li>').join('')+'</ul>':p.slice(1).join('<br>'));tip.hidden=false;
   if(COARSE.matches){tip.style.left='';tip.style.top='';return}
   const r=$('stage').getBoundingClientRect();let x=cx-r.left+14,y=cy-r.top+14;const tw=tip.offsetWidth,th=tip.offsetHeight;if(x+tw>r.width-8)x=cx-r.left-tw-14;if(y+th>r.height-8)y=cy-r.top-th-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'}
@@ -1563,7 +1606,7 @@ function render(keepAnim){const st=STEPS[cur];$('rDim').setAttribute('aria-press
   $('viewLbl').textContent=v==='full'?'Whole house':v==='site'?'Foundation':'Close-up';
   $('stN').textContent=String(cur+1).padStart(2,'0');$('stOf').textContent=`of ${STEPS.length} · ${st.p}`;
   $('stTitle').textContent=st.t;$('stList').innerHTML=st.b.map(x=>`<li>${x}</li>`).join('');
-  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;recStep();{const on=optNote(cur);$('stOpt').hidden=!on;$('stOpt').innerHTML=on}
+  $('stSpec').textContent=st.s;$('stWatch').textContent=st.w;bmCardUpdate();recStep();{const on=optNote(cur);$('stOpt').hidden=!on;$('stOpt').innerHTML=on}
   $('prog').style.width=((cur+1)/STEPS.length*100)+'%';
   $('bBack').disabled=cur===0;$('fB').disabled=cur===0;$('fX').textContent=cur===STEPS.length-1?'Start over ↺':'Next ›';$('fN').textContent=String(cur+1).padStart(2,'0')+' / '+STEPS.length;$('bNext').textContent=cur===STEPS.length-1?'Start over':'Next step';
   document.querySelectorAll('#phases button').forEach(b=>b.classList.toggle('on',b.dataset.p===st.p));
@@ -1689,6 +1732,12 @@ $('bInstall').onclick=async()=>{if(!deferredInstall)return;deferredInstall.promp
 if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone)$('iosTip').hidden=false;
 window.addEventListener('offline',()=>{$('offMsg').textContent='Offline: showing the saved copy. Your site record still saves on this phone.'});
 window.addEventListener('online',()=>{$('offMsg').textContent='Back online.'});
+/* beam bar diagram card: steps with beam cages or beam pours */
+const BMLEV={6:'tie',7:'tie',14:'f2',15:'f2',17:'f3',18:'f3',19:'roof',20:'roof'};let bmMark=null;
+function bmCardUpdate(){const lev=BMLEV[cur];$('bmCard').hidden=!lev;if(!lev)return;const L=LB(lev),sel=$('bmSel');
+  if(sel.dataset.lev!==lev){sel.dataset.lev=lev;sel.innerHTML=L.map(s=>{const R=brec(s);return `<option value="${s.mk}">${s.mk} · ${m(segL(s)).toFixed(2)}m · ${R.w}×${R.d}${R.cant?' · cantilever':''}</option>`}).join('');if(!L.some(s=>s.mk===bmMark))bmMark=L[0].mk}
+  sel.value=bmMark;const s=L.find(x=>x.mk===bmMark);$('bmFig').innerHTML=beamSVG(s);$('bmTxt').innerHTML=beamPlain(s).map(t=>`<li>${t}</li>`).join('')}
+$('bmSel').onchange=e=>{bmMark=e.target.value;bmCardUpdate()};
 /* rebar option controls */
 document.querySelectorAll('#opts select[data-k]').forEach(s=>{const k=s.dataset.k;s.innerHTML=OPTS[k].map(v=>`<option value="${v}">${v==='plan'?OPTPLAN[k]:optLbl(v)}</option>`).join('')});
 function optUI(){document.querySelectorAll('#opts select[data-k]').forEach(s=>{s.value=OPT[s.dataset.k];s.classList.toggle('g33',s.value!=='plan')});document.querySelectorAll('#opts select[data-e]').forEach(s=>s.value=String(EST[s.dataset.e]));const any=Object.values(OPT).some(v=>v!=='plan');$('optWarn').hidden=!any;$('optBadge').hidden=!any}
