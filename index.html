@@ -535,15 +535,15 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <rect x="110" y="40" width="160" height="240" class="cc"/>
         <rect x="142" y="72" width="96" height="176" rx="8" class="tie" stroke-width="2.5"/>
         <path class="tie" stroke-width="2.5" d="M149 79L165 95M149 79L163 75"/>
-        <g class="bar"><circle cx="153" cy="83" r="6"/><circle cx="227" cy="83" r="6"/><circle cx="153" cy="237" r="5"/><circle cx="227" cy="237" r="5"/></g>
-        <text class="ts" x="280" y="78">Top bars</text><text class="t" x="280" y="95">2-#16</text>
+        <g class="bar"><circle cx="153" cy="83" r="5"/><circle cx="227" cy="83" r="5"/><circle cx="153" cy="237" r="6"/><circle cx="227" cy="237" r="6"/></g>
+        <text class="ts" x="280" y="78">Top bars</text><text class="t" x="280" y="95">2-#12</text>
         <text class="ts" x="280" y="154">Stirrup</text><text class="t" x="280" y="171">#10, 2-leg</text>
-        <text class="ts" x="280" y="232">Bottom</text><text class="t" x="280" y="249">2-#12</text>
+        <text class="ts" x="280" y="232">Bottom</text><text class="t" x="280" y="249">2-#16</text>
         <path class="dim" d="M110 296H270M92 40V280"/>
         <text class="t" x="190" y="316" text-anchor="middle">B = 200</text>
         <text class="t" x="82" y="156" text-anchor="end">D</text><text class="t" x="82" y="174" text-anchor="end">300</text>
       </svg>
-      <figcaption><b>Footing tie beam B1, section</b>Runs between columns just below the ground slab. It ties the footings together and carries the ground-floor CHB walls.</figcaption>
+      <figcaption><b>Footing tie beam B1, section</b>Two bars on top, two on the bottom: 2-#16 bottom and 2-#12 top, with 2-#16 top at the right support. Runs between columns just below the ground slab. It ties the footings together and carries the ground-floor CHB walls.</figcaption>
     </figure>
     <figure>
       <svg viewBox="0 0 380 210" role="img" aria-label="Tie beam stirrup spacing between two columns">
@@ -552,7 +552,7 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
         <path d="M40 96H340M40 124H340" style="stroke:var(--main)" stroke-width="2"/>
         <g class="tie" stroke-width="1.5"><path d="M65 93V127M72 93V127M78 93V127M85 93V127M91 93V127M98 93V127M104 93V127M111 93V127M117 93V127M263 93V127M269 93V127M276 93V127M282 93V127M289 93V127M295 93V127M302 93V127M308 93V127M315 93V127"/></g>
         <g style="stroke:var(--mat)" stroke-width="1.5"><path d="M125 93V127M133 93V127M141 93V127M149 93V127M157 93V127M165 93V127M173 93V127M181 93V127M189 93V127M197 93V127M205 93V127M213 93V127M221 93V127M229 93V127M237 93V127M245 93V127M253 93V127"/></g>
-        <text class="ts" x="190" y="76" text-anchor="middle">Top bars 2-#16, continuous</text>
+        <text class="ts" x="190" y="76" text-anchor="middle">B1: 2-#16 bottom, 2-#12 top (2-#16 at the right support)</text>
         <path class="dim" d="M65 146H117M125 146H253M263 146H315"/>
         <text class="t" x="91" y="166" text-anchor="middle">9@75</text>
         <text class="t" x="189" y="166" text-anchor="middle">18@90</text>
@@ -599,8 +599,8 @@ footer{padding-top:24px;color:var(--muted);font-size:13px;border-top:1px solid v
       <table>
         <thead><tr><th>Level</th><th>B × D</th><th>Typical bars</th><th>Stirrups (ends / mid)</th></tr></thead>
         <tbody>
-          <tr><td>Footing tie</td><td>200×300</td><td>2-#16 top, 2-#12/#16 bot</td><td>9 @ 75 / @ 90</td></tr>
-          <tr><td>2nd floor</td><td>200×400</td><td>2-#16 top, 2-#12 to #25 bot</td><td>11–12 @ 75–80 / @ 115</td></tr>
+          <tr><td>Footing tie</td><td>200×300</td><td>bottom 2-#16 or 2-#12 · top 2-#12 or 2-#16, heavier at a support</td><td>9 @ 75 / @ 90</td></tr>
+          <tr><td>2nd floor</td><td>200×400</td><td>bottom 2-#16 (2-#12 on some) · top 2-#12 to 2-#25, heavier at supports</td><td>11–12 @ 75–80 / @ 115</td></tr>
           <tr><td>3rd floor</td><td>200×400, 150×500</td><td>2-#12/#16 top, up to #25 bot</td><td>@ 75–125 / @ 115–125</td></tr>
           <tr><td>Roof beam</td><td>200×300, 150×500</td><td>2-#12 top and bottom</td><td>9 @ 75 / @ 90</td></tr>
         </tbody>
@@ -1441,7 +1441,7 @@ const STEPS=[
   s:"FC1–FC11 · D1 = 300 · C21 : Fy415 (21 MPa concrete, Grade 60 bars)",w:"The foundation plan labels the row-1 C footing \"C12-FC12\". The schedule only goes to C11/FC11, so it is most likely a typo for FC11 (1650 × 1650). Confirm."},
  {p:"Foundation",t:"Footing tie beams",v:"site",c:close(-2000,600),
   b:["200×300 beams along all four rows and along lines A and C.","Line B has tie beams only from row 2 to row 4.","Stirrups: 9 at 75 near each column, 90 in the middle."],
-  s:"B1: top 2-#16 · bottom 2-#12 · 9-2L-#10@75 | @90 | 9@75 · C21 : Fy415 (Grade 60)",w:"The A and C beams run on a slant because of the taper. Cut bars to the real slanted length."},
+  s:"B1: bottom 2-#16 · top 2-#12, 2-#16 at the right support · 9-2L-#10@75 | @90 | 9@75 · C21 : Fy415 (Grade 60)",w:"The A and C beams run on a slant because of the taper. Cut bars to the real slanted length."},
  {p:"Garage level",t:"Ground column ties and forms",v:"close",c:close(-1600,3200),
   b:["Finish the column ties: tight in the 450mm end zones, 150mm in the middle.","Keep ties going through the beam joints.","Form, brace and plumb each column."],
   s:"#12 @ 75 within 450mm of each end · #10 @ 150 middle · C28 : Fy415 (Grade 60)",w:"The garage storey is 2.65m tall, the shortest in the house."},
@@ -1465,7 +1465,7 @@ const STEPS=[
   s:"Beam soffit +2.25 · slab soffit +2.55 · 2nd FFL +2.65",w:"Keep the shoring until the engineer releases it (usually 14–28 days)."},
  {p:"2nd floor",t:"Beams and slab rebar",v:"close",c:close(1900,3500),
   b:["Place 200×400 beam cages along all rows and lines A, B, C.","Lay slab bars, 10mm at 150mm both ways (drawn here at half density). Leave the stair opening in the A–B bay near row 3.","Hanging planter at the front: floor and wall bars, with the floor bars run back into the front beam (formwork dashed)."],
-  s:"2nd floor beams B1–B18 · 2-#16 top · stirrups 11–12 @ 75–80 ends, @115 mid · beams C21 : Fy415 (Grade 60) · slab bars FY276 (Grade 40)",w:"The planter's size and bars aren't detailed in the plans. 10mm @ 200 is shown as an assumption, so get the engineer's detail."},
+  s:"2nd floor beams B1–B18 · typ. 2-#16 bottom, 2-#12 to 2-#25 top · stirrups 11–12 @ 75–80 ends, @115 mid · beams C21 : Fy415 (Grade 60) · slab bars FY276 (Grade 40)",w:"The planter's size and bars aren't detailed in the plans. 10mm @ 200 is shown as an assumption, so get the engineer's detail."},
  {p:"2nd floor",t:"Pour 2nd floor",v:"full",c:close(1900,3500),
   b:["Pour beams and slab together in C21.","Cast the hanging planter at the same time: a hollow concrete trough cantilevered off the front beam, with its bottom slab bars anchored into the beam.","Screed to +2.65 and cure for 7 days."],
   s:"Slab 100mm · C21 : FY276 (Grade 40 slab bars) · beams C21 : Fy415 (Grade 60)",w:"The column bars stick up to lap with the 2nd-storey columns."},
